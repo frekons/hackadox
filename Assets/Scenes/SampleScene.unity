@@ -168,6 +168,7 @@ MonoBehaviour:
   walkForce: 5
   jumpForce: 5
   jumpCooldown: 0.1
+  canMove: 0
 --- !u!61 &163539792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -466,7 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efeda130a1a20474f96ac8a081494a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camOffset: {x: 4.5, y: 1.5, z: 0}
+  cameraOffset: {x: 0, y: 0, z: 0}
   followSpeed: 1
 --- !u!1 &1216188846
 GameObject:
@@ -479,6 +480,7 @@ GameObject:
   - component: {fileID: 1216188848}
   - component: {fileID: 1216188847}
   - component: {fileID: 1216188849}
+  - component: {fileID: 1216188850}
   m_Layer: 0
   m_Name: Test Door
   m_TagString: Untagged
@@ -564,6 +566,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9478bb3de25d84b44ba09ffb297c8d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scenePath: Assets/Scenes/Scene-1.unity
+--- !u!61 &1216188850
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216188846}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.6, y: 1.24}
+    newSize: {x: 0.6, y: 1.24}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 1.24}
+  m_EdgeRadius: 0
 --- !u!1 &1355282832
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +693,7 @@ GameObject:
   - component: {fileID: 1495525031}
   - component: {fileID: 1495525030}
   - component: {fileID: 1495525029}
+  - component: {fileID: 1495525033}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -752,6 +782,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1495525033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495525028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d7f85e96878cb4097c982fcd130bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1963873638440871989
 PrefabInstance:
   m_ObjectHideFlags: 0

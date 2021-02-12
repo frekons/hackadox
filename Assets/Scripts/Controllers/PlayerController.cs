@@ -3,21 +3,26 @@
 public class PlayerController : MonoBehaviour
 {
 	private Camera mainCamera;
-	private Rigidbody2D rb;
+	private Rigidbody2D rigibody2d;
 
+	[Header("Ground Layer Mask")]
 	public LayerMask terrainLayer;
 
+	[Header("Player")]
 	public float walkForce = 5f;
 	public float jumpForce = 5f;
 	public float jumpCooldown = 0.1f;
+	public bool canMove = true;
 
 	private bool hasPressedJump;
 	private float lastJump;
 
 	void Start()
 	{
-		mainCamera = Camera.main;
-		rb = GetComponent<Rigidbody2D>();
+		canMove = true;
+		rigibody2d = GetComponent<Rigidbody2D>();
+
+
 	}
 
 	public bool IsGrounded()
@@ -34,20 +39,26 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		if (!canMove)
+			return;
+
 		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > jumpCooldown)
 			hasPressedJump = true;
 	}
 
 	private void FixedUpdate()
 	{
+		if (!canMove)
+			return;
+
 		float horizontal = Input.GetAxis("Horizontal");
 
-		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rb.velocity.y);
+		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rigibody2d.velocity.y);
 
 		if (CanJump())
 			Jump(ref targetVelocity);
 
-		rb.velocity = targetVelocity;
+		rigibody2d.velocity = targetVelocity;
 	}
 
 	private void Jump(ref Vector2 targetVelocity)
@@ -55,6 +66,5 @@ public class PlayerController : MonoBehaviour
 		targetVelocity.y += jumpForce;
 		hasPressedJump = false;
 		lastJump = Time.time;
-
 	}
 }

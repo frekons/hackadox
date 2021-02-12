@@ -1,12 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-	private void OnCollisionEnter2D(Collision2D collision)
+	[Header("Next scene path")]
+	[SerializeField]
+	public string scenePath;
+
+	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (collision.collider.CompareTag("Player"))
+		if (collider.CompareTag("Player"))
 		{
-			FadeEffect.instance.FadeOut();
+			Debug.Log("Player entered the exit door.");
+
+			collider.GetComponent<PlayerController>().canMove = false;
+
+			FadeEffect.instance.FadeIn(() =>
+			{
+				SceneManager.LoadScene(scenePath);
+			});
 		}
 	}
 }
