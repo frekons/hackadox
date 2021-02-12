@@ -11,10 +11,6 @@ public class FadeEffect : MonoBehaviour
 	private void Awake()
 	{
 		instance = this;
-	}
-
-	private void Start()
-	{
 		image = GetComponent<Image>();
 	}
 

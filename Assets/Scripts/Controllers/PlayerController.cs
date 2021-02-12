@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 		canMove = true;
 		rigibody2d = GetComponent<Rigidbody2D>();
 
-
+		FadeEffect.instance.FadeOut();
 	}
 
 	public bool IsGrounded()

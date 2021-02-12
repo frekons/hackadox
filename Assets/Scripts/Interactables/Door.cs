@@ -17,6 +17,8 @@ public class Door : MonoBehaviour
 
 			FadeEffect.instance.FadeIn(() =>
 			{
+				Debug.Log("Loading '" + scenePath.Split('/')[2].Replace(".unity", "") + "' named scene.");
+
 				SceneManager.LoadScene(scenePath);
 			});
 		}
