@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > 0.1)
+		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > jumpCooldown)
 			hasPressedJump = true;
 	}
 
