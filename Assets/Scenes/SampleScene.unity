@@ -162,7 +162,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1e2f6f54914c74b825b45091cc992b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  walkForce: 5
+  jumpForce: 5
+  jumpCooldown: 0.1
 --- !u!61 &163539792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -200,7 +205,7 @@ GameObject:
   - component: {fileID: 335656237}
   - component: {fileID: 335656236}
   - component: {fileID: 335656238}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,6 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camOffset: {x: 4.5, y: 1.5, z: 0}
+  followSpeed: 1
 --- !u!1001 &1963873638440871989
 PrefabInstance:
   m_ObjectHideFlags: 0
