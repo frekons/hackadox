@@ -48,7 +48,7 @@ public class VariablePrefab : MonoBehaviour
 
             dropdown.options.Add(new TMP_Dropdown.OptionData("none"));
 
-            foreach (var field in _type.GetFields())
+            foreach (var field in _type.GetProperties())
             {
                 //print(field /*+ ": " + field.GetValue(_object)*/);
 
@@ -77,11 +77,11 @@ public class VariablePrefab : MonoBehaviour
                     {
                         Debug.Log("Option: " + option.text);
 
-                        var field = _type.GetField(option.text);
+                        var field = _type.GetProperty(option.text);
 
                         var args = new object[] { input };
 
-                        var parseMethodInfo = field.FieldType.GetMethod("Parse", new System.Type[] { typeof(string) });
+                        var parseMethodInfo = field.PropertyType.GetMethod("Parse", new System.Type[] { typeof(string) });
 
                         var result = parseMethodInfo.Invoke(null, args);
 

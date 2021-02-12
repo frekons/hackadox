@@ -14,7 +14,22 @@ public class TestVariableScript : MonoBehaviour
     [System.Serializable]
     public class PlayerSt
     {
-        public int health = 100;
-        public float gravity = 800;
+        public int _health = 100;
+        public float _gravity = 800;
+
+        public int health
+        {
+            get
+            {
+                return _health;
+            }
+
+            set
+            {
+                Debug.Log("set called!");
+
+                _health = value;
+            }
+        }
     }
 }
