@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
-	[Header("Next scene path")]
-	[SerializeField]
+	public Sprite[] sprites = new Sprite[2];
+
+	[HideInInspector]
 	public string scenePath;
+
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
@@ -13,14 +15,28 @@ public class Door : MonoBehaviour
 		{
 			Debug.Log("Player entered the exit door.");
 
-			collider.GetComponent<PlayerController>().canMove = false;
-
-			FadeEffect.instance.FadeIn(() =>
+			if (!string.IsNullOrWhiteSpace(scenePath))
 			{
-				Debug.Log("Loading '" + scenePath.Split('/')[2].Replace(".unity", "") + "' named scene.");
+				SetDoorOpen(true);
 
-				SceneManager.LoadScene(scenePath);
-			});
+				collider.GetComponent<PlayerController>().canMove = false;
+
+				FadeEffect.instance.FadeIn(() =>
+				{
+					Debug.Log("Loading '" + scenePath + "' named scene.");
+					SceneManager.LoadScene(scenePath);
+
+					SetDoorOpen(false);
+				});
+			}
+			else
+				Debug.LogError("No scene selected for the door.");
+
 		}
+	}
+
+	public void SetDoorOpen(bool state)
+	{
+		GetComponent<SpriteRenderer>().sprite = sprites[state == false ? 0 : 1];
 	}
 }

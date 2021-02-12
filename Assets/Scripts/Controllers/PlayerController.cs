@@ -9,20 +9,65 @@ public class PlayerController : MonoBehaviour
 	public LayerMask terrainLayer;
 
 	[Header("Player")]
+	public float health = 100f;
 	public float walkForce = 5f;
 	public float jumpForce = 5f;
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
+	public bool isDead = false;
 
 	private bool hasPressedJump;
 	private float lastJump;
 
 	void Start()
 	{
-		canMove = true;
 		rigibody2d = GetComponent<Rigidbody2D>();
 
-		FadeEffect.instance.FadeOut();
+		Spawn();
+	}
+
+	public void TakeDamage(float damage)
+	{
+		if (isDead)
+			return;
+
+		health -= damage;
+
+		if (health <= 0)
+			OnPlayerDead();
+
+	}
+
+	public void OnPlayerDead()
+	{
+		if (isDead)
+			return;
+
+		isDead = true;
+		canMove = false;
+		Debug.Log("Player has dead.");
+
+		FadeEffect.instance.FadeIn(() =>
+		{
+			Spawn();
+		});
+	}
+
+	void Spawn()
+	{
+		rigibody2d.velocity = Vector2.zero;
+		rigibody2d.angularVelocity = 0;
+		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
+		gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+		canMove = true;
+
+		FadeEffect.instance.FadeOut(() =>
+		{
+			isDead = false;
+			health = 100f;
+		});
+
+		Debug.Log("Player has spawned.");
 	}
 
 	public bool IsGrounded()
@@ -39,6 +84,9 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		if (transform.position.y < -10f)
+			TakeDamage(100f);
+
 		if (!canMove)
 			return;
 

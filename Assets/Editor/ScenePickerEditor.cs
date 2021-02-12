@@ -5,13 +5,15 @@ public class ScenePickerEditor : Editor
 {
 	public override void OnInspectorGUI()
 	{
+		DrawDefaultInspector();
+
 		var picker = target as Door;
 		var oldScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(picker.scenePath);
 
 		serializedObject.Update();
 
 		EditorGUI.BeginChangeCheck();
-		var newScene = EditorGUILayout.ObjectField("scene", oldScene, typeof(SceneAsset), false) as SceneAsset;
+		var newScene = EditorGUILayout.ObjectField("Teleport Scene", oldScene, typeof(SceneAsset), false) as SceneAsset;
 
 		if (EditorGUI.EndChangeCheck())
 		{
