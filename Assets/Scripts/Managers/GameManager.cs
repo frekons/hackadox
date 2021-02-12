@@ -2,13 +2,10 @@
 
 public class GameManager : MonoBehaviour
 {
-	void Start()
+	public static GameManager instance;
+
+	void Awake()
 	{
-
-	}
-
-	void Update()
-	{
-
+		instance = this;
 	}
 }

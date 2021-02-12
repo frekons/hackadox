@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8720111170500183177}
   - component: {fileID: 8720111170500183182}
   m_Layer: 0
-  m_Name: Test Door
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,4 +126,5 @@ MonoBehaviour:
   sprites:
   - {fileID: 5213229242370633579, guid: 30cdfff23152abd40a91d51ca71d52b4, type: 3}
   - {fileID: 436563815456543028, guid: 30cdfff23152abd40a91d51ca71d52b4, type: 3}
+  isOpen: 0
   scenePath: 

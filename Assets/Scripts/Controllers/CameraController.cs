@@ -2,6 +2,7 @@
 
 public class CameraController : MonoBehaviour
 {
+	[Header("Camera")]
 	private GameObject localPlayer;
 	public Vector3 cameraOffset = Vector3.zero;
 	public float followSpeed = 1f;

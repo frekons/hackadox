@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour
 {
 	public Sprite[] sprites = new Sprite[2];
+	public bool isOpen;
 
 	[HideInInspector]
 	public string scenePath;
@@ -24,9 +25,8 @@ public class Door : MonoBehaviour
 				FadeEffect.instance.FadeIn(() =>
 				{
 					Debug.Log("Loading '" + scenePath + "' named scene.");
-					SceneManager.LoadScene(scenePath);
 
-					SetDoorOpen(false);
+					SceneManager.LoadScene(scenePath);
 				});
 			}
 			else
@@ -37,6 +37,7 @@ public class Door : MonoBehaviour
 
 	public void SetDoorOpen(bool state)
 	{
+		isOpen = state;
 		GetComponent<SpriteRenderer>().sprite = sprites[state == false ? 0 : 1];
 	}
 }

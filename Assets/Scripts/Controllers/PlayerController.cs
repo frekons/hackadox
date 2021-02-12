@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
 	public void TakeDamage(float damage)
 	{
-		if (isDead)
+		if (isDead || !canMove)
 			return;
 
 		health -= damage;
@@ -40,12 +40,16 @@ public class PlayerController : MonoBehaviour
 
 	public void OnPlayerDead()
 	{
-		if (isDead)
+		if (isDead || !canMove)
 			return;
+
+		Debug.Log("Player has dead.");
+
+		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, false);
+		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, true);
 
 		isDead = true;
 		canMove = false;
-		Debug.Log("Player has dead.");
 
 		FadeEffect.instance.FadeIn(() =>
 		{
@@ -57,13 +61,22 @@ public class PlayerController : MonoBehaviour
 	{
 		rigibody2d.velocity = Vector2.zero;
 		rigibody2d.angularVelocity = 0;
+
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
 		gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+
 		canMove = true;
 
 		FadeEffect.instance.FadeOut(() =>
 		{
-			isDead = false;
+			if (isDead)
+			{
+				isDead = false;
+				CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, false);
+			}
+
+			CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
+
 			health = 100f;
 		});
 
