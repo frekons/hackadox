@@ -1,27 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Camera mainCamera;
-    private Rigidbody2D rb;
-	public float walkSpeed = 5f;
-	public float jumpSpeed = 5f;
+	private Camera mainCamera;
+	private Rigidbody2D rb;
 
-    void Start()
-    {
-        mainCamera = Camera.main;
-        rb = GetComponent<Rigidbody2D>();
-    }
+	public LayerMask terrainLayer;
 
-    void Update()
-    {
-        float horizontal = Input.GetAxis("Horizontal");//, vertical = Input.GetAxis("Vertical");
+	public float walkForce = 5f;
+	public float jumpForce = 5f;
+	public float jumpCooldown = 0.1f;
 
-        Vector2 toMove = new Vector2(horizontal * walkSpeed, rb.velocity.y);
-        if (Input.GetKeyDown(KeyCode.Space))
-            toMove.y = jumpSpeed * 1f;
-        rb.velocity = toMove;
-    }
+	private bool hasPressedJump;
+	private float lastJump;
+
+	void Start()
+	{
+		mainCamera = Camera.main;
+		rb = GetComponent<Rigidbody2D>();
+	}
+
+	public bool IsGrounded()
+	{
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, terrainLayer);
+
+		return hit.transform != null ? true : false;
+	}
+
+	public bool CanJump()
+	{
+		return IsGrounded() ? (Time.time - lastJump > jumpCooldown) && hasPressedJump : false;
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > 0.1)
+			hasPressedJump = true;
+	}
+
+	private void FixedUpdate()
+	{
+		float horizontal = Input.GetAxis("Horizontal");
+
+		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rb.velocity.y);
+
+		if (CanJump())
+			Jump(ref targetVelocity);
+
+		rb.velocity = targetVelocity;
+	}
+
+	private void Jump(ref Vector2 targetVelocity)
+	{
+		targetVelocity.y += jumpForce;
+		hasPressedJump = false;
+		lastJump = Time.time;
+	}
 }
