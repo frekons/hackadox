@@ -36,12 +36,6 @@ public class PlayerController : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > jumpCooldown)
 			hasPressedJump = true;
-
-		if (Input.GetKeyDown(KeyCode.A))
-			FadeEffect.instance.FadeIn();
-		else if (Input.GetKeyDown(KeyCode.B))
-			FadeEffect.instance.FadeOut();
-
 	}
 
 	private void FixedUpdate()

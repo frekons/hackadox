@@ -2,13 +2,11 @@
 
 public class Door : MonoBehaviour
 {
-	void Start()
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
-
-	}
-
-	void Update()
-	{
-
+		if (collision.collider.CompareTag("Player"))
+		{
+			FadeEffect.instance.FadeOut();
+		}
 	}
 }
