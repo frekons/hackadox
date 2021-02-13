@@ -59,7 +59,7 @@ public class Timer : MonoBehaviour
         {
             _progressSlider.value = value;
 
-            currentTime -= Time.deltaTime;
+            currentTime -= UnityEngine.Time.deltaTime;
 
             value = currentTime / seconds;
 
