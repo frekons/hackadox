@@ -22,6 +22,12 @@ public class MenuManager : MonoBehaviour
 
 	private GameObject _selectedButton;
 
+	[SerializeField]
+	private Sprite[] audioButtonSprites;
+
+	private bool isSoundActive = true;
+	private float tempVolume;
+
 	private bool isClickedPlay;
 
 	public GameObject SelectedButton
@@ -62,7 +68,10 @@ public class MenuManager : MonoBehaviour
 
 		var eventSystem = EventSystem.current;
 
-		if (eventSystem && eventSystem.currentSelectedGameObject != null && SelectedButton != eventSystem.currentSelectedGameObject && eventSystem.currentSelectedGameObject.GetComponent<Button>())
+		if (eventSystem && eventSystem.currentSelectedGameObject != null &&
+			SelectedButton != eventSystem.currentSelectedGameObject &&
+			eventSystem.currentSelectedGameObject.GetComponent<Button>() &&
+			eventSystem.currentSelectedGameObject.name != "Audio Toggle Button")
 		{
 			SelectedButton = eventSystem.currentSelectedGameObject;
 		}
@@ -89,6 +98,8 @@ public class MenuManager : MonoBehaviour
 			return;
 
 		_audioMixer.SetFloat("MainVolume", volume);
+		isSoundActive = true;
+		_buttons[2].GetComponent<Image>().sprite = audioButtonSprites[1];
 	}
 
 	public void OnPressPlay()
@@ -104,6 +115,22 @@ public class MenuManager : MonoBehaviour
 		{
 			SceneManager.LoadScene(1);
 		}));
+	}
+
+	public void OnClickToggleAudio()
+	{
+		isSoundActive = !isSoundActive;
+		if (isSoundActive == false)
+		{
+			_audioMixer.GetFloat("MainVolume", out tempVolume);
+			_audioMixer.SetFloat("MainVolume", -80f);
+		}
+		else
+		{
+			_audioMixer.SetFloat("MainVolume", tempVolume);
+		}
+
+		EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite = audioButtonSprites[isSoundActive ? 1 : 0];
 	}
 
 	//
