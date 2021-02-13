@@ -19,8 +19,6 @@ public class Timer : MonoBehaviour
         Instance = this;
     }
 
-
-
     private GameObject _timeIsUpObject;
 
     private IEnumerator TimerIEnumerator(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
