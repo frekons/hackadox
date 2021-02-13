@@ -35,8 +35,6 @@ public class ConsolePanel : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
         _consoleText.text = _defaultText;
     }
 
