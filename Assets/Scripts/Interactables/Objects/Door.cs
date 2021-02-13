@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Door : MonoBehaviour
+public class Door : Interactable
 {
 	public Sprite[] sprites = new Sprite[2];
 	public bool isOpen;
@@ -9,25 +9,30 @@ public class Door : MonoBehaviour
 	[HideInInspector]
 	public string scenePath;
 
-
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
 		if (collider.CompareTag("Player"))
 		{
 			Debug.Log("Player entered the exit door.");
 
+			PlayerController player = collider.GetComponent<PlayerController>();
+
 			if (!string.IsNullOrWhiteSpace(scenePath))
 			{
-				SetDoorOpen(true);
+				if (player)
+					if (player.canMove)
+					{
+						SetDoorOpen(true);
 
-				collider.GetComponent<PlayerController>().canMove = false;
+						collider.GetComponent<PlayerController>().canMove = false;
 
-				FadeEffect.instance.FadeIn(() =>
-				{
-					Debug.Log("Loading '" + scenePath + "' named scene.");
+						FadeEffect.instance.FadeIn(() =>
+						{
+							Debug.Log("Loading '" + scenePath + "' named scene.");
 
-					SceneManager.LoadScene(scenePath);
-				});
+							SceneManager.LoadScene(scenePath);
+						});
+					}
 			}
 			else
 				Debug.LogError("No scene selected for the door.");

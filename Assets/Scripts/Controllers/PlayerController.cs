@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
 	private Camera mainCamera;
 	private Rigidbody2D rigibody2d;
+	private CooldownManager cooldownManager = new CooldownManager();
 
 	[Header("Ground Layer Mask")]
 	public LayerMask terrainLayer;
@@ -17,7 +19,6 @@ public class PlayerController : MonoBehaviour
 	public bool isDead = false;
 
 	private bool hasPressedJump;
-	private float lastJump;
 
 	void Start()
 	{
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
 		if (health <= 0)
 			OnPlayerDead();
 
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
 	}
 
 	public void OnPlayerDead()
@@ -59,6 +61,10 @@ public class PlayerController : MonoBehaviour
 
 	void Spawn()
 	{
+		health = 100f;
+
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+
 		rigibody2d.velocity = Vector2.zero;
 		rigibody2d.angularVelocity = 0;
 
@@ -76,8 +82,6 @@ public class PlayerController : MonoBehaviour
 			}
 
 			CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
-
-			health = 100f;
 		});
 
 		Debug.Log("Player has spawned.");
@@ -85,14 +89,14 @@ public class PlayerController : MonoBehaviour
 
 	public bool IsGrounded()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.55f, terrainLayer);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.20f, terrainLayer);
 
 		return hit.transform != null ? true : false;
 	}
 
 	public bool CanJump()
 	{
-		return IsGrounded() ? (Time.time - lastJump > jumpCooldown) && hasPressedJump : false;
+		return IsGrounded() ? (!cooldownManager.IsInCooldown("jump")) && hasPressedJump : false;
 	}
 
 	private void Update()
@@ -103,7 +107,7 @@ public class PlayerController : MonoBehaviour
 		if (!canMove)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastJump > jumpCooldown)
+		if (Input.GetKeyDown(KeyCode.Space) && !cooldownManager.IsInCooldown("jump"))
 			hasPressedJump = true;
 	}
 
@@ -126,6 +130,6 @@ public class PlayerController : MonoBehaviour
 	{
 		targetVelocity.y += jumpForce;
 		hasPressedJump = false;
-		lastJump = Time.time;
+		cooldownManager.SetCooldown("jump", jumpCooldown);
 	}
 }

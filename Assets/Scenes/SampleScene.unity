@@ -695,11 +695,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test Door
       objectReference: {fileID: 0}
-    - target: {fileID: 8720111170500183182, guid: 322a88a436428b44b99d1e34421084ea,
-        type: 3}
-      propertyPath: scenePath
-      value: Assets/MobileBloom/Example/ExampleBloom.unity
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 322a88a436428b44b99d1e34421084ea, type: 3}
 --- !u!1001 &1963873638440871989

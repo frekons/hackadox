@@ -9,22 +9,18 @@ public class CanvasManager : MonoBehaviour
 	{
 		MainScreen,
 		GameScreen,
-		DeathScreen // olacak mı belli değil
+		DeathScreen // olacak mı belli değilsa
 	}
-	private Dictionary<CanvasNames, Canvas> canvasList = new Dictionary<CanvasNames, Canvas>();
+	public static Dictionary<CanvasNames, Canvas> canvasList = new Dictionary<CanvasNames, Canvas>();
 
 	void Awake()
 	{
 		instance = this;
-
-		canvasList.Add(CanvasNames.MainScreen, GameObject.Find("Main Canvas")?.GetComponent<Canvas>());
-		canvasList.Add(CanvasNames.GameScreen, GameObject.Find("Game Canvas")?.GetComponent<Canvas>());
-		canvasList.Add(CanvasNames.DeathScreen, GameObject.Find("Death Canvas")?.GetComponent<Canvas>());
 	}
 
 	public void SetCanvasVisibility(CanvasNames canvasName, bool state)
 	{
-		if (canvasList[canvasName])
+		if (canvasList.ContainsKey(canvasName))
 			canvasList[canvasName].enabled = state;
 		else
 			Debug.LogError(canvasName.ToString() + " is null.");
