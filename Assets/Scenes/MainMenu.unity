@@ -750,7 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1aaaf4a33db9114885dd04559d9f9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displacementMap: {fileID: 2800000, guid: d367c2854b3c7f04da6392eab615d109, type: 3}
+  displacementMap: {fileID: 2800000, guid: 6586cf56639478e4ea86d7b39db0f3f5, type: 3}
   Shader: {fileID: 4800000, guid: cfcc7133df2b79e4985e2400ed9fcaa7, type: 3}
   intensity: 0.289
   flipIntensity: 0.289
