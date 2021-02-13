@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
+    [Header("Properties")]
+    public bool Active = false;
+    public float Time = 5;
+
     [Header("Events")]
     public UnityEvent OnEnd;
 
@@ -21,6 +25,14 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        if (Active)
+        {
+            SetTimer(Time);
+        }
     }
 
     private GameObject _timeIsUpObject;
