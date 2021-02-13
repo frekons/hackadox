@@ -55,9 +55,9 @@ public class VariablePrefab : MonoBehaviour
 
         _button.interactable = false;
 
-        ConsolePanel.Instance.WriteCallback(VariableName + ".", () =>
+        ConsolePanel.instance.WriteCallback(VariableName + ".", () =>
         {
-            var dropdown = Instantiate(VariablesDropdownPrefab, ConsolePanel.Instance.transform)
+            var dropdown = Instantiate(VariablesDropdownPrefab, ConsolePanel.instance.transform)
                                                 .GetComponent<TMP_Dropdown>();
 
             dropdown.options.Add(new TMP_Dropdown.OptionData("none"));
@@ -70,7 +70,7 @@ public class VariablePrefab : MonoBehaviour
                 }
             }
 
-            dropdown.transform.position = GetTextWorldTopRightPosition(ConsolePanel.Instance._consoleText);
+            dropdown.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
 
             dropdown.Show();
 
@@ -80,11 +80,11 @@ public class VariablePrefab : MonoBehaviour
 
                 //ConsolePanel.Instance.Clear();
 
-                ConsolePanel.Instance.WriteCallback(option.text + " = ", ()=>
+                ConsolePanel.instance.WriteCallback(option.text + " = ", ()=>
                 {
-                    var inputField = Instantiate<TMP_InputField>(PopInputFieldPrefab, ConsolePanel.Instance.transform);
+                    var inputField = Instantiate<TMP_InputField>(PopInputFieldPrefab, ConsolePanel.instance.transform);
 
-                    inputField.transform.position = GetTextWorldTopRightPosition(ConsolePanel.Instance._consoleText);
+                    inputField.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
 
                     inputField.Select();
 
@@ -107,7 +107,7 @@ public class VariablePrefab : MonoBehaviour
 
                         Debug.Log("result: " + result);
 
-                        ConsolePanel.Instance.WriteLine(result.ToString());
+                        ConsolePanel.instance.WriteLine(result.ToString());
 
                         _button.interactable = true;
 
@@ -124,7 +124,7 @@ public class VariablePrefab : MonoBehaviour
 
     Vector3 GetTextWorldTopRightPosition(TextMeshProUGUI textMeshProUGUI)
     {
-        var characterInfo = textMeshProUGUI.textInfo.characterInfo[ConsolePanel.Instance._consoleText.textInfo.characterCount - 1];
+        var characterInfo = textMeshProUGUI.textInfo.characterInfo[ConsolePanel.instance._consoleText.textInfo.characterCount - 1];
 
         var localPosition = characterInfo.topRight + Vector3.right * 10 + Vector3.up * 10;
 

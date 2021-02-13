@@ -3,12 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class Door : Interactable
 {
-	public Sprite[] sprites = new Sprite[2];
-
-	private bool isOpen;
+	public Sprite[] Sprites = new Sprite[2];
 
 	[HideInInspector]
-	public string scenePath;
+	public string ScenePath;
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
@@ -18,20 +16,20 @@ public class Door : Interactable
 
 			PlayerController player = collider.GetComponent<PlayerController>();
 
-			if (!string.IsNullOrWhiteSpace(scenePath))
+			if (!string.IsNullOrWhiteSpace(ScenePath))
 			{
 				if (player)
 					if (player.canMove)
 					{
 						SetDoorOpen(true);
 
-						collider.GetComponent<PlayerController>().canMove = false;
+						collider.GetComponent<PlayerController>().OnPlayerEnterDoor();
 
-						FadeEffect.instance.FadeIn(() =>
+						FadeEffect.Instance.FadeIn(() =>
 						{
-							Debug.Log("Loading '" + scenePath + "' named scene.");
+							Debug.Log("Loading '" + ScenePath + "' named scene.");
 
-							SceneManager.LoadScene(scenePath);
+							SceneManager.LoadScene(ScenePath);
 						});
 					}
 			}
@@ -43,7 +41,6 @@ public class Door : Interactable
 
 	public void SetDoorOpen(bool state)
 	{
-		isOpen = state;
-		GetComponent<SpriteRenderer>().sprite = sprites[state == false ? 0 : 1];
+		GetComponent<SpriteRenderer>().sprite = Sprites[state == false ? 0 : 1];
 	}
 }

@@ -1,101 +1,106 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    [Header("Properties")]
-    public bool Active = false;
-    public float Time = 5;
+	[Header("Properties")]
+	public bool Active = false;
+	public float Time = 5;
 
-    [Header("Events")]
-    public UnityEvent OnEnd;
+	[Header("Events")]
+	public UnityEvent OnEnd;
 
-    [Header("Objects")]
-    [SerializeField]
-    private Slider _progressSlider;
+	[Header("Objects")]
+	[SerializeField]
+	private Slider _progressSlider;
 
-    [SerializeField]
-    private GameObject _timeIsUpPrefab;
+	[SerializeField]
+	private GameObject _timeIsUpPrefab;
 
-    private IEnumerator timerNumerator;
+	private IEnumerator timerNumerator;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+	private void OnEnable()
+	{
+		if (Instance != null)
+		{
+			Destroy(gameObject);
+			throw new System.Exception("More than one instance of singleton detected.");
+		}
 
-    private void Start()
-    {
-        if (Active)
-        {
-            SetTimer(Time);
-        }
-    }
+		Instance = this;
+	}
 
-    private GameObject _timeIsUpObject;
+	private void Start()
+	{
+		if (Active)
+		{
+			SetTimer(Time);
+		}
+	}
 
-    private IEnumerator TimerIEnumerator(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
-    {
-        if (_timeIsUpObject)
-        {
-            Destroy(_timeIsUpObject);
+	private GameObject _timeIsUpObject;
 
-            _timeIsUpObject = null;
-        }
+	private IEnumerator TimerIEnumerator(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
+	{
+		if (_timeIsUpObject)
+		{
+			Destroy(_timeIsUpObject);
 
-        if (onStart != null)
-            onStart();
+			_timeIsUpObject = null;
+		}
 
-        var waitForEndOfFrame = new WaitForEndOfFrame();
+		if (onStart != null)
+			onStart();
 
-        float currentTime = seconds;
+		var waitForEndOfFrame = new WaitForEndOfFrame();
 
-        float value = 1.0f;
+		float currentTime = seconds;
 
-        while (value >= 0)
-        {
-            _progressSlider.value = value;
+		float value = 1.0f;
 
-            currentTime -= UnityEngine.Time.deltaTime;
+		while (value >= 0)
+		{
+			_progressSlider.value = value;
 
-            value = currentTime / seconds;
+			currentTime -= UnityEngine.Time.deltaTime;
 
-            if (onProgress != null)
-                onProgress.Invoke(value);
+			value = currentTime / seconds;
 
-            yield return waitForEndOfFrame;
-        }
+			if (onProgress != null)
+				onProgress.Invoke(value);
 
-        if (onEnd != null)
-            onEnd();
+			yield return waitForEndOfFrame;
+		}
 
-        OnEnd.Invoke();
+		if (onEnd != null)
+			onEnd();
 
-        _timeIsUpObject = Instantiate(_timeIsUpPrefab, transform);
+		OnEnd.Invoke();
 
-        timerNumerator = null;
-    }
+		_timeIsUpObject = Instantiate(_timeIsUpPrefab, transform);
 
-    #region public static methods
+		timerNumerator = null;
+	}
 
-    public static void SetTimer(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
-    {
-        if (Instance.timerNumerator != null)
-        {
-            Instance.StopCoroutine(Instance.timerNumerator);
+	#region public static methods
 
-            Instance.timerNumerator = null;
-        }
+	public static void SetTimer(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
+	{
+		if (Instance.timerNumerator != null)
+		{
+			Instance.StopCoroutine(Instance.timerNumerator);
 
-        Instance.timerNumerator = Instance.TimerIEnumerator(seconds, onStart, onProgress, onEnd);
+			Instance.timerNumerator = null;
+		}
 
-        Instance.StartCoroutine(Instance.timerNumerator);
-    }
+		Instance.timerNumerator = Instance.TimerIEnumerator(seconds, onStart, onProgress, onEnd);
 
-    #endregion
+		Instance.StartCoroutine(Instance.timerNumerator);
+	}
 
-    public static Timer Instance;
+	#endregion
+
+	public static Timer Instance;
 }

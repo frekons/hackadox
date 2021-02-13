@@ -5,13 +5,23 @@ using UnityEngine.UI;
 
 public class FadeEffect : MonoBehaviour
 {
-	private Image image;
-	public static FadeEffect instance;
+	private Image _image;
+	public static FadeEffect Instance;
 
 	private void Awake()
 	{
-		instance = this;
-		image = GetComponent<Image>();
+		_image = GetComponent<Image>();
+	}
+
+	private void OnEnable()
+	{
+		if (Instance != null)
+		{
+			Destroy(gameObject);
+			throw new System.Exception("More than one instance of singleton detected.");
+		}
+
+		Instance = this;
 	}
 
 	public void FadeIn(Action callback = null)
@@ -28,13 +38,13 @@ public class FadeEffect : MonoBehaviour
 
 	private IEnumerator _FadeIn(Action callback)
 	{
-		image.color = new Color(0, 0, 0, 0);
+		_image.color = new Color(0, 0, 0, 0);
 		for (float i = 0; i <= 1; i += Time.deltaTime)
 		{
-			image.color = new Color(0, 0, 0, i);
+			_image.color = new Color(0, 0, 0, i);
 			yield return null;
 		}
-		image.color = new Color(0, 0, 0, 1);
+		_image.color = new Color(0, 0, 0, 1);
 
 		if (callback != null)
 			callback();
@@ -42,13 +52,13 @@ public class FadeEffect : MonoBehaviour
 
 	private IEnumerator _FadeOut(Action callback)
 	{
-		image.color = new Color(0, 0, 0, 1);
+		_image.color = new Color(0, 0, 0, 1);
 		for (float i = 1; i >= 0; i -= Time.deltaTime)
 		{
-			image.color = new Color(0, 0, 0, i);
+			_image.color = new Color(0, 0, 0, i);
 			yield return null;
 		}
-		image.color = new Color(0, 0, 0, 0);
+		_image.color = new Color(0, 0, 0, 0);
 
 		if (callback != null)
 			callback();
