@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	private Camera mainCamera;
+	private CameraController cameraController;
 	private Rigidbody2D rigibody2d;
+	private Animator animator;
+	private SpriteRenderer sprite;
 	private CooldownManager cooldownManager = new CooldownManager();
 
 	[Header("Ground Layer Mask")]
@@ -19,10 +21,29 @@ public class PlayerController : MonoBehaviour
 	public bool isDead = false;
 
 	private bool hasPressedJump;
+	private bool _facingLeft = false;
+	public bool FacingLeft
+	{
+		get
+		{
+			return _facingLeft;
+		}
+		set
+		{
+			if (_facingLeft != value)
+				OnFacingDirectionChange(value);
+
+			_facingLeft = value;
+		}
+	}
+
 
 	void Start()
 	{
 		rigibody2d = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
+		sprite = GetComponent<SpriteRenderer>();
+		cameraController = Camera.main.GetComponent<CameraController>();
 
 		Spawn();
 	}
@@ -59,6 +80,12 @@ public class PlayerController : MonoBehaviour
 		});
 	}
 
+	public void OnFacingDirectionChange(bool facingLeft)
+	{
+		sprite.flipX = facingLeft;
+		cameraController.cameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
+	}
+
 	void Spawn()
 	{
 		health = 100f;
@@ -69,7 +96,7 @@ public class PlayerController : MonoBehaviour
 		rigibody2d.angularVelocity = 0;
 
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
-		gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+		gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
 		canMove = true;
 
@@ -89,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
 	public bool IsGrounded()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.20f, terrainLayer);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, terrainLayer);
 
 		return hit.transform != null ? true : false;
 	}
@@ -104,11 +131,20 @@ public class PlayerController : MonoBehaviour
 		if (transform.position.y < -10f)
 			TakeDamage(100f);
 
+		animator.SetBool("isJumped", !IsGrounded());
+
 		if (!canMove)
 			return;
 
 		if (Input.GetKeyDown(KeyCode.Space) && !cooldownManager.IsInCooldown("jump"))
 			hasPressedJump = true;
+
+		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+			FacingLeft = true;
+		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+			FacingLeft = false;
+
+		animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
 	}
 
 	private void FixedUpdate()

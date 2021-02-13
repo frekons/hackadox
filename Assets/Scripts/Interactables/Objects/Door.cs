@@ -4,7 +4,9 @@ using UnityEngine.SceneManagement;
 public class Door : Interactable
 {
 	public Sprite[] sprites = new Sprite[2];
-	public bool isOpen;
+
+	[SerializeField]
+	private bool isOpen;
 
 	[HideInInspector]
 	public string scenePath;
