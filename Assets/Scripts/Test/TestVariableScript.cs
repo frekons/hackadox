@@ -2,13 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class VisibleAttributes
+{
+    public string Name;
+    public bool IsVisible;
+}
+
 public class TestVariableScript : MonoBehaviour
 {
-    private PlayerSt player = new PlayerSt();
+    public List<VisibleAttributes> VisibleAttributesList = new List<VisibleAttributes>();
+
+    private Dictionary<string, bool> VisibleAttributesDict = new Dictionary<string, bool>();
+
+    public PlayerSt player = new PlayerSt();
+
+    private void Start()
+    {
+        foreach (var attr in VisibleAttributesList)
+        {
+            VisibleAttributesDict.Add(attr.Name, attr.IsVisible);
+        }
+
+    }
 
     public void AddVariable()
     {
-        ConsolePanel.Instance.AddVariable("test", player, typeof(PlayerSt));
+        ConsolePanel.Instance.AddVariable("test", player, VisibleAttributesDict);
     }
 
     [System.Serializable]
@@ -17,6 +37,7 @@ public class TestVariableScript : MonoBehaviour
         public int _health = 100;
         public float _gravity = 800;
 
+        [Visible(true)]
         public int health
         {
             get
@@ -26,9 +47,25 @@ public class TestVariableScript : MonoBehaviour
 
             set
             {
-                Debug.Log("set called!");
+                Debug.Log("set health called!");
 
                 _health = value;
+            }
+        }
+
+        [Visible(true)]
+        public float gravity
+        {
+            get
+            {
+                return _gravity;
+            }
+
+            set
+            {
+                Debug.Log("set gravity called!");
+
+                _gravity = value;
             }
         }
     }

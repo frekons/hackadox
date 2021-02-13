@@ -4,6 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.AttributeUsage(System.AttributeTargets.Property)
+]
+public class VisibleAttribute : System.Attribute
+{
+    public bool visible;
+
+    public VisibleAttribute(bool visible)
+    {
+        this.visible = visible;
+    }
+}
+
+
+
 public class VariablePrefab : MonoBehaviour
 {
     public TMP_Dropdown VariablesDropdownPrefab;
@@ -22,17 +36,17 @@ public class VariablePrefab : MonoBehaviour
         }
     }
 
-    private System.Type _type;
-
     private object _object;
 
-    public void Set(string variableName, object @object, System.Type type)
+    Dictionary<string, bool> VisibleAttributesDict;
+
+    public void Set(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
     {
         _textMeshPro.text = variableName;
 
         this._object = @object;
 
-        this._type = type;
+        this.VisibleAttributesDict = visibleAttributesDict;
     }
 
     public void OnButtonPress()
@@ -48,11 +62,12 @@ public class VariablePrefab : MonoBehaviour
 
             dropdown.options.Add(new TMP_Dropdown.OptionData("none"));
 
-            foreach (var field in _type.GetProperties())
+            foreach (var field in _object.GetType().GetProperties())
             {
-                //print(field /*+ ": " + field.GetValue(_object)*/);
-
-                dropdown.options.Add(new TMP_Dropdown.OptionData(field.Name /*+ ": " + field.GetValue(_object)*/));
+                if (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name])
+                {
+                    dropdown.options.Add(new TMP_Dropdown.OptionData(field.Name /*+ ": " + field.GetValue(_object)*/));
+                }
             }
 
             dropdown.transform.position = GetTextWorldTopRightPosition(ConsolePanel.Instance._consoleText);
@@ -75,9 +90,12 @@ public class VariablePrefab : MonoBehaviour
 
                     inputField.onEndEdit.AddListener((string input) =>
                     {
+                        if (input.Trim() == string.Empty)
+                            return;
+
                         Debug.Log("Option: " + option.text);
 
-                        var field = _type.GetProperty(option.text);
+                        var field = _object.GetType().GetProperty(option.text);
 
                         var args = new object[] { input };
 

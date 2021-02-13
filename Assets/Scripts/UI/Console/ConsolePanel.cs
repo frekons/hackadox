@@ -181,7 +181,7 @@ public class ConsolePanel : MonoBehaviour
         StartCoroutine(ClearIEnumerator(startIndex, lastIndex));
     }
 
-    public void AddVariable(string variableName, object @object, System.Type type)
+    public void AddVariable(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
     {
         if (VariableList.Find(x => x._textMeshPro.text == variableName) != default) // if already exists
             return;
@@ -189,7 +189,7 @@ public class ConsolePanel : MonoBehaviour
         var variablePrefab = Instantiate(_variablePrefab, _variablesTransform)
                             .GetComponent<VariablePrefab>();
 
-        variablePrefab.Set(variableName, @object, type);
+        variablePrefab.Set(variableName, @object, visibleAttributesDict);
 
         VariableList.Add(variablePrefab);
 
