@@ -5,7 +5,6 @@ public class Door : Interactable
 {
 	public Sprite[] sprites = new Sprite[2];
 
-	[SerializeField]
 	private bool isOpen;
 
 	[HideInInspector]
