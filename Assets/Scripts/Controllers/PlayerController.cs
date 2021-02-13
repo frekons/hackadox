@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
 	private CameraController cameraController;
@@ -15,13 +14,15 @@ public class PlayerController : MonoBehaviour
 	[Header("Ground Layer Mask")]
 	public LayerMask terrainLayer;
 
+	#region PLAYER FIELDS
 	[Header("Player")]
 	public float health = 100f;
-	public float walkForce = 5f;
+	public float walkSpeed = 5f;
 	public float jumpForce = 5f;
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
 	public bool isDead = false;
+	#endregion
 
 	private bool hasPressedJump;
 	private bool _facingLeft = false;
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviour
 			_facingLeft = value;
 		}
 	}
+
+	#region UNITY FUNCTIONS
 	void Start()
 	{
 		rigibody2d = GetComponent<Rigidbody2D>();
@@ -49,60 +52,50 @@ public class PlayerController : MonoBehaviour
 		Spawn();
 	}
 
-	public void ResetToDefaults()
+	private void Update()
 	{
-		health = 100f;
-		walkForce = 5f;
-		jumpForce = 5f;
-		jumpCooldown = 0.1f;
-
-		GameManager.instance.OnPlayerReset();
-	}
-
-	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
-	{
-		if (isDead || !canMove)
+		if (isDead)
 			return;
 
-		health -= damage;
+		if (transform.position.y < -10f)
+			KillPlayer();
 
-		if (health <= 0)
-			OnPlayerDead(damageType);
+		animator.SetBool("isJumped", !IsGrounded());
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
-
-		GameManager.instance.OnPlayerTakeDamage(damage, damageType);
-	}
-
-	public void OnPlayerDead(GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
-	{
-		if (isDead || !canMove)
+		if (!canMove)
 			return;
 
-		Debug.Log("Player has dead.");
+		if (Input.GetKeyDown(KeyCode.Space) && !cooldownManager.IsInCooldown("jump"))
+			hasPressedJump = true;
 
-		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, false);
-		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, true);
+		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+			facingLeft = true;
+		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+			facingLeft = false;
 
-		isDead = true;
-		canMove = false;
-
-		animator.SetFloat("walkSpeed", 0);
-		animator.SetBool("isJumping", false);
-		animator.SetBool("isDead", true);
-
-		animator.SetInteger("damageType", (int)damageType);
-
-		ResetToDefaults();
-
-		FadeEffect.instance.FadeIn(() =>
-		{
-			Spawn();
-		});
-
-		GameManager.instance.OnPlayerDead(damageType);
+		if (IsGrounded())
+			animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
 	}
 
+	private void FixedUpdate()
+	{
+		if (!canMove)
+			return;
+		if (isDead)
+			return;
+
+		float horizontal = Input.GetAxis("Horizontal");
+
+		Vector2 targetVelocity = new Vector2(horizontal * walkSpeed, rigibody2d.velocity.y);
+
+		if (CanJump())
+			Jump(ref targetVelocity);
+
+		rigibody2d.velocity = targetVelocity;
+	}
+	#endregion
+
+	#region EVENTS 
 	public void OnPlayerFacingDirectionChange(bool facingLeft)
 	{
 		sprite.flipX = facingLeft;
@@ -119,7 +112,9 @@ public class PlayerController : MonoBehaviour
 		animator.SetFloat("walkSpeed", 0);
 		animator.SetBool("isJumping", false);
 	}
+	#endregion
 
+	#region FUNCTIONS 
 	void Spawn()
 	{
 		if (isDead)
@@ -168,6 +163,15 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	private void Jump(ref Vector2 targetVelocity)
+	{
+		targetVelocity.y += jumpForce;
+		hasPressedJump = false;
+		cooldownManager.SetCooldown("jump", jumpCooldown);
+
+		GameManager.instance.OnPlayerJump();
+	}
+
 	public bool IsGrounded()
 	{
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, terrainLayer);
@@ -180,54 +184,58 @@ public class PlayerController : MonoBehaviour
 		return IsGrounded() ? (!cooldownManager.IsInCooldown("jump")) && hasPressedJump : false;
 	}
 
-	private void Update()
+	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
-		if (isDead)
+		if (isDead || !canMove)
 			return;
 
-		if (transform.position.y < -10f)
-			OnPlayerDead();
+		health -= damage;
 
-		animator.SetBool("isJumped", !IsGrounded());
+		if (health <= 0)
+			KillPlayer(damageType);
 
-		if (!canMove)
-			return;
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
 
-		if (Input.GetKeyDown(KeyCode.Space) && !cooldownManager.IsInCooldown("jump"))
-			hasPressedJump = true;
-
-		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
-			facingLeft = true;
-		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
-			facingLeft = false;
-
-		if (IsGrounded())
-			animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
+		GameManager.instance.OnPlayerTakeDamage(damage, damageType);
 	}
 
-	private void FixedUpdate()
+	public void KillPlayer(GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
-		if (!canMove)
-			return;
-		if (isDead)
+		if (isDead || !canMove)
 			return;
 
-		float horizontal = Input.GetAxis("Horizontal");
+		Debug.Log("Player has dead.");
 
-		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rigibody2d.velocity.y);
+		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, false);
+		CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, true);
 
-		if (CanJump())
-			Jump(ref targetVelocity);
+		isDead = true;
+		canMove = false;
 
-		rigibody2d.velocity = targetVelocity;
+		animator.SetFloat("walkSpeed", 0);
+		animator.SetBool("isJumping", false);
+		animator.SetBool("isDead", true);
+
+		animator.SetInteger("damageType", (int)damageType);
+
+		ResetToDefaults();
+
+		FadeEffect.instance.FadeIn(() =>
+		{
+			Spawn();
+		});
+
+		GameManager.instance.OnPlayerDead(damageType);
 	}
 
-	private void Jump(ref Vector2 targetVelocity)
+	public void ResetToDefaults()
 	{
-		targetVelocity.y += jumpForce;
-		hasPressedJump = false;
-		cooldownManager.SetCooldown("jump", jumpCooldown);
+		health = 100f;
+		walkSpeed = 5f;
+		jumpForce = 5f;
+		jumpCooldown = 0.1f;
 
-		GameManager.instance.OnPlayerJump();
+		GameManager.instance.OnPlayerReset();
 	}
+	#endregion
 }
