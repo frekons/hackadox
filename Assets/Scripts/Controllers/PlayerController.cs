@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -24,7 +25,10 @@ public class PlayerController : MonoBehaviour
 	public bool canMove = true;
 	public bool isDead = false;
 
-	private Player _player = new Player();
+	public List<VisibleAttributes> VisibleAttributesList = new List<VisibleAttributes>();
+	public Dictionary<string, bool> VisibleAttributesDict = new Dictionary<string, bool>();
+	public Player Player = new Player();
+
 	private bool _hasPressedJump;
 	private bool _facingLeft = false;
 	public bool FacingLeft
@@ -107,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
 		float horizontal = Input.GetAxis("Horizontal");
 
-		Vector2 targetVelocity = new Vector2(horizontal * walkSpeed, _rigibody2d.velocity.y);
+		Vector2 targetVelocity = new Vector2(horizontal * Player.walkSpeed, _rigibody2d.velocity.y);
 
 		if (CanJump())
 			Jump(ref targetVelocity);
@@ -149,10 +153,10 @@ public class PlayerController : MonoBehaviour
 			_animator.SetBool("isDead", false);
 			_animator.SetInteger("damageType", 0);
 			isDead = false;
-			health = 100f;
+			Player.health = 100f;
 		}
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		_rigibody2d.velocity = Vector2.zero;
 		_rigibody2d.angularVelocity = 0;
@@ -192,7 +196,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump(ref Vector2 targetVelocity)
 	{
-		targetVelocity.y = jumpForce;
+		targetVelocity.y = Player.jumpForce;
 		_hasPressedJump = false;
 		_cooldownManager.SetCooldown("jump", jumpCooldown);
 
@@ -216,12 +220,12 @@ public class PlayerController : MonoBehaviour
 		if (isDead || !canMove)
 			return;
 
-		health -= damage;
+		Player.health -= damage;
 
-		if (health <= 0)
+		if (Player.health <= 0)
 			KillPlayer(damageType);
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		GameManager.Instance.OnPlayerTakeDamage(damage, damageType);
 	}
@@ -257,9 +261,9 @@ public class PlayerController : MonoBehaviour
 
 	public void ResetToDefaults()
 	{
-		_player = new Player();
+		Player = new Player();
 
-		GameManager.Instance.OnPlayerReset(_player);
+		GameManager.Instance.OnPlayerReset(this);
 	}
 	#endregion
 }
