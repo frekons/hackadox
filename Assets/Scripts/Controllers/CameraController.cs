@@ -17,6 +17,9 @@ public class CameraController : MonoBehaviour
 		Vector3 _camPos = localPlayerRb.transform.position;
 		_camPos.z = transform.position.z;
 
+		if (localPlayerRb.transform.position.y < -5f)
+			return;
+
 		transform.position = Vector3.Lerp(transform.position, _camPos + cameraOffset + new Vector3(localPlayerRb.velocity.x / 2, 0, 0), Time.deltaTime * followSpeed);
 	}
 }

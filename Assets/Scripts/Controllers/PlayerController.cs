@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
 	private Animator animator;
 	private SpriteRenderer sprite;
 	private CooldownManager cooldownManager = new CooldownManager();
+	private Coroutine spawnedEffect;
 
 	[Header("Ground Layer Mask")]
 	public LayerMask terrainLayer;
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour
 		isDead = true;
 		canMove = false;
 
-		animator.SetBool("isWalking", false);
+		animator.SetFloat("walkSpeed", 0);
 		animator.SetBool("isJumping", false);
 		animator.SetBool("isDead", true);
 
@@ -111,6 +113,10 @@ public class PlayerController : MonoBehaviour
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
 		gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
+		if (spawnedEffect != null)
+			StopCoroutine(spawnedEffect);
+
+		spawnedEffect = StartCoroutine(SpawnedEffect());
 
 		FadeEffect.instance.FadeOut(() =>
 		{
@@ -122,6 +128,17 @@ public class PlayerController : MonoBehaviour
 		});
 
 		Debug.Log("Player has spawned.");
+	}
+
+	public IEnumerator SpawnedEffect()
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+			yield return new WaitForSeconds(0.2f);
+			GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+			yield return new WaitForSeconds(0.2f);
+		}
 	}
 
 	public bool IsGrounded()
