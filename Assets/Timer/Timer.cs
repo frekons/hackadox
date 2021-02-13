@@ -6,6 +6,14 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
+    [Header("Properties")]
+    public bool Active = false;
+    public float Time = 5;
+
+    [Header("Events")]
+    public UnityEvent OnEnd;
+
+    [Header("Objects")]
     [SerializeField]
     private Slider _progressSlider;
 
@@ -17,6 +25,14 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        if (Active)
+        {
+            SetTimer(Time);
+        }
     }
 
     private GameObject _timeIsUpObject;
@@ -43,7 +59,7 @@ public class Timer : MonoBehaviour
         {
             _progressSlider.value = value;
 
-            currentTime -= Time.deltaTime;
+            currentTime -= UnityEngine.Time.deltaTime;
 
             value = currentTime / seconds;
 
@@ -55,6 +71,8 @@ public class Timer : MonoBehaviour
 
         if (onEnd != null)
             onEnd();
+
+        OnEnd.Invoke();
 
         _timeIsUpObject = Instantiate(_timeIsUpPrefab, transform);
 
