@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
+    [Header("Events")]
+    public UnityEvent OnEnd;
+
+    [Header("Objects")]
     [SerializeField]
     private Slider _progressSlider;
 
@@ -55,6 +59,8 @@ public class Timer : MonoBehaviour
 
         if (onEnd != null)
             onEnd();
+
+        OnEnd.Invoke();
 
         _timeIsUpObject = Instantiate(_timeIsUpPrefab, transform);
 
