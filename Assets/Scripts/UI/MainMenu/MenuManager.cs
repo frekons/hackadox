@@ -91,8 +91,6 @@ public class MenuManager : MonoBehaviour
 		_audioMixer.SetFloat("MainVolume", volume);
 	}
 
-	public AudioMixerSnapshot fadeOut;
-
 	public void OnPressPlay()
 	{
 		Debug.Log("Pressed play button.");
