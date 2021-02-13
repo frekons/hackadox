@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 		GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResetToDefaults();
 	}
 
-	/** PLAYER EVENTS **/
+	#region PLAYER EVENTS
 	public void OnPlayerDead(DamageTypes damageType = DamageTypes.Suicide)
 	{
 
@@ -56,8 +56,9 @@ public class GameManager : MonoBehaviour
 	{
 
 	}
+	#endregion
 
-	/** INTERACTABLE EVENTS **/
+	#region OBJECT EVENTS
 	public void OnEnterLava(Collider2D collision)
 	{
 
@@ -67,4 +68,5 @@ public class GameManager : MonoBehaviour
 	{
 
 	}
+	#endregion
 }

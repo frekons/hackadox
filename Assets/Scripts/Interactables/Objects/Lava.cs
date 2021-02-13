@@ -10,7 +10,6 @@ public class Lava : HarmfulObject
 	[Range(0f, 100f)]
 	public float damageCooldown;
 
-
 	public void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.CompareTag("Player"))
@@ -19,6 +18,13 @@ public class Lava : HarmfulObject
 		GameManager.instance.OnEnterLava(collision);
 	}
 
+	public void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.gameObject.CompareTag("Player"))
+			isStaying = false;
+
+		GameManager.instance.OnExitLava(collision);
+	}
 	private void Update()
 	{
 		if (isStaying)
@@ -27,14 +33,5 @@ public class Lava : HarmfulObject
 				GiveDamage(GameObject.FindWithTag("Player").GetComponent<Collider2D>());
 				cooldownManager.SetCooldown("lava_damage", damageCooldown);
 			}
-	}
-
-
-	public void OnTriggerExit2D(Collider2D collision)
-	{
-		if (collision.gameObject.CompareTag("Player"))
-			isStaying = false;
-
-		GameManager.instance.OnExitLava(collision);
 	}
 }
