@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	private Camera mainCamera;
+	private CameraController cameraController;
 	private Rigidbody2D rigibody2d;
 	private Animator animator;
 	private SpriteRenderer sprite;
@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
 		rigibody2d = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		sprite = GetComponent<SpriteRenderer>();
+		cameraController = Camera.main.GetComponent<CameraController>();
 
 		Spawn();
 	}
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
 			facingLeft = false;
 
 		sprite.flipX = facingLeft;
-		Debug.Log(facingLeft);
+		cameraController.cameraOffset = facingLeft ? new Vector3(-2, 0, 0) : new Vector3(2, 0, 0);
 	}
 
 	private void FixedUpdate()

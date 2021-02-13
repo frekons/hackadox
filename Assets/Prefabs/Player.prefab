@@ -104,10 +104,10 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!61 &163539792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   jumpCooldown: 0.1
   canMove: 0
   isDead: 0
+  facingLeft: 0
 --- !u!95 &277961971446107615
 Animator:
   serializedVersion: 3
