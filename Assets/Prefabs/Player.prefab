@@ -120,11 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1e2f6f54914c74b825b45091cc992b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainLayer:
+  TerrainLayer:
     serializedVersion: 2
     m_Bits: 136
   health: 100
-  walkForce: 5
+  walkSpeed: 5
   jumpForce: 5
   jumpCooldown: 0.1
   canMove: 0
@@ -161,6 +161,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0010700226, y: 0}
-  m_Size: {x: 0.41961956, y: 0.96}
+  m_Offset: {x: -0.0010700226, y: 0.012837648}
+  m_Size: {x: 0.41961956, y: 0.93432474}
   m_Direction: 0

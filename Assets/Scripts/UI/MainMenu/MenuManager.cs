@@ -23,12 +23,11 @@ public class MenuManager : MonoBehaviour
 	private GameObject _selectedButton;
 
 	[SerializeField]
-	private Sprite[] audioButtonSprites;
+	private Sprite[] _audioButtonSprites;
 
-	private bool isSoundActive = true;
-	private float tempVolume;
-
-	private bool isClickedPlay;
+	private bool _isSoundActive = true;
+	private float _tempVolume;
+	private bool _isClickedPlay;
 
 	public GameObject SelectedButton
 	{
@@ -48,9 +47,14 @@ public class MenuManager : MonoBehaviour
 		}
 	}
 
-
-	private void Awake()
+	private void OnEnable()
 	{
+		if (Instance != null)
+		{
+			Destroy(gameObject);
+			throw new System.Exception("More than one instance of singleton detected.");
+		}
+
 		Instance = this;
 	}
 
@@ -63,7 +67,7 @@ public class MenuManager : MonoBehaviour
 
 	private void LateUpdate()
 	{
-		if (isClickedPlay)
+		if (_isClickedPlay)
 			return;
 
 		var eventSystem = EventSystem.current;
@@ -86,7 +90,7 @@ public class MenuManager : MonoBehaviour
 
 	public void OnMouseEnterButton(GameObject button, PointerEventData eventData)
 	{
-		if (isClickedPlay)
+		if (_isClickedPlay)
 			return;
 
 		SelectedButton = button;
@@ -94,22 +98,22 @@ public class MenuManager : MonoBehaviour
 
 	public void OnVolumeSliderChange(float volume)
 	{
-		if (isClickedPlay)
+		if (_isClickedPlay)
 			return;
 
 		_audioMixer.SetFloat("MainVolume", volume);
-		isSoundActive = true;
-		_buttons[2].GetComponent<Image>().sprite = audioButtonSprites[1];
+		_isSoundActive = true;
+		_buttons[2].GetComponent<Image>().sprite = _audioButtonSprites[1];
 	}
 
 	public void OnPressPlay()
 	{
 		Debug.Log("Pressed play button.");
 
-		if (isClickedPlay)
+		if (_isClickedPlay)
 			return;
 
-		isClickedPlay = true;
+		_isClickedPlay = true;
 
 		StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
 		{
@@ -119,18 +123,18 @@ public class MenuManager : MonoBehaviour
 
 	public void OnClickToggleAudio()
 	{
-		isSoundActive = !isSoundActive;
-		if (isSoundActive == false)
+		_isSoundActive = !_isSoundActive;
+		if (_isSoundActive == false)
 		{
-			_audioMixer.GetFloat("MainVolume", out tempVolume);
+			_audioMixer.GetFloat("MainVolume", out _tempVolume);
 			_audioMixer.SetFloat("MainVolume", -80f);
 		}
 		else
 		{
-			_audioMixer.SetFloat("MainVolume", tempVolume);
+			_audioMixer.SetFloat("MainVolume", _tempVolume);
 		}
 
-		EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite = audioButtonSprites[isSoundActive ? 1 : 0];
+		EventSystem.current.currentSelectedGameObject.GetComponent<Image>().sprite = _audioButtonSprites[_isSoundActive ? 1 : 0];
 	}
 
 	//

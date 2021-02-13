@@ -27,7 +27,7 @@ public class TestVariableScript : MonoBehaviour
 
 	public void AddVariable()
 	{
-		ConsolePanel.Instance.AddVariable("test", player, VisibleAttributesDict);
+		ConsolePanel.instance.AddVariable("test", player, VisibleAttributesDict);
 	}
 
 	[System.Serializable]

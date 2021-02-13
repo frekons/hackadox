@@ -3,23 +3,25 @@
 public class CameraController : MonoBehaviour
 {
 	[Header("Camera")]
-	private Rigidbody2D localPlayerRb;
-	public Vector3 cameraOffset = Vector3.zero;
-	public float followSpeed = 1f;
+	private Rigidbody2D _localPlayerRigidbody;
+	public Vector3 CameraOffset = Vector3.zero;
+
+	[SerializeField]
+	private float _followSpeed = 1f;
 
 	void Start()
 	{
-		localPlayerRb = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+		_localPlayerRigidbody = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
 	}
 
 	void LateUpdate()
 	{
-		Vector3 _camPos = localPlayerRb.transform.position;
-		_camPos.z = transform.position.z;
+		Vector3 camPos = _localPlayerRigidbody.transform.position;
+		camPos.z = transform.position.z;
 
-		if (localPlayerRb.transform.position.y < -5f)
+		if (_localPlayerRigidbody.transform.position.y < -5f)
 			return;
 
-		transform.position = Vector3.Lerp(transform.position, _camPos + cameraOffset + new Vector3(localPlayerRb.velocity.x / 2, 0, 0), Time.deltaTime * followSpeed);
+		transform.position = Vector3.Lerp(transform.position, camPos + CameraOffset + new Vector3(_localPlayerRigidbody.velocity.x / 2, 0, 0), Time.deltaTime * _followSpeed);
 	}
 }

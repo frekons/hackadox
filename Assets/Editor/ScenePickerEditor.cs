@@ -8,7 +8,7 @@ public class ScenePickerEditor : Editor
 		DrawDefaultInspector();
 
 		var picker = target as Door;
-		var oldScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(picker.scenePath);
+		var oldScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(picker.ScenePath);
 
 		serializedObject.Update();
 

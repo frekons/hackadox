@@ -2,7 +2,6 @@
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager instance;
 	public enum DamageTypes
 	{
 		Suicide,
@@ -10,10 +9,15 @@ public class GameManager : MonoBehaviour
 		Weapon
 	}
 
-
-	void Awake()
+	private void OnEnable()
 	{
-		instance = this;
+		if (Instance != null)
+		{
+			Destroy(gameObject);
+			throw new System.Exception("More than one instance of singleton detected.");
+		}
+
+		Instance = this;
 	}
 
 	public void ResetGame()
@@ -69,4 +73,6 @@ public class GameManager : MonoBehaviour
 
 	}
 	#endregion
+
+	public static GameManager Instance;
 }

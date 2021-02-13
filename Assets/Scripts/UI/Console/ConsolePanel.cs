@@ -1,202 +1,213 @@
-using System.Linq;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ConsolePanel : MonoBehaviour
 {
-    public List<VariablePrefab> VariableList = new List<VariablePrefab>();
+	public List<VariablePrefab> VariableList = new List<VariablePrefab>();
 
-    [Header("Fields")]
-    [SerializeField]
-    [Multiline]
-    private string _defaultText = ">\t";
+	[Header("Fields")]
+	[SerializeField]
+	[Multiline]
+	private string _defaultText = ">\t";
 
-    [Header("Objects")]
-    [SerializeField]
-    public TextMeshProUGUI _consoleText;
+	[Header("Objects")]
+	[SerializeField]
+	public TextMeshProUGUI _consoleText;
 
-    [SerializeField]
-    private HorizontalLayoutGroup _horizontalLayoutGroup;
+	[SerializeField]
+	private HorizontalLayoutGroup _horizontalLayoutGroup;
 
-    [SerializeField]
-    private Transform _variablesTransform;
+	[SerializeField]
+	private Transform _variablesTransform;
 
-    [Header("Prefabs")]
-    [SerializeField]
-    private GameObject _variablePrefab;
+	[Header("Prefabs")]
+	[SerializeField]
+	private GameObject _variablePrefab;
 
-    // ---
+	// ---
 
-    private bool _editingText;
+	private bool _editingText;
 
 
-    private void Awake()
+	private void Awake()
+	{
+		instance = this;
+
+		_consoleText.text = _defaultText;
+	}
+
+	private void OnEnable()
+	{
+		if (instance != null)
+		{
+			Destroy(gameObject);
+			throw new System.Exception("More than one instance of singleton detected.");
+		}
+
+		instance = this;
+	}
+
+
+	private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+
+	private IEnumerator ClearIEnumerator(int startIndex, int lastIndex, float waitTime = 0.065f) // startIndex > lastIndex
+	{
+		while (_editingText)
+			yield return _waitForEndOfFrame;
+
+		OnClearStarted();
+
+		_editingText = true;
+
+		var waitForSeconds = new WaitForSecondsRealtime(waitTime);
+
+		for (int i = startIndex; i >= lastIndex; --i)
+		{
+			var character = _consoleText.text[i];
+
+			_consoleText.text = _consoleText.text.Remove(i);
+
+			OnCharacterRemove(character);
+
+			if (!DiscardedCharacters.Contains(character))
+			{
+				yield return waitForSeconds;
+			}
+		}
+
+		_editingText = false;
+
+		OnClearCompleted();
+	}
+
+	private IEnumerator WriteIEnumerator(string message, System.Action onWriteEnd = null, float waitTime = 0.065f)
+	{
+		while (_editingText)
+			yield return _waitForEndOfFrame;
+
+		OnWriteStarted();
+
+		_editingText = true;
+
+		var waitForSeconds = new WaitForSecondsRealtime(waitTime);
+
+		foreach (var character in message)
+		{
+			_consoleText.text += character;
+
+			OnCharacterWrote(character);
+
+			if (!DiscardedCharacters.Contains(character))
+			{
+				yield return waitForSeconds;
+			}
+		}
+
+		_editingText = false;
+
+		if (onWriteEnd != null)
+			onWriteEnd();
+
+		OnWriteCompleted();
+	}
+
+	// ----
+
+	private void OnCharacterWrote(char character)
+	{
+		// TODO, write sounds
+	}
+
+	private void OnCharacterRemove(char character)
+	{
+		// TODO, write sounds
+	}
+
+
+	private void OnWriteStarted()
+	{
+		HackerCharacter.Instance.SetHacking();
+	}
+
+	private void OnClearStarted()
+	{
+
+	}
+
+	private void OnWriteCompleted()
+	{
+		HackerCharacter.Instance.SetIdle();
+	}
+
+	private void OnClearCompleted()
+	{
+		//HackerCharacter.Instance.SetIdle();
+	}
+
+	// ---
+
+	public readonly char[] DiscardedCharacters = new char[] // skip waiting in these characters
     {
-        Instance = this;
+		' ',
+		'\n'
+	};
 
-        _consoleText.text = _defaultText;
-    }
+	public void WriteLine(string message, params object[] args)
+	{
+		var formattedMessage = string.Format(message, args) + "\n>\t";
 
+		StartCoroutine(WriteIEnumerator(formattedMessage));
+	}
 
-    private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
+	public void Write(string message, params object[] args)
+	{
+		var formattedMessage = string.Format(message, args) + "\n\t";
 
-    private IEnumerator ClearIEnumerator(int startIndex, int lastIndex, float waitTime = 0.065f) // startIndex > lastIndex
-    {
-        while (_editingText)
-            yield return _waitForEndOfFrame;
+		StartCoroutine(WriteIEnumerator(formattedMessage));
+	}
 
-        OnClearStarted();
+	public void WriteCallback(string message, System.Action onWriteEnd)
+	{
+		StartCoroutine(WriteIEnumerator(message, onWriteEnd));
+	}
 
-        _editingText = true;
+	public void Clear()
+	{
+		StartCoroutine(ClearIEnumerator(_consoleText.text.Length - 1, _defaultText.Length));
+	}
 
-        var waitForSeconds = new WaitForSecondsRealtime(waitTime);
+	public void ClearLastLine()
+	{
+		int lastIndex = _consoleText.text.LastIndexOf('\n');
 
-        for (int i = startIndex; i >= lastIndex; --i)
-        {
-            var character = _consoleText.text[i];
+		if (lastIndex == -1 || lastIndex < _defaultText.Length)
+			return;
 
-            _consoleText.text = _consoleText.text.Remove(i);
+		int startIndex = _consoleText.text.Length - 1;
 
-            OnCharacterRemove(character);
+		StartCoroutine(ClearIEnumerator(startIndex, lastIndex));
+	}
 
-            if (!DiscardedCharacters.Contains(character))
-            {
-                yield return waitForSeconds;
-            }
-        }
+	public void AddVariable(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
+	{
+		if (VariableList.Find(x => x._textMeshPro.text == variableName) != default) // if already exists
+			return;
 
-        _editingText = false;
+		var variablePrefab = Instantiate(_variablePrefab, _variablesTransform)
+							.GetComponent<VariablePrefab>();
 
-        OnClearCompleted();
-    }
+		variablePrefab.Set(variableName, @object, visibleAttributesDict);
 
-    private IEnumerator WriteIEnumerator(string message, System.Action onWriteEnd = null, float waitTime = 0.065f)
-    {
-        while (_editingText)
-            yield return _waitForEndOfFrame;
+		VariableList.Add(variablePrefab);
 
-        OnWriteStarted();
+		LayoutRebuilder.ForceRebuildLayoutImmediate(_horizontalLayoutGroup.GetComponent<RectTransform>());
+	}
 
-        _editingText = true;
+	//
 
-        var waitForSeconds = new WaitForSecondsRealtime(waitTime);
-
-        foreach (var character in message)
-        {
-            _consoleText.text += character;
-
-            OnCharacterWrote(character);
-
-            if (!DiscardedCharacters.Contains(character))
-            {
-                yield return waitForSeconds;
-            }
-        }
-
-        _editingText = false;
-
-        if (onWriteEnd != null)
-            onWriteEnd();
-
-        OnWriteCompleted();
-    }
-
-    // ----
-
-    private void OnCharacterWrote(char character)
-    {
-        // TODO, write sounds
-    }
-
-    private void OnCharacterRemove(char character)
-    {
-        // TODO, write sounds
-    }
-    
-
-    private void OnWriteStarted()
-    {
-        HackerCharacter.Instance.SetHacking();
-    }
-
-    private void OnClearStarted()
-    {
-
-    }
-
-    private void OnWriteCompleted()
-    {
-        HackerCharacter.Instance.SetIdle();
-    }
-
-    private void OnClearCompleted()
-    {
-        //HackerCharacter.Instance.SetIdle();
-    }
-
-    // ---
-
-    public readonly char[] DiscardedCharacters = new char[] // skip waiting in these characters
-    {
-        ' ',
-        '\n'
-    };
-
-    public void WriteLine(string message, params object[] args)
-    {
-        var formattedMessage = string.Format(message, args) + "\n>\t";
-
-        StartCoroutine(WriteIEnumerator(formattedMessage));
-    }
-
-    public void Write(string message, params object[] args)
-    {
-        var formattedMessage = string.Format(message, args) + "\n\t";
-
-        StartCoroutine(WriteIEnumerator(formattedMessage));
-    }
-
-    public void WriteCallback(string message, System.Action onWriteEnd)
-    {
-        StartCoroutine(WriteIEnumerator(message, onWriteEnd));
-    }
-
-    public void Clear()
-    {
-        StartCoroutine(ClearIEnumerator(_consoleText.text.Length - 1, _defaultText.Length));
-    }
-
-    public void ClearLastLine()
-    {
-        int lastIndex = _consoleText.text.LastIndexOf('\n');
-
-        if (lastIndex == -1 || lastIndex < _defaultText.Length)
-            return;
-
-        int startIndex = _consoleText.text.Length - 1;
-
-        StartCoroutine(ClearIEnumerator(startIndex, lastIndex));
-    }
-
-    public void AddVariable(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
-    {
-        if (VariableList.Find(x => x._textMeshPro.text == variableName) != default) // if already exists
-            return;
-
-        var variablePrefab = Instantiate(_variablePrefab, _variablesTransform)
-                            .GetComponent<VariablePrefab>();
-
-        variablePrefab.Set(variableName, @object, visibleAttributesDict);
-
-        VariableList.Add(variablePrefab);
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_horizontalLayoutGroup.GetComponent<RectTransform>());
-    }
-
-    //
-
-    public static ConsolePanel Instance;
+	public static ConsolePanel instance;
 }

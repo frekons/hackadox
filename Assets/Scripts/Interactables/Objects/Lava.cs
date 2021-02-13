@@ -15,7 +15,7 @@ public class Lava : HarmfulObject
 		if (collision.gameObject.CompareTag("Player"))
 			isStaying = true;
 
-		GameManager.instance.OnEnterLava(collision);
+		GameManager.Instance.OnEnterLava(collision);
 	}
 
 	public void OnTriggerExit2D(Collider2D collision)
@@ -23,7 +23,7 @@ public class Lava : HarmfulObject
 		if (collision.gameObject.CompareTag("Player"))
 			isStaying = false;
 
-		GameManager.instance.OnExitLava(collision);
+		GameManager.Instance.OnExitLava(collision);
 	}
 	private void Update()
 	{
