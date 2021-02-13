@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
 	private CameraController cameraController;
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
 		Spawn();
 	}
 
-	public void TakeDamage(float damage)
+	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
 		if (isDead || !canMove)
 			return;
@@ -56,12 +57,12 @@ public class PlayerController : MonoBehaviour
 		health -= damage;
 
 		if (health <= 0)
-			OnPlayerDead();
+			OnPlayerDead(damageType);
 
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
 	}
 
-	public void OnPlayerDead()
+	public void OnPlayerDead(GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
 		if (isDead || !canMove)
 			return;
@@ -73,6 +74,12 @@ public class PlayerController : MonoBehaviour
 
 		isDead = true;
 		canMove = false;
+
+		animator.SetBool("isWalking", false);
+		animator.SetBool("isJumping", false);
+		animator.SetBool("isDead", true);
+
+		animator.SetInteger("damageType", (int)damageType);
 
 		FadeEffect.instance.FadeIn(() =>
 		{
@@ -88,7 +95,13 @@ public class PlayerController : MonoBehaviour
 
 	void Spawn()
 	{
-		health = 100f;
+		if (isDead)
+		{
+			animator.SetBool("isDead", false);
+			animator.SetInteger("damageType", 0);
+			isDead = false;
+			health = 100f;
+		}
 
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
 
@@ -98,15 +111,12 @@ public class PlayerController : MonoBehaviour
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
 		gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-		canMove = true;
 
 		FadeEffect.instance.FadeOut(() =>
 		{
-			if (isDead)
-			{
-				isDead = false;
-				CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, false);
-			}
+			//if (isDead)
+			//	CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, false);
+			canMove = true;
 
 			CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
 		});
@@ -128,8 +138,11 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		if (isDead)
+			return;
+
 		if (transform.position.y < -10f)
-			TakeDamage(100f);
+			OnPlayerDead();
 
 		animator.SetBool("isJumped", !IsGrounded());
 
@@ -144,12 +157,15 @@ public class PlayerController : MonoBehaviour
 		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
 			facingLeft = false;
 
-		animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
+		if (IsGrounded())
+			animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
 	}
 
 	private void FixedUpdate()
 	{
 		if (!canMove)
+			return;
+		if (isDead)
 			return;
 
 		float horizontal = Input.GetAxis("Horizontal");
