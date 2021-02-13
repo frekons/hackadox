@@ -1,37 +1,25 @@
 fileFormatVersion: 2
-guid: 19f261e73fad0d14a83f1bac6ff0e2ce
+guid: 35e310218cb39d5478e5c78192565cd5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1131923544352016421
-    second: bgsheet_0
+      213: -702453614318282444
+    second: enemyshoot-Sheet_0
   - first:
-      213: -6363258113442214126
-    second: bgsheet_1
+      213: 2913330845496693366
+    second: enemyshoot-Sheet_1
   - first:
-      213: 2689025499977462671
-    second: bgsheet_2
+      213: 3185504527084291314
+    second: enemyshoot-Sheet_2
   - first:
-      213: 2028657767566313566
-    second: bgsheet_3
+      213: -7285230261611115205
+    second: enemyshoot-Sheet_3
   - first:
-      213: 8095736076804039744
-    second: bgsheet_4
+      213: 6609500326124945305
+    second: enemyshoot-Sheet_4
   - first:
-      213: 3205438457023786582
-    second: bgsheet_5
-  - first:
-      213: 3286432565312583005
-    second: bgsheet_6
-  - first:
-      213: -8619412250413410352
-    second: bgsheet_7
-  - first:
-      213: -1216953305699866607
-    second: bgsheet_8
-  - first:
-      213: 5991714540869777043
-    second: bgsheet_9
+      213: -6804048471359312163
+    second: enemyshoot-Sheet_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -62,7 +50,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: -1
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -76,7 +64,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 40
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bgsheet_0
+      name: enemyshoot-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 384
-        height: 256
+        width: 96
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,20 +123,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 528c006677665bf00800000000000000
-      internalID: 1131923544352016421
+      spriteID: 4399e57d8226046f0800000000000000
+      internalID: -702453614318282444
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bgsheet_1
+      name: enemyshoot-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672d40fe7fa3e6820800000000000000
+      internalID: 2913330845496693366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyshoot-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f402476d7f253c20800000000000000
+      internalID: 3185504527084291314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyshoot-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 96
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3d4eb50da9a5ea90800000000000000
+      internalID: -7285230261611115205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: enemyshoot-Sheet_4
       rect:
         serializedVersion: 2
         x: 384
         y: 0
-        width: 384
-        height: 256
+        width: 96
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +207,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21f8726b57a21b7a0800000000000000
-      internalID: -6363258113442214126
+      spriteID: 99f71892789a9bb50800000000000000
+      internalID: 6609500326124945305
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: bgsheet_2
+      name: enemyshoot-Sheet_5
       rect:
         serializedVersion: 2
-        x: 768
+        x: 480
         y: 0
-        width: 384
-        height: 256
+        width: 96
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,155 +228,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f83bf16f176515520800000000000000
-      internalID: 2689025499977462671
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_3
-      rect:
-        serializedVersion: 2
-        x: 1152
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e5880a6cd7d372c10800000000000000
-      internalID: 2028657767566313566
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_4
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 044283d9115d95070800000000000000
-      internalID: 8095736076804039744
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_5
-      rect:
-        serializedVersion: 2
-        x: 1920
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 65e67442b410c7c20800000000000000
-      internalID: 3205438457023786582
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_6
-      rect:
-        serializedVersion: 2
-        x: 2304
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d557bb18101cb9d20800000000000000
-      internalID: 3286432565312583005
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_7
-      rect:
-        serializedVersion: 2
-        x: 2688
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0d75571d932b16880800000000000000
-      internalID: -8619412250413410352
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_8
-      rect:
-        serializedVersion: 2
-        x: 3072
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 118a5898a638c1fe0800000000000000
-      internalID: -1216953305699866607
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bgsheet_9
-      rect:
-        serializedVersion: 2
-        x: 3456
-        y: 0
-        width: 384
-        height: 256
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 396f51421a8d62350800000000000000
-      internalID: 5991714540869777043
+      spriteID: ddea616f6f92391a0800000000000000
+      internalID: -6804048471359312163
       vertices: []
       indices: 
       edges: []
