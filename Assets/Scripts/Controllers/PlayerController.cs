@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
 	private bool hasPressedJump;
 	private bool _facingLeft = false;
-	public bool FacingLeft
+	public bool facingLeft
 	{
 		get
 		{
@@ -140,9 +140,9 @@ public class PlayerController : MonoBehaviour
 			hasPressedJump = true;
 
 		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
-			FacingLeft = true;
+			facingLeft = true;
 		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
-			FacingLeft = false;
+			facingLeft = false;
 
 		animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
 	}

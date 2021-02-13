@@ -1,86 +1,114 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip _switchButtonSound;
+	[SerializeField]
+	private AudioClip _switchButtonSound;
 
-    [SerializeField]
-    private GameObject _selector;
+	[SerializeField]
+	private GameObject _selector;
 
-    [SerializeField]
-    private List<Button> _buttons;
+	[SerializeField]
+	private List<Button> _buttons;
 
-    [SerializeField]
-    private AudioMixer _audioMixer;
-
-
-    private GameObject _selectedButton;
-
-    public GameObject SelectedButton
-    {
-        get
-        {
-            return _selectedButton;
-        }
-
-        set
-        {
-            if (_selectedButton != value && value != null)
-            {
-                UISoundManager.PlayOneShot(_switchButtonSound);
-            }
-
-            _selectedButton = value;
-        }
-    }
+	[SerializeField]
+	private AudioMixer _audioMixer;
 
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+	private GameObject _selectedButton;
 
-    private void Start()
-    {
-        var eventSystem = EventSystem.current;
+	private bool isClickedPlay;
 
-        //eventSystem.SetSelectedGameObject(_buttons[0].gameObject);
-    }
+	public GameObject SelectedButton
+	{
+		get
+		{
+			return _selectedButton;
+		}
 
-    private void LateUpdate()
-    {
-        var eventSystem = EventSystem.current;
+		set
+		{
+			if (_selectedButton != value && value != null)
+			{
+				UISoundManager.PlayOneShot(_switchButtonSound);
+			}
 
-        if (eventSystem && eventSystem.currentSelectedGameObject != null && SelectedButton != eventSystem.currentSelectedGameObject && eventSystem.currentSelectedGameObject.GetComponent<Button>())
-        {
-            SelectedButton = eventSystem.currentSelectedGameObject;
-        }
+			_selectedButton = value;
+		}
+	}
 
-        if (SelectedButton)
-        {
-            _selector.transform.position = Vector3.Lerp(_selector.transform.position, SelectedButton.transform.position, Time.deltaTime * 10.0f);
-        }
-    }
 
-    //
+	private void Awake()
+	{
+		Instance = this;
+	}
 
-    public void OnMouseEnterButton(GameObject button, PointerEventData eventData)
-    {
-        SelectedButton = button;
-    }
+	private void Start()
+	{
+		var eventSystem = EventSystem.current;
 
-    public void OnVolumeSliderChange(float volume)
-    {
-        _audioMixer.SetFloat("MainVolume", volume);
-    }
+		//eventSystem.SetSelectedGameObject(_buttons[0].gameObject);
+	}
 
-    //
+	private void LateUpdate()
+	{
+		if (isClickedPlay)
+			return;
 
-    public static MenuManager Instance;
+		var eventSystem = EventSystem.current;
+
+		if (eventSystem && eventSystem.currentSelectedGameObject != null && SelectedButton != eventSystem.currentSelectedGameObject && eventSystem.currentSelectedGameObject.GetComponent<Button>())
+		{
+			SelectedButton = eventSystem.currentSelectedGameObject;
+		}
+
+		if (SelectedButton)
+		{
+			_selector.transform.position = Vector3.Lerp(_selector.transform.position, SelectedButton.transform.position, Time.deltaTime * 10.0f);
+		}
+	}
+
+	//
+
+	public void OnMouseEnterButton(GameObject button, PointerEventData eventData)
+	{
+		if (isClickedPlay)
+			return;
+
+		SelectedButton = button;
+	}
+
+	public void OnVolumeSliderChange(float volume)
+	{
+		if (isClickedPlay)
+			return;
+
+		_audioMixer.SetFloat("MainVolume", volume);
+	}
+
+	public AudioMixerSnapshot fadeOut;
+
+	public void OnPressPlay()
+	{
+		Debug.Log("Pressed play button.");
+
+		if (isClickedPlay)
+			return;
+
+		isClickedPlay = true;
+
+		StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
+		{
+			SceneManager.LoadScene(1);
+		}));
+	}
+
+	//
+
+	public static MenuManager Instance;
 }
