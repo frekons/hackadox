@@ -19,9 +19,24 @@ public class PlayerController : MonoBehaviour
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
 	public bool isDead = false;
-	public bool facingLeft = false;
 
 	private bool hasPressedJump;
+	private bool _facingLeft = false;
+	public bool FacingLeft
+	{
+		get
+		{
+			return _facingLeft;
+		}
+		set
+		{
+			if (_facingLeft != value)
+				OnFacingDirectionChange(value);
+
+			_facingLeft = value;
+		}
+	}
+
 
 	void Start()
 	{
@@ -63,6 +78,12 @@ public class PlayerController : MonoBehaviour
 		{
 			Spawn();
 		});
+	}
+
+	public void OnFacingDirectionChange(bool facingLeft)
+	{
+		sprite.flipX = facingLeft;
+		cameraController.cameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
 	}
 
 	void Spawn()
@@ -119,12 +140,11 @@ public class PlayerController : MonoBehaviour
 			hasPressedJump = true;
 
 		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
-			facingLeft = true;
+			FacingLeft = true;
 		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
-			facingLeft = false;
+			FacingLeft = false;
 
-		sprite.flipX = facingLeft;
-		cameraController.cameraOffset = facingLeft ? new Vector3(-2, 0, 0) : new Vector3(2, 0, 0);
+		animator.SetFloat("walkSpeed", Mathf.Abs(rigibody2d.velocity.x) > 0 ? 2 : 0);
 	}
 
 	private void FixedUpdate()
@@ -133,7 +153,6 @@ public class PlayerController : MonoBehaviour
 			return;
 
 		float horizontal = Input.GetAxis("Horizontal");
-
 
 		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rigibody2d.velocity.y);
 

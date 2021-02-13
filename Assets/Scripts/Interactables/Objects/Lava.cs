@@ -7,9 +7,7 @@ public class Lava : HarmfulObject
 	[Range(0f, 100f)]
 	public float damageCooldown;
 
-	public override void OnTriggerEnter2D(Collider2D collision)
-	{
-	}
+	public override void OnTriggerEnter2D(Collider2D collision) { }
 
 	private void OnTriggerStay2D(UnityEngine.Collider2D collision)
 	{
