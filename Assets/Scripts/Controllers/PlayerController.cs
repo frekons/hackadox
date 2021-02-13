@@ -86,8 +86,6 @@ public class PlayerController : MonoBehaviour
 
 			if (hit)
 			{
-				Debug.Log(hit.transform.name);
-
 				PlatformEffector2D platformEffector = hit.transform.GetComponent<PlatformEffector2D>();
 
 				if (platformEffector)
