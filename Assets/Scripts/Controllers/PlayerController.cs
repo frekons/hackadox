@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
 	private Camera mainCamera;
 	private Rigidbody2D rigibody2d;
+	private Animator animator;
+	private SpriteRenderer sprite;
 	private CooldownManager cooldownManager = new CooldownManager();
 
 	[Header("Ground Layer Mask")]
@@ -17,12 +19,15 @@ public class PlayerController : MonoBehaviour
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
 	public bool isDead = false;
+	public bool facingLeft = false;
 
 	private bool hasPressedJump;
 
 	void Start()
 	{
 		rigibody2d = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
+		sprite = GetComponent<SpriteRenderer>();
 
 		Spawn();
 	}
@@ -69,7 +74,7 @@ public class PlayerController : MonoBehaviour
 		rigibody2d.angularVelocity = 0;
 
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
-		gameObject.transform.rotation = Quaternion.Euler(0, 0, 90);
+		gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
 		canMove = true;
 
@@ -89,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
 	public bool IsGrounded()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.20f, terrainLayer);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, terrainLayer);
 
 		return hit.transform != null ? true : false;
 	}
@@ -104,11 +109,21 @@ public class PlayerController : MonoBehaviour
 		if (transform.position.y < -10f)
 			TakeDamage(100f);
 
+		animator.SetBool("isJumped", !IsGrounded());
+
 		if (!canMove)
 			return;
 
 		if (Input.GetKeyDown(KeyCode.Space) && !cooldownManager.IsInCooldown("jump"))
 			hasPressedJump = true;
+
+		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+			facingLeft = true;
+		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+			facingLeft = false;
+
+		sprite.flipX = facingLeft;
+		Debug.Log(facingLeft);
 	}
 
 	private void FixedUpdate()
@@ -117,6 +132,7 @@ public class PlayerController : MonoBehaviour
 			return;
 
 		float horizontal = Input.GetAxis("Horizontal");
+
 
 		Vector2 targetVelocity = new Vector2(horizontal * walkForce, rigibody2d.velocity.y);
 
