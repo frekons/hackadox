@@ -25,7 +25,7 @@ public class Door : Interactable
 					{
 						SetDoorOpen(true);
 
-						collider.GetComponent<PlayerController>().canMove = false;
+						collider.GetComponent<PlayerController>().OnPlayerEnterDoor();
 
 						FadeEffect.instance.FadeIn(() =>
 						{

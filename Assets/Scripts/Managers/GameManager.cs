@@ -16,4 +16,55 @@ public class GameManager : MonoBehaviour
 		instance = this;
 	}
 
+	public void ResetGame()
+	{
+		GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResetToDefaults();
+	}
+
+	/** PLAYER EVENTS **/
+	public void OnPlayerDead(DamageTypes damageType = DamageTypes.Suicide)
+	{
+
+	}
+
+	public void OnPlayerEnterDoor()
+	{
+
+	}
+
+	public void OnPlayerSpawn()
+	{
+
+	}
+
+	public void OnPlayerJump()
+	{
+
+	}
+
+	public void OnPlayerFacingDirectionChange(bool facingLeft)
+	{
+
+	}
+
+	public void OnPlayerTakeDamage(float damage, DamageTypes damageType = DamageTypes.Suicide)
+	{
+
+	}
+
+	public void OnPlayerReset()
+	{
+
+	}
+
+	/** INTERACTABLE EVENTS **/
+	public void OnEnterLava(Collider2D collision)
+	{
+
+	}
+
+	public void OnExitLava(Collider2D collision)
+	{
+
+	}
 }

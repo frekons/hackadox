@@ -34,13 +34,11 @@ public class PlayerController : MonoBehaviour
 		set
 		{
 			if (_facingLeft != value)
-				OnFacingDirectionChange(value);
+				OnPlayerFacingDirectionChange(value);
 
 			_facingLeft = value;
 		}
 	}
-
-
 	void Start()
 	{
 		rigibody2d = GetComponent<Rigidbody2D>();
@@ -49,6 +47,16 @@ public class PlayerController : MonoBehaviour
 		cameraController = Camera.main.GetComponent<CameraController>();
 
 		Spawn();
+	}
+
+	public void ResetToDefaults()
+	{
+		health = 100f;
+		walkForce = 5f;
+		jumpForce = 5f;
+		jumpCooldown = 0.1f;
+
+		GameManager.instance.OnPlayerReset();
 	}
 
 	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
@@ -62,6 +70,8 @@ public class PlayerController : MonoBehaviour
 			OnPlayerDead(damageType);
 
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+
+		GameManager.instance.OnPlayerTakeDamage(damage, damageType);
 	}
 
 	public void OnPlayerDead(GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
@@ -83,16 +93,31 @@ public class PlayerController : MonoBehaviour
 
 		animator.SetInteger("damageType", (int)damageType);
 
+		ResetToDefaults();
+
 		FadeEffect.instance.FadeIn(() =>
 		{
 			Spawn();
 		});
+
+		GameManager.instance.OnPlayerDead(damageType);
 	}
 
-	public void OnFacingDirectionChange(bool facingLeft)
+	public void OnPlayerFacingDirectionChange(bool facingLeft)
 	{
 		sprite.flipX = facingLeft;
 		cameraController.cameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
+
+		GameManager.instance.OnPlayerFacingDirectionChange(facingLeft);
+	}
+
+	public void OnPlayerEnterDoor()
+	{
+		GameManager.instance.OnPlayerEnterDoor();
+
+		canMove = false;
+		animator.SetFloat("walkSpeed", 0);
+		animator.SetBool("isJumping", false);
 	}
 
 	void Spawn()
@@ -126,6 +151,8 @@ public class PlayerController : MonoBehaviour
 
 			CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
 		});
+
+		GameManager.instance.OnPlayerSpawn();
 
 		Debug.Log("Player has spawned.");
 	}
@@ -200,5 +227,7 @@ public class PlayerController : MonoBehaviour
 		targetVelocity.y += jumpForce;
 		hasPressedJump = false;
 		cooldownManager.SetCooldown("jump", jumpCooldown);
+
+		GameManager.instance.OnPlayerJump();
 	}
 }
