@@ -227,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32228121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.29, y: -3.33, z: 0}
+  m_LocalPosition: {x: -7.25, y: -3.19, z: 0}
   m_LocalScale: {x: 1.1506159, y: 0.2924, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -505,8 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efeda130a1a20474f96ac8a081494a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 0, y: 0, z: 0}
-  followSpeed: 3
+  CameraOffset: {x: 0, y: 0, z: 0}
+  _followSpeed: 1
 --- !u!1 &801627825
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,16 +966,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.93432474
-      objectReference: {fileID: 0}
-    - target: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: 0.012837648
-      objectReference: {fileID: 0}
     - target: {fileID: 3323194692057797558, guid: 74f27bdd9da20814791ac1f62d2acf30,
         type: 3}
       propertyPath: m_Name
@@ -1117,32 +1107,12 @@ PrefabInstance:
     - target: {fileID: 4541383380235650409, guid: ef765a4e1a533de4a9d3b795ab48dc91,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.362
-      objectReference: {fileID: 0}
-    - target: {fileID: 4541383380235650409, guid: ef765a4e1a533de4a9d3b795ab48dc91,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4541383380235650409, guid: ef765a4e1a533de4a9d3b795ab48dc91,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4541383380235650409, guid: ef765a4e1a533de4a9d3b795ab48dc91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 0.318
       objectReference: {fileID: 0}
     - target: {fileID: 5185847288702803610, guid: ef765a4e1a533de4a9d3b795ab48dc91,
         type: 3}
       propertyPath: m_RootOrder
       value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5185847288702803610, guid: ef765a4e1a533de4a9d3b795ab48dc91,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5185847288702803610, guid: ef765a4e1a533de4a9d3b795ab48dc91,
         type: 3}
