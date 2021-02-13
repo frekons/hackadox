@@ -2,6 +2,8 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
 	#region COMPONENTS
@@ -71,10 +73,29 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space) && !_cooldownManager.IsInCooldown("jump"))
 			_hasPressedJump = true;
 
-		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+		if (Input.GetAxisRaw("Horizontal") < 0 && Input.GetAxisRaw("Horizontal") != 0)
 			FacingLeft = true;
-		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+		else if (Input.GetAxisRaw("Horizontal") != 0)
 			FacingLeft = false;
+
+		if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0 && IsGrounded())
+		{
+
+			var hit = Physics2D.Raycast(transform.position, Vector2.down, 50f, (int)Mathf.Pow(2, 7));
+
+			if (hit)
+			{
+				Debug.Log(hit.transform.name);
+
+				PlatformEffector2D platformEffector = hit.transform.GetComponent<PlatformEffector2D>();
+
+				if (platformEffector)
+				{
+					platformEffector.rotationalOffset = 180;
+					StartCoroutine(PlatformerReset(platformEffector));
+				}
+			}
+		}
 
 		if (IsGrounded())
 			_animator.SetFloat("walkSpeed", Mathf.Abs(_rigibody2d.velocity.x) > 0 ? 2 : 0);
@@ -118,6 +139,12 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region FUNCTIONS 
+	IEnumerator PlatformerReset(PlatformEffector2D platformEffector)
+	{
+		yield return new WaitForSeconds(0.5f);
+		platformEffector.rotationalOffset = 0;
+	}
+
 	void Spawn()
 	{
 		if (isDead)
@@ -168,7 +195,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump(ref Vector2 targetVelocity)
 	{
-		targetVelocity.y += jumpForce;
+		targetVelocity.y = jumpForce;
 		_hasPressedJump = false;
 		_cooldownManager.SetCooldown("jump", jumpCooldown);
 
@@ -235,8 +262,8 @@ public class PlayerController : MonoBehaviour
 	{
 		health = 100f;
 		walkSpeed = 5f;
-		jumpForce = 5f;
-		jumpCooldown = 0.1f;
+		jumpForce = 5.5f;
+		jumpCooldown = 1;
 
 		GameManager.Instance.OnPlayerReset();
 	}
