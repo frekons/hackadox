@@ -1,4 +1,4 @@
-﻿public class Teleporter : Interactable
+﻿public class Resetter : Interactable
 {
 	void Start()
 	{
