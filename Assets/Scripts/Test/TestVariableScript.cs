@@ -36,7 +36,6 @@ public class TestVariableScript : MonoBehaviour
 		public int _health = 100;
 		public float _gravity = 800;
 
-		[Visible(true)]
 		public int health
 		{
 			get
@@ -52,7 +51,6 @@ public class TestVariableScript : MonoBehaviour
 			}
 		}
 
-		[Visible(true)]
 		public float gravity
 		{
 			get

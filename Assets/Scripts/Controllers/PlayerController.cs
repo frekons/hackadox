@@ -20,14 +20,11 @@ public class PlayerController : MonoBehaviour
 
 	#region PLAYER FIELDS
 	[Header("Player")]
-	public float health = 100f;
-	public float walkSpeed = 5f;
-	public float jumpForce = 5f;
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
 	public bool isDead = false;
 
-
+	private Player _player = new Player();
 	private bool _hasPressedJump;
 	private bool _facingLeft = false;
 	public bool FacingLeft
@@ -260,12 +257,109 @@ public class PlayerController : MonoBehaviour
 
 	public void ResetToDefaults()
 	{
-		health = 100f;
-		walkSpeed = 5f;
-		jumpForce = 5.5f;
-		jumpCooldown = 1;
+		_player = new Player();
 
-		GameManager.Instance.OnPlayerReset();
+		GameManager.Instance.OnPlayerReset(_player);
 	}
 	#endregion
+}
+
+[System.Serializable]
+public class Player
+{
+	private float _health = 100;
+	private float _walkSpeed = 5f;
+	private float _jumpForce = 5.5f;
+	private float _gravity = 800;
+	private float _playerPositionX, _playerPositionY;
+
+	public float health
+	{
+		get
+		{
+			return _health;
+		}
+
+		set
+		{
+			Debug.Log("set health called!");
+
+			_health = value;
+		}
+	}
+
+	public float gravity
+	{
+		get
+		{
+			return _gravity;
+		}
+
+		set
+		{
+			Debug.Log("set gravity called!");
+
+			_gravity = value;
+		}
+	}
+
+	public float walkSpeed
+	{
+		get
+		{
+			return _walkSpeed;
+		}
+
+		set
+		{
+			Debug.Log("set walk speed called!");
+
+			_walkSpeed = value;
+		}
+	}
+
+	public float jumpForce
+	{
+		get
+		{
+			return _jumpForce;
+		}
+
+		set
+		{
+			Debug.Log("set jump force called!");
+
+			_jumpForce = value;
+		}
+	}
+
+	public float posX
+	{
+		get
+		{
+			return _playerPositionX;
+		}
+
+		set
+		{
+			Debug.Log("set pos X called!");
+
+			_playerPositionX = value;
+		}
+	}
+
+	public float posY
+	{
+		get
+		{
+			return _playerPositionY;
+		}
+
+		set
+		{
+			Debug.Log("set pos Y called!");
+
+			_playerPositionY = value;
+		}
+	}
 }
