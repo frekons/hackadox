@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	public void OnPlayerReset()
+	public void OnPlayerReset(Player player)
 	{
 
 	}

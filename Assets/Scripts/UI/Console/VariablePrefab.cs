@@ -1,133 +1,118 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-
-[System.AttributeUsage(System.AttributeTargets.Property)
-]
-public class VisibleAttribute : System.Attribute
-{
-    public bool visible;
-
-    public VisibleAttribute(bool visible)
-    {
-        this.visible = visible;
-    }
-}
-
-
 
 public class VariablePrefab : MonoBehaviour
 {
-    public TMP_Dropdown VariablesDropdownPrefab;
+	public TMP_Dropdown VariablesDropdownPrefab;
 
-    public TMP_InputField PopInputFieldPrefab;
+	public TMP_InputField PopInputFieldPrefab;
 
-    public TextMeshProUGUI _textMeshPro;
+	public TextMeshProUGUI _textMeshPro;
 
-    public Button _button;
+	public Button _button;
 
-    public string VariableName
-    {
-        get
-        {
-            return _textMeshPro.text;
-        }
-    }
+	public string VariableName
+	{
+		get
+		{
+			return _textMeshPro.text;
+		}
+	}
 
-    private object _object;
+	private object _object;
 
-    Dictionary<string, bool> VisibleAttributesDict;
+	Dictionary<string, bool> VisibleAttributesDict;
 
-    public void Set(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
-    {
-        _textMeshPro.text = variableName;
+	public void Set(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
+	{
+		_textMeshPro.text = variableName;
 
-        this._object = @object;
+		this._object = @object;
 
-        this.VisibleAttributesDict = visibleAttributesDict;
-    }
+		this.VisibleAttributesDict = visibleAttributesDict;
+	}
 
-    public void OnButtonPress()
-    {
-        //Debug.Log("Button Pressed! Type: " + _type.Name);
+	public void OnButtonPress()
+	{
+		//Debug.Log("Button Pressed! Type: " + _type.Name);
 
-        _button.interactable = false;
+		_button.interactable = false;
 
-        ConsolePanel.instance.WriteCallback(VariableName + ".", () =>
-        {
-            var dropdown = Instantiate(VariablesDropdownPrefab, ConsolePanel.instance.transform)
-                                                .GetComponent<TMP_Dropdown>();
+		ConsolePanel.instance.WriteCallback(VariableName + ".", () =>
+		{
+			var dropdown = Instantiate(VariablesDropdownPrefab, ConsolePanel.instance.transform)
+												.GetComponent<TMP_Dropdown>();
 
-            dropdown.options.Add(new TMP_Dropdown.OptionData("none"));
+			dropdown.options.Add(new TMP_Dropdown.OptionData("none"));
 
-            foreach (var field in _object.GetType().GetProperties())
-            {
-                if (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name])
-                {
-                    dropdown.options.Add(new TMP_Dropdown.OptionData(field.Name /*+ ": " + field.GetValue(_object)*/));
-                }
-            }
+			foreach (var field in _object.GetType().GetProperties())
+			{
+				if (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name])
+				{
+					dropdown.options.Add(new TMP_Dropdown.OptionData(field.Name /*+ ": " + field.GetValue(_object)*/));
+				}
+			}
 
-            dropdown.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
+			dropdown.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
 
-            dropdown.Show();
+			dropdown.Show();
 
-            dropdown.onValueChanged.AddListener((int selectedIndex) =>
-            {
-                var option = dropdown.options[selectedIndex];
+			dropdown.onValueChanged.AddListener((int selectedIndex) =>
+			{
+				var option = dropdown.options[selectedIndex];
 
-                //ConsolePanel.Instance.Clear();
+				//ConsolePanel.Instance.Clear();
 
-                ConsolePanel.instance.WriteCallback(option.text + " = ", ()=>
-                {
-                    var inputField = Instantiate<TMP_InputField>(PopInputFieldPrefab, ConsolePanel.instance.transform);
+				ConsolePanel.instance.WriteCallback(option.text + " = ", () =>
+				{
+					var inputField = Instantiate<TMP_InputField>(PopInputFieldPrefab, ConsolePanel.instance.transform);
 
-                    inputField.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
+					inputField.transform.position = GetTextWorldTopRightPosition(ConsolePanel.instance._consoleText);
 
-                    inputField.Select();
+					inputField.Select();
 
-                    inputField.onEndEdit.AddListener((string input) =>
-                    {
-                        if (input.Trim() == string.Empty)
-                            return;
+					inputField.onEndEdit.AddListener((string input) =>
+					{
+						if (input.Trim() == string.Empty)
+							return;
 
-                        Debug.Log("Option: " + option.text);
+						Debug.Log("Option: " + option.text);
 
-                        var field = _object.GetType().GetProperty(option.text);
+						var field = _object.GetType().GetProperty(option.text);
 
-                        var args = new object[] { input };
+						var args = new object[] { input };
 
-                        var parseMethodInfo = field.PropertyType.GetMethod("Parse", new System.Type[] { typeof(string) });
+						var parseMethodInfo = field.PropertyType.GetMethod("Parse", new System.Type[] { typeof(string) });
 
-                        var result = parseMethodInfo.Invoke(null, args);
+						var result = parseMethodInfo.Invoke(null, args);
 
-                        field.SetValue(_object, result);
+						field.SetValue(_object, result);
 
-                        Debug.Log("result: " + result);
+						Debug.Log("result: " + result);
 
-                        ConsolePanel.instance.WriteLine(result.ToString());
+						ConsolePanel.instance.WriteLine(result.ToString());
 
-                        _button.interactable = true;
+						_button.interactable = true;
 
-                        Destroy(inputField.gameObject);
-                    });
-                });
+						Destroy(inputField.gameObject);
+					});
+				});
 
-                Destroy(dropdown.gameObject);
-            });
-        });
+				Destroy(dropdown.gameObject);
+			});
+		});
 
 
-    }
+	}
 
-    Vector3 GetTextWorldTopRightPosition(TextMeshProUGUI textMeshProUGUI)
-    {
-        var characterInfo = textMeshProUGUI.textInfo.characterInfo[ConsolePanel.instance._consoleText.textInfo.characterCount - 1];
+	Vector3 GetTextWorldTopRightPosition(TextMeshProUGUI textMeshProUGUI)
+	{
+		var characterInfo = textMeshProUGUI.textInfo.characterInfo[ConsolePanel.instance._consoleText.textInfo.characterCount - 1];
 
-        var localPosition = characterInfo.topRight + Vector3.right * 10 + Vector3.up * 10;
+		var localPosition = characterInfo.topRight + Vector3.right * 10 + Vector3.up * 10;
 
-        return textMeshProUGUI.transform.TransformPoint(localPosition);
-    }
+		return textMeshProUGUI.transform.TransformPoint(localPosition);
+	}
 }
