@@ -1142,12 +1142,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d0ed122eff37404cb99efd934c79163, type: 3}
---- !u!70 &575829418 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
-    type: 3}
-  m_PrefabInstance: {fileID: 1963873638440871989}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &754745755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,9 +1177,9 @@ RectTransform:
   m_Father: {fileID: 153508450}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 262.34375, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 262.34375, y: -181.353}
   m_SizeDelta: {x: 0, y: 365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754745757
@@ -2655,50 +2649,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: _collider
-      value: 
-      objectReference: {fileID: 575829418}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: jumpCooldown
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[0].Name
-      value: posX
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[1].Name
-      value: posY
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[2].Name
-      value: health
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[3].Name
-      value: gravity
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[0].IsVisible
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[1].IsVisible
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[2].IsVisible
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: VisibleAttributesList.Array.data[3].IsVisible
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3323194692057797558, guid: 74f27bdd9da20814791ac1f62d2acf30,
         type: 3}
       propertyPath: m_Name

@@ -120,15 +120,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1e2f6f54914c74b825b45091cc992b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 1105646009457761430}
   TerrainLayer:
     serializedVersion: 2
     m_Bits: 136
-  health: 100
-  walkSpeed: 5
-  jumpForce: 5.5
-  jumpCooldown: 1
+  jumpCooldown: 0.1
   canMove: 0
   isDead: 0
+  VisibleAttributesList:
+  - Name: posX
+    IsVisible: 1
+  - Name: posY
+    IsVisible: 1
+  - Name: health
+    IsVisible: 1
+  - Name: gravity
+    IsVisible: 1
+  Player:
+    _health: 100
+    _walkSpeed: 5
+    _jumpForce: 5.5
+    _gravity: -9.81
+    _playerPositionX: -999
+    _playerPositionY: -999
 --- !u!95 &277961971446107615
 Animator:
   serializedVersion: 3
