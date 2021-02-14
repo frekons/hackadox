@@ -28,4 +28,9 @@ public class LaserCannon : HarmfulObject
 			laser.SetPosition(1, Vector3.MoveTowards(laser.GetPosition(1), Vector2.right * 25f, Time.deltaTime * 20f));
 		}
 	}
+
+	public void OnHover()
+	{
+		TooltipManager.Instance.ShowTooltip("LaserCannon");
+	}
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Lava : HarmfulObject
+public class Lava : HarmfulObject, ITooltip
 {
 	private CooldownManager cooldownManager = new CooldownManager();
 
@@ -33,5 +33,15 @@ public class Lava : HarmfulObject
 				GiveDamage(GameObject.FindWithTag("Player").GetComponent<Collider2D>());
 				cooldownManager.SetCooldown("lava_damage", damageCooldown);
 			}
+	}
+
+	public void OnHover()
+	{
+		TooltipManager.Instance.ShowTooltip("LAVA");
+	}
+
+	public void OnClick()
+	{
+		Debug.Log("clicked lava");
 	}
 }
