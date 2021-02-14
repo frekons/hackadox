@@ -331,7 +331,7 @@ public class Player
 	public float _walkSpeed = 5f;
 	public float _jumpForce = 5.5f;
 	public float _gravity = -9.81f;
-	public float _playerPositionX = -999f, _playerPositionY = -999f;
+	public float _playerPositionX , _playerPositionY;
 
 	[Call]
 	public float health
