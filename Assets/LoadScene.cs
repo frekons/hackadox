@@ -11,7 +11,7 @@ public class LoadScene : MonoBehaviour
 
     public string SceneName;
 
-    void Start()
+    void Awake()
     {
         if (LoadNextScene)
         {

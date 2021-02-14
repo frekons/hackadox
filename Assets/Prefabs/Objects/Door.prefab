@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -1
   m_Sprite: {fileID: 5213229242370633579, guid: 30cdfff23152abd40a91d51ca71d52b4,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9478bb3de25d84b44ba09ffb297c8d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
+  Sprites:
   - {fileID: 5213229242370633579, guid: 30cdfff23152abd40a91d51ca71d52b4, type: 3}
   - {fileID: 436563815456543028, guid: 30cdfff23152abd40a91d51ca71d52b4, type: 3}
-  scenePath: 
+  ScenePath: Assets/Scenes/Levels/Level-2.unity

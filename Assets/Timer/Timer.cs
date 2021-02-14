@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
 {
 	[Header("Properties")]
 	public bool Active = false;
+
 	public float Time = 5;
 
 	[Header("Events")]
@@ -15,6 +16,9 @@ public class Timer : MonoBehaviour
 	[Header("Objects")]
 	[SerializeField]
 	private Slider _progressSlider;
+
+	[SerializeField]
+	private TMPro.TextMeshProUGUI _textMeshPro;
 
 	[SerializeField]
 	private GameObject _timeIsUpPrefab;
@@ -72,6 +76,8 @@ public class Timer : MonoBehaviour
 
 				value = currentTime / seconds;
 
+				_textMeshPro.text = ((int)currentTime).ToString();
+
 				if (onProgress != null)
 					onProgress.Invoke(value);
 			}
@@ -104,6 +110,7 @@ public class Timer : MonoBehaviour
 
 		Instance.StartCoroutine(Instance.timerNumerator);
 	}
+
 
 	public static void Pause()
     {
