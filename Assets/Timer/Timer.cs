@@ -40,6 +40,8 @@ public class Timer : MonoBehaviour
 		}
 	}
 
+	private bool _pause = false;
+
 	private GameObject _timeIsUpObject;
 
 	private IEnumerator TimerIEnumerator(float seconds, UnityAction onStart = null, UnityAction<float> onProgress = null, UnityAction onEnd = null)
@@ -62,14 +64,17 @@ public class Timer : MonoBehaviour
 
 		while (value >= 0)
 		{
-			_progressSlider.value = value;
+			if (!_pause)
+			{
+				_progressSlider.value = value;
 
-			currentTime -= UnityEngine.Time.deltaTime;
+				currentTime -= UnityEngine.Time.deltaTime;
 
-			value = currentTime / seconds;
+				value = currentTime / seconds;
 
-			if (onProgress != null)
-				onProgress.Invoke(value);
+				if (onProgress != null)
+					onProgress.Invoke(value);
+			}
 
 			yield return waitForEndOfFrame;
 		}
@@ -98,6 +103,16 @@ public class Timer : MonoBehaviour
 		Instance.timerNumerator = Instance.TimerIEnumerator(seconds, onStart, onProgress, onEnd);
 
 		Instance.StartCoroutine(Instance.timerNumerator);
+	}
+
+	public static void Pause()
+    {
+		Instance._pause = true;
+    }
+
+	public static void Resume()
+    {
+		Instance._pause = false;
 	}
 
 	#endregion

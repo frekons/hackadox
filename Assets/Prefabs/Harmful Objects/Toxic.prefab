@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 700381590593244095}
   - component: {fileID: 700381590593244094}
   m_Layer: 0
-  m_Name: toxic
+  m_Name: Toxic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700381590593244033}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8961, y: -4.8075, z: 0.21257591}
+  m_LocalPosition: {x: 1.8961, y: -4.8075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -142,5 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dcf221dc33d2145b63b4eaa2a25148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDamage: 30
+  _maxDamage: 0
+  _randomDamage: 0
+  isStaying: 0
   damageCooldown: 2
