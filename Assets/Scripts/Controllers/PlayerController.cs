@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
 		platformEffector.rotationalOffset = 0;
 	}
 
-	void Spawn()
+	public void Spawn()
 	{
 		if (isDead)
 		{
@@ -193,11 +193,13 @@ public class PlayerController : MonoBehaviour
 
 		_spawnedEffect = StartCoroutine(SpawnedEffect());
 
+		canMove = true;
+
 		FadeEffect.Instance.FadeOut(() =>
 		{
 			//if (isDead)
 			//	CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, false);
-			canMove = true;
+			//canMove = true;
 
 			CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
 		});
@@ -308,6 +310,11 @@ public class PlayerController : MonoBehaviour
 
 		GameManager.Instance.OnPlayerReset(this);
 
+		CallAllProperties();
+	}
+
+	public void CallAllProperties()
+    {
 		foreach (var item in Player.GetType().GetProperties())
 		{
 			if (item.GetCustomAttributes(true).FirstOrDefault(element => element is CallAttribute) != default)
@@ -319,10 +326,6 @@ public class PlayerController : MonoBehaviour
 	#endregion
 }
 
-public class CallAttribute : Attribute
-{
-
-}
 
 [Serializable]
 public class Player
@@ -331,7 +334,7 @@ public class Player
 	public float _walkSpeed = 5f;
 	public float _jumpForce = 5.5f;
 	public float _gravity = -9.81f;
-	public float _playerPositionX = -999f, _playerPositionY = -999f;
+	public float _playerPositionX , _playerPositionY;
 
 	[Call]
 	public float health
@@ -436,4 +439,9 @@ public class Player
 			_playerPositionY = value;
 		}
 	}
+}
+
+public class CallAttribute : Attribute
+{
+
 }
