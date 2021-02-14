@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShootCooldown: 3
   AmmoSpeed: 5
-  _shootSound: {fileID: 0}
+  _shootSound: {fileID: 8300000, guid: 3f6a8d4c77b7ed145942c3fb42c306f9, type: 3}
   EnemyStruct:
     _isEnemy: 1
   _audioSource: {fileID: 1668347651229908023}
