@@ -48,17 +48,12 @@ public class MiniGame : MonoBehaviour
 
         if (timeRemaining > 0)
         {
-
             timeRemaining -= Time.deltaTime;
-
             TimerText.text = timeRemaining.ToString().Substring(0,5);
-
         }
         else
         {
-
             StartCoroutine(EndMiniGame());
-
         }
 
     }
@@ -68,20 +63,14 @@ public class MiniGame : MonoBehaviour
 
         for (int i = 0; i < ButtonCount; i++)
         {
-
             var go = Instantiate(ButtonPrefab, ButtonContainer);
-
             var button = go.GetComponent<Button>();
-
             Buttons.Add(button);
-
             int _i = i;
-
             button.onClick.AddListener(()=>
             {
                 onButtonClick(_i); 
             });
-
         }
 
         AnswerButtonIndex = Random.Range(0, Buttons.Count);
