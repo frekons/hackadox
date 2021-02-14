@@ -1124,6 +1124,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621688054090, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
+      propertyPath: Time
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832612621688054090, guid: 55ec8bb166dbbfc488078cd9264eef4e,
+        type: 3}
       propertyPath: OnEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 234530497}

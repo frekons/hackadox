@@ -2370,12 +2370,12 @@ PrefabInstance:
     - target: {fileID: 6832612621513731821, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621513731821, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621688054090, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
@@ -2400,17 +2400,17 @@ PrefabInstance:
     - target: {fileID: 6832612621805849790, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621805849790, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621805849790, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7486941989424610362, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
@@ -2526,6 +2526,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Timer-Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7486941989424610367, guid: 55ec8bb166dbbfc488078cd9264eef4e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55ec8bb166dbbfc488078cd9264eef4e, type: 3}
