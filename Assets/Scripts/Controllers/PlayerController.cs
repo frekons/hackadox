@@ -10,6 +10,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	#region COMPONENTS
+	[Header("Components")]
+	[SerializeField]
+	private CapsuleCollider2D _collider;
 	private CameraController _cameraController;
 	private Rigidbody2D _rigibody2d;
 	private Animator _animator;
@@ -79,7 +82,7 @@ public class PlayerController : MonoBehaviour
 		if (!canMove)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.Space) && !_cooldownManager.IsInCooldown("jump"))
+		if (Input.GetButtonDown("Jump") && CanPressJump())
 			_hasPressedJump = true;
 
 		if (Input.GetAxisRaw("Horizontal") < 0 && Input.GetAxisRaw("Horizontal") != 0)
@@ -121,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
 		Vector2 targetVelocity = new Vector2(horizontal * Player.walkSpeed, _rigibody2d.velocity.y);
 
-		if (CanJump())
+		if (CanJump() && _hasPressedJump)
 			Jump(ref targetVelocity);
 
 		_rigibody2d.velocity = targetVelocity;
@@ -150,7 +153,20 @@ public class PlayerController : MonoBehaviour
 	#region FUNCTIONS 
 	IEnumerator PlatformerReset(PlatformEffector2D platformEffector)
 	{
-		yield return new WaitForSeconds(0.5f);
+		const float DISTANCE_ERROR = 0.5f;
+
+		var waitForEndOfFrame = new WaitForEndOfFrame();
+
+		while (true)
+		{
+			float distance = Mathf.Abs(platformEffector.transform.position.y - transform.position.y);
+
+			if (distance > (_collider.size.y / (2.0f - DISTANCE_ERROR)))
+				break;
+
+			yield return waitForEndOfFrame;
+		}
+
 		platformEffector.rotationalOffset = 0;
 	}
 
@@ -211,16 +227,36 @@ public class PlayerController : MonoBehaviour
 		GameManager.Instance.OnPlayerJump();
 	}
 
+	public bool IsCloseToGround(float distance)
+	{
+		var sourcePoint = _collider.bounds.min;
+
+		sourcePoint.x = transform.position.x;
+
+		RaycastHit2D hit = Physics2D.Raycast(sourcePoint, Vector2.down, distance, TerrainLayer);
+
+		return hit.transform != null;
+	}
+
 	public bool IsGrounded()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.6f, TerrainLayer);
+		var sourcePoint = _collider.bounds.min;
 
-		return hit.transform != null ? true : false;
+		sourcePoint.x = transform.position.x;
+
+		RaycastHit2D hit = Physics2D.Raycast(sourcePoint, Vector2.down, 0.1f, TerrainLayer);
+
+		return hit.transform != null;
+	}
+
+	public bool CanPressJump()
+	{
+		return IsCloseToGround(0.25f) ? (!_cooldownManager.IsInCooldown("jump")) : false;
 	}
 
 	public bool CanJump()
 	{
-		return IsGrounded() ? (!_cooldownManager.IsInCooldown("jump")) && _hasPressedJump : false;
+		return IsGrounded() ? (!_cooldownManager.IsInCooldown("jump")) : false;
 	}
 
 	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
