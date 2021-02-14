@@ -27,7 +27,7 @@ public class TestVariableScript : MonoBehaviour
 
 	public void AddVariable()
 	{
-		ConsolePanel.instance.AddVariable("test", player, VisibleAttributesDict);
+		ConsolePanel.Instance.AddVariable("test", player, VisibleAttributesDict);
 	}
 
 	[System.Serializable]
@@ -36,7 +36,6 @@ public class TestVariableScript : MonoBehaviour
 		public int _health = 100;
 		public float _gravity = 800;
 
-		[Visible(true)]
 		public int health
 		{
 			get
@@ -52,7 +51,6 @@ public class TestVariableScript : MonoBehaviour
 			}
 		}
 
-		[Visible(true)]
 		public float gravity
 		{
 			get

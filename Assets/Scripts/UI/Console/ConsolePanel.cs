@@ -35,22 +35,19 @@ public class ConsolePanel : MonoBehaviour
 
 	private void Awake()
 	{
-		instance = this;
-
 		_consoleText.text = _defaultText;
 	}
 
 	private void OnEnable()
 	{
-		if (instance != null)
+		if (Instance != null)
 		{
 			Destroy(gameObject);
 			throw new System.Exception("More than one instance of singleton detected.");
 		}
 
-		instance = this;
+		Instance = this;
 	}
-
 
 	private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
@@ -194,8 +191,13 @@ public class ConsolePanel : MonoBehaviour
 
 	public void AddVariable(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
 	{
-		if (VariableList.Find(x => x._textMeshPro.text == variableName) != default) // if already exists
+		var existingCheck = VariableList.Find(x => x._textMeshPro.text == variableName);
+
+		if (existingCheck != default) // if already exists
+		{
+			existingCheck.Set(variableName, @object, visibleAttributesDict); // update
 			return;
+		}
 
 		var variablePrefab = Instantiate(_variablePrefab, _variablesTransform)
 							.GetComponent<VariablePrefab>();
@@ -209,5 +211,5 @@ public class ConsolePanel : MonoBehaviour
 
 	//
 
-	public static ConsolePanel instance;
+	public static ConsolePanel Instance;
 }

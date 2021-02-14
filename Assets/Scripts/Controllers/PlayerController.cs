@@ -1,7 +1,10 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
 	#region COMPONENTS
@@ -18,13 +21,13 @@ public class PlayerController : MonoBehaviour
 
 	#region PLAYER FIELDS
 	[Header("Player")]
-	public float health = 100f;
-	public float walkSpeed = 5f;
-	public float jumpForce = 5f;
 	public float jumpCooldown = 0.1f;
 	public bool canMove = true;
 	public bool isDead = false;
 
+	public List<VisibleAttributes> VisibleAttributesList = new List<VisibleAttributes>();
+	public Dictionary<string, bool> VisibleAttributesDict = new Dictionary<string, bool>();
+	public Player Player = new Player();
 
 	private bool _hasPressedJump;
 	private bool _facingLeft = false;
@@ -71,10 +74,27 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space) && !_cooldownManager.IsInCooldown("jump"))
 			_hasPressedJump = true;
 
-		if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)))
+		if (Input.GetAxisRaw("Horizontal") < 0 && Input.GetAxisRaw("Horizontal") != 0)
 			FacingLeft = true;
-		else if ((Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)))
+		else if (Input.GetAxisRaw("Horizontal") != 0)
 			FacingLeft = false;
+
+		if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0 && IsGrounded())
+		{
+
+			var hit = Physics2D.Raycast(transform.position, Vector2.down, 50f, (int)Mathf.Pow(2, 7));
+
+			if (hit)
+			{
+				PlatformEffector2D platformEffector = hit.transform.GetComponent<PlatformEffector2D>();
+
+				if (platformEffector)
+				{
+					platformEffector.rotationalOffset = 180;
+					StartCoroutine(PlatformerReset(platformEffector));
+				}
+			}
+		}
 
 		if (IsGrounded())
 			_animator.SetFloat("walkSpeed", Mathf.Abs(_rigibody2d.velocity.x) > 0 ? 2 : 0);
@@ -89,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
 		float horizontal = Input.GetAxis("Horizontal");
 
-		Vector2 targetVelocity = new Vector2(horizontal * walkSpeed, _rigibody2d.velocity.y);
+		Vector2 targetVelocity = new Vector2(horizontal * Player.walkSpeed, _rigibody2d.velocity.y);
 
 		if (CanJump())
 			Jump(ref targetVelocity);
@@ -118,6 +138,12 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region FUNCTIONS 
+	IEnumerator PlatformerReset(PlatformEffector2D platformEffector)
+	{
+		yield return new WaitForSeconds(0.5f);
+		platformEffector.rotationalOffset = 0;
+	}
+
 	void Spawn()
 	{
 		if (isDead)
@@ -125,10 +151,10 @@ public class PlayerController : MonoBehaviour
 			_animator.SetBool("isDead", false);
 			_animator.SetInteger("damageType", 0);
 			isDead = false;
-			health = 100f;
+			Player.health = 100f;
 		}
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		_rigibody2d.velocity = Vector2.zero;
 		_rigibody2d.angularVelocity = 0;
@@ -168,7 +194,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump(ref Vector2 targetVelocity)
 	{
-		targetVelocity.y += jumpForce;
+		targetVelocity.y = Player.jumpForce;
 		_hasPressedJump = false;
 		_cooldownManager.SetCooldown("jump", jumpCooldown);
 
@@ -192,12 +218,12 @@ public class PlayerController : MonoBehaviour
 		if (isDead || !canMove)
 			return;
 
-		health -= damage;
+		Player.health -= damage;
 
-		if (health <= 0)
+		if (Player.health <= 0)
 			KillPlayer(damageType);
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = health.ToString();
+		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		GameManager.Instance.OnPlayerTakeDamage(damage, damageType);
 	}
@@ -233,12 +259,109 @@ public class PlayerController : MonoBehaviour
 
 	public void ResetToDefaults()
 	{
-		health = 100f;
-		walkSpeed = 5f;
-		jumpForce = 5f;
-		jumpCooldown = 0.1f;
+		Player = new Player();
 
-		GameManager.Instance.OnPlayerReset();
+		GameManager.Instance.OnPlayerReset(this);
 	}
 	#endregion
+}
+
+[System.Serializable]
+public class Player
+{
+	private float _health = 100;
+	private float _walkSpeed = 5f;
+	private float _jumpForce = 5.5f;
+	private float _gravity = 800;
+	private float _playerPositionX, _playerPositionY;
+
+	public float health
+	{
+		get
+		{
+			return _health;
+		}
+
+		set
+		{
+			Debug.Log("set health called!");
+
+			_health = value;
+		}
+	}
+
+	public float gravity
+	{
+		get
+		{
+			return _gravity;
+		}
+
+		set
+		{
+			Debug.Log("set gravity called!");
+
+			_gravity = value;
+		}
+	}
+
+	public float walkSpeed
+	{
+		get
+		{
+			return _walkSpeed;
+		}
+
+		set
+		{
+			Debug.Log("set walk speed called!");
+
+			_walkSpeed = value;
+		}
+	}
+
+	public float jumpForce
+	{
+		get
+		{
+			return _jumpForce;
+		}
+
+		set
+		{
+			Debug.Log("set jump force called!");
+
+			_jumpForce = value;
+		}
+	}
+
+	public float posX
+	{
+		get
+		{
+			return _playerPositionX;
+		}
+
+		set
+		{
+			Debug.Log("set pos X called!");
+
+			_playerPositionX = value;
+		}
+	}
+
+	public float posY
+	{
+		get
+		{
+			return _playerPositionY;
+		}
+
+		set
+		{
+			Debug.Log("set pos Y called!");
+
+			_playerPositionY = value;
+		}
+	}
 }
