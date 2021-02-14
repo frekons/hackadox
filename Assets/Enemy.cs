@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float ShootCooldown = 3.0f, AmmoSpeed = 5.0f;
+
+    public EnemySt EnemyStruct = new EnemySt();
 
     [SerializeField]
     private GameObject _ammoPrefab;
@@ -28,7 +31,7 @@ public class Enemy : MonoBehaviour
 
         if (hit != default && hit.transform != default)
         {
-            if (hit.transform.gameObject.CompareTag("Player"))
+            if (EnemyStruct.isEnemy && hit.transform.gameObject.CompareTag("Player"))
             {
                 Shoot(hit);
 
@@ -102,4 +105,27 @@ public class Enemy : MonoBehaviour
 
         ammo.Shoot(_shootPosition.rotation * Vector2.right);
     }
+}
+
+[Serializable]
+public class EnemySt
+{
+	public bool _isEnemy = true;
+
+	[Call]
+	public bool isEnemy
+	{
+		get
+		{
+			return _isEnemy;
+		}
+
+		set
+		{
+			Debug.Log("set isEnemy called!");
+
+            _isEnemy = value;
+		}
+	}
+
 }

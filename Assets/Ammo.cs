@@ -23,6 +23,8 @@ public class Ammo : MonoBehaviour
             Instantiate(HitEffect, collision.contacts[0].point, Quaternion.identity);
         }
 
+        collision.collider.SendMessage("KillPlayer");
+
         Destroy(gameObject);
     }
 
