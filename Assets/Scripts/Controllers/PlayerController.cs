@@ -308,6 +308,11 @@ public class PlayerController : MonoBehaviour
 
 		GameManager.Instance.OnPlayerReset(this);
 
+		CallAllProperties();
+	}
+
+	public void CallAllProperties()
+    {
 		foreach (var item in Player.GetType().GetProperties())
 		{
 			if (item.GetCustomAttributes(true).FirstOrDefault(element => element is CallAttribute) != default)
@@ -319,10 +324,6 @@ public class PlayerController : MonoBehaviour
 	#endregion
 }
 
-public class CallAttribute : Attribute
-{
-
-}
 
 [Serializable]
 public class Player
@@ -436,4 +437,9 @@ public class Player
 			_playerPositionY = value;
 		}
 	}
+}
+
+public class CallAttribute : Attribute
+{
+
 }
