@@ -64,9 +64,13 @@ public class MiniGame : MonoBehaviour
         for (int i = 0; i < ButtonCount; i++)
         {
             var go = Instantiate(ButtonPrefab, ButtonContainer);
+
             var button = go.GetComponent<Button>();
+
             Buttons.Add(button);
+
             int _i = i;
+
             button.onClick.AddListener(()=>
             {
                 onButtonClick(_i); 
