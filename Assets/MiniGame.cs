@@ -1,129 +1,228 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MiniGame : MonoBehaviour
 {
 
+    public int ButtonCount = 21;
+
+    public int MaxWinCount = 3;
+
+    public float timeRemaining = 20f;
 
 
-    int RSelect;
+    int AnswerButtonIndex = 0;
 
-    bool flag = false;
+    int WinCounter = 0;
 
-    bool isClicked = false;
 
-    int rNum = Random.Range(100, 999);
+    private UnityAction WinMG;
 
-    private float lastClick = 0;
+    private UnityAction LoseMG;
 
-    int WinTime = 0;
 
-    private void Start()
+    [SerializeField]
+    private Animator anim;
+
+
+    [SerializeField]
+    private List<Button> Buttons;
+
+    [SerializeField]
+    private TMPro.TextMeshProUGUI TimerText;
+
+    [SerializeField]
+    private GameObject ButtonPrefab;
+
+    [SerializeField]
+    private Transform ButtonContainer;
+
+    [SerializeField]
+    private TMPro.TextMeshProUGUI WinCounterText;
+
+    public void Update()
     {
-        Init();
-    }
 
+        if (timeRemaining > 0)
+        {
+
+            timeRemaining -= Time.deltaTime;
+
+            TimerText.text = timeRemaining.ToString().Substring(0,5);
+
+        }
+        else
+        {
+
+            StartCoroutine(EndMiniGame());
+
+        }
+
+    }
 
     void Init()
     {
-        RSelect = Random.Range(1, 22);
+
+        for (int i = 0; i < ButtonCount; i++)
+        {
+
+            var go = Instantiate(ButtonPrefab, ButtonContainer);
+
+            var button = go.GetComponent<Button>();
+
+            Buttons.Add(button);
+
+            int _i = i;
+
+            button.onClick.AddListener(()=>
+            {
+                onButtonClick(_i); 
+            });
+
+        }
+
+        AnswerButtonIndex = Random.Range(0, Buttons.Count);
+
+        RandomizerCaller();
+
     }
 
-    void Update()
+    public static void CreateMinigame(int buttonCount, float second, UnityAction onWin, UnityAction onLose)
     {
-        Debug.Log(RSelect);
-        for (int i = 1; i < 22; i++)
-        {
 
+        var minigame = Resources.Load<GameObject>("Prefabs/Minigame-Panel");
 
-            if (i >= 1 && i <= 7)
-            {
-                if (RSelect == i && flag == true) continue;
+        MiniGame _minigame = minigame.GetComponent<MiniGame>();
 
-                rNum = Random.Range(100, 999);
-                GameObject.Find("Buttons").transform.Find("ButtonsA").transform.Find(i.ToString()).transform.Find("Text").GetComponent<Text>().text = rNum.ToString();
-            }
+        _minigame.ButtonCount = buttonCount;
 
-            if (i >= 8 && i <= 14)
-            {
-                if (RSelect == i && flag == true) continue;
+        _minigame.timeRemaining = second;
 
-                rNum = Random.Range(100, 999);
-                GameObject.Find("Buttons").transform.Find("ButtonsB").transform.Find(i.ToString()).transform.Find("Text").GetComponent<Text>().text = rNum.ToString();
-            }
+        _minigame.Init();
 
-            if (i >= 15 && i <= 23)
-            {
-                if (RSelect == i && flag == true) continue;
+        _minigame.anim.SetBool("onStart", true);
 
-                rNum = Random.Range(100, 999);
-                GameObject.Find("Buttons").transform.Find("ButtonsC").transform.Find(i.ToString()).transform.Find("Text").GetComponent<Text>().text = rNum.ToString();
-            }
+        _minigame.WinMG = onWin;
 
-            if (i == 21) flag = true;
-
-        }
-
-        
-        if (RSelect >= 1 && RSelect <= 7 && isClicked == false)
-        {
-            if (lastClick > (Time.time - 1f)) return;
-            lastClick = Time.time;
-            Button answer = GameObject.Find("Buttons").transform.Find("ButtonsA").transform.Find(RSelect.ToString()).GetComponent<Button>();
-            answer.onClick.AddListener(Win);
-        }
-
-        if (RSelect >= 8 && RSelect <= 14 && isClicked == false)
-        {
-            if (lastClick > (Time.time - 1f)) return;
-            lastClick = Time.time;
-            Button answer = GameObject.Find("Buttons").transform.Find("ButtonsB").transform.Find(RSelect.ToString()).GetComponent<Button>();
-            answer.onClick.AddListener(Win);
-        }
-
-        if (RSelect >= 15 && RSelect <= 23 && isClicked == false)
-        {
-            if (lastClick > (Time.time - 1f)) return;
-            lastClick = Time.time;
-            Button answer = GameObject.Find("Buttons").transform.Find("ButtonsC").transform.Find(RSelect.ToString()).GetComponent<Button>();
-            answer.onClick.AddListener(Win);
-        }
-
-        isClicked = false;
+        _minigame.LoseMG = onLose;
+ 
     }
 
-    void Win()
+    public void WinMiniGame()
     {
 
-        isClicked = true;
+        WinMG();
 
-        WinTime++;
-        
-        if(WinTime < 3)
+        StartCoroutine(EndMiniGame());
+
+    }
+
+    public void LoseMiniGame()
+    {
+
+        LoseMG();
+
+        StartCoroutine(EndMiniGame());
+
+    }
+
+    public void onButtonClick(int i)
+    {
+
+        Debug.Log(AnswerButtonIndex+1);
+
+        if (i == AnswerButtonIndex)
         {
+            WinCounter++;
 
-            Debug.Log("You chose the correct button!");
+            WinCounterText.text = WinCounter + "/" + MaxWinCount;
 
-            GameObject.Find("Counter").transform.GetComponent<TMPro.TextMeshProUGUI>().text = WinTime + "/3";
+            Debug.Log("Turret MiniGame: Correct button!");
 
+            DestroyAllButtons();
+
+            if (WinCounter >= MaxWinCount)
+            {
+                StartCoroutine(EndMiniGame());
+            }
+                 
             Init();
-
         }
-        else EndMG();
 
     }
 
-    void EndMG()
+    IEnumerator EndMiniGame()
     {
-        //laser disabled
 
-        WinTime = 0;
+        anim.SetBool("onStart", false);
+
+        anim.SetBool("onEnd", true);
+
+        WinCounter = 0;
+
+        yield return new WaitForSeconds(0.3f);
 
         gameObject.SetActive(false);
+
     }
+
+    public void DestroyAllButtons()
+    {
+        for (int i = Buttons.Count-1; i >= 0; i--)
+        {
+            Destroy(Buttons[i].gameObject);
+        }
+
+        Buttons.Clear();
+    }
+
+    void RandomizerCaller()
+    {
+
+        Buttons[AnswerButtonIndex].GetComponentInChildren<TMPro.TextMeshProUGUI>().text = Random.Range(100, 999).ToString();
+
+        for (int i = 0; i < Buttons.Count; i++)
+        {
+
+            if (AnswerButtonIndex == i) continue;
+
+            StartCoroutine(ButtonRandomizer(Buttons[i].transform.Find("Text").GetComponent<TMPro.TextMeshProUGUI>()));
+
+        }
+        
+
+    }
+
+
+    IEnumerator ButtonRandomizer(TMPro.TextMeshProUGUI texts)
+    {
+
+        var waitForSec = new WaitForSeconds(0.5f);
+
+        while (WinCounter < MaxWinCount && texts != null)
+        {
+
+            int rNum = Random.Range(100, 999);
+
+            texts.text = rNum.ToString();
+
+            yield return waitForSec;
+
+        }
+
+
+    }
+
+
+}
+
 
     
 
-    }
+ 
+    
+
+    
