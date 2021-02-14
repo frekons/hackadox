@@ -113,6 +113,8 @@ public class MenuManager : MonoBehaviour
 		if (_isClickedPlay)
 			return;
 
+		FadeEffect.Instance.FadeIn();
+
 		_isClickedPlay = true;
 
 		StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>

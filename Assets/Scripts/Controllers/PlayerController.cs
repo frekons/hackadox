@@ -269,7 +269,10 @@ public class PlayerController : MonoBehaviour
 		Player.health -= damage;
 
 		if (Player.health <= 0)
+		{
+			Player.health = 0;
 			KillPlayer(damageType);
+		}
 
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
@@ -314,7 +317,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 	public void CallAllProperties()
-    {
+	{
 		foreach (var item in Player.GetType().GetProperties())
 		{
 			if (item.GetCustomAttributes(true).FirstOrDefault(element => element is CallAttribute) != default)
@@ -334,7 +337,7 @@ public class Player
 	public float _walkSpeed = 5f;
 	public float _jumpForce = 5.5f;
 	public float _gravity = -9.81f;
-	public float _playerPositionX , _playerPositionY;
+	public float _playerPositionX, _playerPositionY;
 
 	[Call]
 	public float health
