@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
 		if (!canMove)
 			return;
 
-		if (Input.GetButtonDown("Jump") && CanJump())
+		if (Input.GetButtonDown("Jump") && CanPressJump())
 			_hasPressedJump = true;
 
 		if (Input.GetAxisRaw("Horizontal") < 0 && Input.GetAxisRaw("Horizontal") != 0)
@@ -227,6 +227,17 @@ public class PlayerController : MonoBehaviour
 		GameManager.Instance.OnPlayerJump();
 	}
 
+	public bool IsCloseToGround(float distance)
+	{
+		var sourcePoint = _collider.bounds.min;
+
+		sourcePoint.x = transform.position.x;
+
+		RaycastHit2D hit = Physics2D.Raycast(sourcePoint, Vector2.down, distance, TerrainLayer);
+
+		return hit.transform != null;
+	}
+
 	public bool IsGrounded()
 	{
 		var sourcePoint = _collider.bounds.min;
@@ -236,6 +247,11 @@ public class PlayerController : MonoBehaviour
 		RaycastHit2D hit = Physics2D.Raycast(sourcePoint, Vector2.down, 0.1f, TerrainLayer);
 
 		return hit.transform != null;
+	}
+
+	public bool CanPressJump()
+	{
+		return IsCloseToGround(0.25f) ? (!_cooldownManager.IsInCooldown("jump")) : false;
 	}
 
 	public bool CanJump()
