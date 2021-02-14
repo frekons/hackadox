@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,11 +19,27 @@ public class GameManager : MonoBehaviour
 		}
 
 		Instance = this;
+
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+		if (Functions.Instance)
+        {
+			Functions.Instance.GameManager = this;
+		}
 	}
 
 	public void ResetGame()
 	{
-		GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().ResetToDefaults();
+		//var playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+		//playerController.ResetToDefaults();
+
+		//playerController.Spawn();
+
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
 	#region PLAYER EVENTS

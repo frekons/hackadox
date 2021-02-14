@@ -6,6 +6,15 @@ public class CanvasObject : MonoBehaviour
 
 	private void Awake()
 	{
-		CanvasManager.CanvasList.Add(canvasName, GetComponent<Canvas>());
+		var canvas = GetComponent<Canvas>();
+
+		if (!CanvasManager.CanvasList.ContainsKey(canvasName))
+		{
+			CanvasManager.CanvasList.Add(canvasName, canvas);
+		}
+		else
+		{
+			CanvasManager.CanvasList[canvasName] = canvas;
+		}
 	}
 }

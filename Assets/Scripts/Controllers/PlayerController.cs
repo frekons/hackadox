@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
 		platformEffector.rotationalOffset = 0;
 	}
 
-	void Spawn()
+	public void Spawn()
 	{
 		if (isDead)
 		{
@@ -193,11 +193,13 @@ public class PlayerController : MonoBehaviour
 
 		_spawnedEffect = StartCoroutine(SpawnedEffect());
 
+		canMove = true;
+
 		FadeEffect.Instance.FadeOut(() =>
 		{
 			//if (isDead)
 			//	CanvasManager.instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, false);
-			canMove = true;
+			//canMove = true;
 
 			CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, true);
 		});
