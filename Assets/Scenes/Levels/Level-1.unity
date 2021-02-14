@@ -573,8 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efeda130a1a20474f96ac8a081494a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 0, y: 0, z: 0}
-  followSpeed: 3
+  CameraOffset: {x: -1, y: 0, z: 0}
+  _followSpeed: 1
 --- !u!81 &414534040
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1284,24 +1284,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 163539788, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 9c936cd1b2c094142814e0384b99d574, type: 2}
-    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
-      propertyPath: terrainLayer.m_Bits
-      value: 136
-      objectReference: {fileID: 0}
-    - target: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.93432474
-      objectReference: {fileID: 0}
-    - target: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: 0.012837648
-      objectReference: {fileID: 0}
     - target: {fileID: 3323194692057797558, guid: 74f27bdd9da20814791ac1f62d2acf30,
         type: 3}
       propertyPath: m_Name
