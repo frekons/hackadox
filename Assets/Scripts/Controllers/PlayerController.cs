@@ -9,14 +9,27 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-	#region COMPONENTS
-	[Header("Components")]
+	#region SOUNDS
+	public AudioClip JumpSound, DieSound;
+    #endregion
+
+    #region COMPONENTS
+    [Header("Components")]
+
+	[SerializeField]
+	private AudioSource _audioSource;
+
 	[SerializeField]
 	private CapsuleCollider2D _collider;
+
 	private CameraController _cameraController;
+
 	private Rigidbody2D _rigibody2d;
+
 	private Animator _animator;
+
 	private SpriteRenderer _sprite;
+
 	private CooldownManager _cooldownManager = new CooldownManager();
 	#endregion
 
@@ -222,6 +235,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Jump(ref Vector2 targetVelocity)
 	{
+		_audioSource.PlayOneShot(JumpSound);
+
 		targetVelocity.y = Player.jumpForce;
 		_hasPressedJump = false;
 		_cooldownManager.SetCooldown("jump", jumpCooldown);
@@ -278,8 +293,10 @@ public class PlayerController : MonoBehaviour
 
 	public void KillPlayer(GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
-		if (isDead || !canMove)
+		if (isDead/* || !canMove*/)
 			return;
+
+		_audioSource.PlayOneShot(DieSound);
 
 		Debug.Log("Player has dead.");
 
