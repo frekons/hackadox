@@ -27,7 +27,7 @@ public class TestVariableScript : MonoBehaviour
 
 	public void AddVariable()
 	{
-		ConsolePanel.Instance.AddVariable("test", player, VisibleAttributesDict);
+		ConsolePanel.Instance.AddVariable("player", GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().Player, GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().VisibleAttributesDict);
 	}
 
 	[System.Serializable]
