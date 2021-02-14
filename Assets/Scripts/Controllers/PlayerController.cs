@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -13,7 +15,6 @@ public class PlayerController : MonoBehaviour
 	private Animator _animator;
 	private SpriteRenderer _sprite;
 	private CooldownManager _cooldownManager = new CooldownManager();
-	private Coroutine _spawnedEffect;
 	#endregion
 
 	[Header("Ground Layer Mask")]
@@ -29,6 +30,8 @@ public class PlayerController : MonoBehaviour
 	public Dictionary<string, bool> VisibleAttributesDict = new Dictionary<string, bool>();
 	public Player Player = new Player();
 
+	private Coroutine _platformerReset;
+	private Coroutine _spawnedEffect;
 	private bool _hasPressedJump;
 	private bool _facingLeft = false;
 	public bool FacingLeft
@@ -54,6 +57,11 @@ public class PlayerController : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_sprite = GetComponent<SpriteRenderer>();
 		_cameraController = Camera.main.GetComponent<CameraController>();
+
+		foreach (var attr in VisibleAttributesList)
+		{
+			VisibleAttributesDict.Add(attr.Name, attr.IsVisible);
+		}
 
 		Spawn();
 	}
@@ -81,7 +89,6 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0 && IsGrounded())
 		{
-
 			var hit = Physics2D.Raycast(transform.position, Vector2.down, 50f, (int)Mathf.Pow(2, 7));
 
 			if (hit)
@@ -91,7 +98,10 @@ public class PlayerController : MonoBehaviour
 				if (platformEffector)
 				{
 					platformEffector.rotationalOffset = 180;
-					StartCoroutine(PlatformerReset(platformEffector));
+
+					if (_platformerReset != null)
+						StopCoroutine(_platformerReset);
+					_platformerReset = StartCoroutine(PlatformerReset(platformEffector));
 				}
 			}
 		}
@@ -244,7 +254,6 @@ public class PlayerController : MonoBehaviour
 		_animator.SetFloat("walkSpeed", 0);
 		_animator.SetBool("isJumping", false);
 		_animator.SetBool("isDead", true);
-
 		_animator.SetInteger("damageType", (int)damageType);
 
 		ResetToDefaults();
@@ -262,19 +271,33 @@ public class PlayerController : MonoBehaviour
 		Player = new Player();
 
 		GameManager.Instance.OnPlayerReset(this);
+
+		foreach (var item in Player.GetType().GetProperties())
+		{
+			if (item.GetCustomAttributes(true).FirstOrDefault(element => element is CallAttribute) != default)
+			{
+				item.SetValue(Player, item.GetValue(Player));
+			}
+		}
 	}
 	#endregion
 }
 
-[System.Serializable]
+public class CallAttribute : Attribute
+{
+
+}
+
+[Serializable]
 public class Player
 {
-	private float _health = 100;
-	private float _walkSpeed = 5f;
-	private float _jumpForce = 5.5f;
-	private float _gravity = 800;
-	private float _playerPositionX, _playerPositionY;
+	public float _health = 100f;
+	public float _walkSpeed = 5f;
+	public float _jumpForce = 5.5f;
+	public float _gravity = -9.81f;
+	public float _playerPositionX = -999f, _playerPositionY = -999f;
 
+	[Call]
 	public float health
 	{
 		get
@@ -290,21 +313,7 @@ public class Player
 		}
 	}
 
-	public float gravity
-	{
-		get
-		{
-			return _gravity;
-		}
-
-		set
-		{
-			Debug.Log("set gravity called!");
-
-			_gravity = value;
-		}
-	}
-
+	[Call]
 	public float walkSpeed
 	{
 		get
@@ -320,6 +329,7 @@ public class Player
 		}
 	}
 
+	[Call]
 	public float jumpForce
 	{
 		get
@@ -335,6 +345,24 @@ public class Player
 		}
 	}
 
+	[Call]
+	public float gravity
+	{
+		get
+		{
+			return _gravity;
+		}
+
+		set
+		{
+			Debug.Log("set gravity called!");
+
+			Physics2D.gravity = new Vector2(0, value);
+
+			_gravity = value;
+		}
+	}
+
 	public float posX
 	{
 		get
@@ -345,6 +373,10 @@ public class Player
 		set
 		{
 			Debug.Log("set pos X called!");
+
+			Vector2 playerPos = GameObject.FindWithTag("Player").transform.position;
+			playerPos.x = value;
+			GameObject.FindWithTag("Player").transform.position = playerPos;
 
 			_playerPositionX = value;
 		}
@@ -360,6 +392,10 @@ public class Player
 		set
 		{
 			Debug.Log("set pos Y called!");
+
+			Vector2 playerPos = GameObject.FindWithTag("Player").transform.position;
+			playerPos.y = value;
+			GameObject.FindWithTag("Player").transform.position = playerPos;
 
 			_playerPositionY = value;
 		}
