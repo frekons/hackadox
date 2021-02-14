@@ -105,6 +105,7 @@ public class Timer : MonoBehaviour
 		Instance.StartCoroutine(Instance.timerNumerator);
 	}
 
+
 	public static void Pause()
     {
 		Instance._pause = true;

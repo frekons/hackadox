@@ -193,6 +193,8 @@ public class PlayerController : MonoBehaviour
 			Player.health = 100f;
 		}
 
+		Timer.SetTimer(Timer.Instance.Time); // restart timer
+
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		_rigibody2d.velocity = Vector2.zero;
@@ -300,7 +302,7 @@ public class PlayerController : MonoBehaviour
 
 		Debug.Log("Player has dead.");
 
-		CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, false);
+		//CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.GameScreen, false);
 		CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, true);
 
 		isDead = true;

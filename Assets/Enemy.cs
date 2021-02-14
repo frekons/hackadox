@@ -7,7 +7,14 @@ public class Enemy : MonoBehaviour
 {
     public float ShootCooldown = 3.0f, AmmoSpeed = 5.0f;
 
+    [Header("Objects")]
+    [SerializeField]
+    private AudioClip _shootSound;
+
     public EnemySt EnemyStruct = new EnemySt();
+
+    [SerializeField]
+    private AudioSource _audioSource;
 
     [SerializeField]
     private GameObject _ammoPrefab;
@@ -96,6 +103,8 @@ public class Enemy : MonoBehaviour
         _animator.SetTrigger("Shoot");
 
         StartCoroutine(ShootEffect());
+
+        _audioSource.PlayOneShot(_shootSound);
     }
 
     public void ShootTrigger()

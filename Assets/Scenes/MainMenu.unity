@@ -386,7 +386,7 @@ MonoBehaviour:
   - {fileID: 772845093}
   - {fileID: 622120857}
   _audioMixer: {fileID: 24100000, guid: e27f11e9fce118a4f9e3fe3bc3fcafa4, type: 2}
-  audioButtonSprites:
+  _audioButtonSprites:
   - {fileID: 4800741761136664645, guid: 8580ce01146164546828f836696430da, type: 3}
   - {fileID: -6037983004969425167, guid: 8580ce01146164546828f836696430da, type: 3}
 --- !u!114 &145387622
