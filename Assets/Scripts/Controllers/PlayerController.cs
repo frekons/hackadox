@@ -193,7 +193,8 @@ public class PlayerController : MonoBehaviour
 			Player.health = 100f;
 		}
 
-		Timer.SetTimer(Timer.Instance.Time); // restart timer
+		if (Timer.Instance)
+			Timer.SetTimer(Timer.Instance.Time); // restart timer
 
 		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 

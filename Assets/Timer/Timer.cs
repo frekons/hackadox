@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
 {
 	[Header("Properties")]
 	public bool Active = false;
+
 	public float Time = 5;
 
 	[Header("Events")]
@@ -15,6 +16,9 @@ public class Timer : MonoBehaviour
 	[Header("Objects")]
 	[SerializeField]
 	private Slider _progressSlider;
+
+	[SerializeField]
+	private TMPro.TextMeshProUGUI _textMeshPro;
 
 	[SerializeField]
 	private GameObject _timeIsUpPrefab;
@@ -71,6 +75,8 @@ public class Timer : MonoBehaviour
 				currentTime -= UnityEngine.Time.deltaTime;
 
 				value = currentTime / seconds;
+
+				_textMeshPro.text = ((int)currentTime).ToString();
 
 				if (onProgress != null)
 					onProgress.Invoke(value);

@@ -60,7 +60,9 @@ public class MenuManager : MonoBehaviour
 
 	private void Start()
 	{
-		var eventSystem = EventSystem.current;
+		AudioMixer = _audioMixer;
+
+		//var eventSystem = EventSystem.current;
 
 		//eventSystem.SetSelectedGameObject(_buttons[0].gameObject);
 	}
@@ -120,6 +122,9 @@ public class MenuManager : MonoBehaviour
 		StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
 		{
 			SceneManager.LoadScene(1);
+
+			_audioMixer.SetFloat("MainVolume", 1.0f);
+
 		}));
 	}
 
@@ -142,4 +147,6 @@ public class MenuManager : MonoBehaviour
 	//
 
 	public static MenuManager Instance;
+
+	public static AudioMixer AudioMixer;
 }

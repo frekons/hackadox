@@ -18,7 +18,7 @@ public class ScenePickerEditor : Editor
 		if (EditorGUI.EndChangeCheck())
 		{
 			var newPath = AssetDatabase.GetAssetPath(newScene);
-			var scenePathProperty = serializedObject.FindProperty("scenePath");
+			var scenePathProperty = serializedObject.FindProperty("ScenePath");
 			scenePathProperty.stringValue = newPath;
 		}
 		serializedObject.ApplyModifiedProperties();
