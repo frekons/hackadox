@@ -741,8 +741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efeda130a1a20474f96ac8a081494a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 0, y: 0, z: 0}
-  followSpeed: 3
+  CameraOffset: {x: 0, y: 0, z: 0}
+  _followSpeed: 1
 --- !u!114 &543302211
 MonoBehaviour:
   m_ObjectHideFlags: 0
