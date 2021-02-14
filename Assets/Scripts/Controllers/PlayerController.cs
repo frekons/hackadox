@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
 	public void OnPlayerFacingDirectionChange(bool facingLeft)
 	{
 		_sprite.flipX = facingLeft;
-		_cameraController.CameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
+		//_cameraController.CameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
 
 		GameManager.Instance.OnPlayerFacingDirectionChange(facingLeft);
 	}
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
 
 		canMove = false;
 		_animator.SetFloat("walkSpeed", 0);
-		_animator.SetBool("isJumping", false);
+		_animator.SetBool("isJumped", false);
 	}
 	#endregion
 
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
 		if (Timer.Instance)
 			Timer.SetTimer(Timer.Instance.Time); // restart timer
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
+		//GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		_rigibody2d.velocity = Vector2.zero;
 		_rigibody2d.angularVelocity = 0;
@@ -292,7 +292,7 @@ public class PlayerController : MonoBehaviour
 			KillPlayer(damageType);
 		}
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
+		//GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		GameManager.Instance.OnPlayerTakeDamage(damage, damageType);
 	}

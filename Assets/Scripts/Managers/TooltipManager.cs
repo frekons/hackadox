@@ -26,12 +26,17 @@ public class TooltipManager : MonoBehaviour
 		}
 	}
 
-	private void Start()
-	{
+    //private void Start()
+    //{
+    //	_mainCamera = Camera.main;
+    //}
+
+    private void OnLevelWasLoaded(int level)
+    {
 		_mainCamera = Camera.main;
 	}
 
-	private void OnEnable()
+    private void OnEnable()
 	{
 		if (Instance != null)
 		{

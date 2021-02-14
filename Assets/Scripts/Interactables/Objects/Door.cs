@@ -12,6 +12,8 @@ public class Door : Interactable
 	{
 		if (collider.CompareTag("Player"))
 		{
+			Timer.Pause();
+
 			Debug.Log("Player entered the exit door.");
 
 			PlayerController player = collider.GetComponent<PlayerController>();
@@ -30,12 +32,15 @@ public class Door : Interactable
 							Debug.Log("Loading '" + ScenePath + "' named scene.");
 
 							SceneManager.LoadScene(ScenePath);
+
+							Timer.Resume();
 						});
 					}
 			}
 			else
+            {
 				Debug.LogError("No scene selected for the door.");
-
+			}
 		}
 	}
 

@@ -119,12 +119,11 @@ public class MenuManager : MonoBehaviour
 
 		_isClickedPlay = true;
 
-		StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
+		CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
 		{
 			SceneManager.LoadScene(1);
 
-			_audioMixer.SetFloat("MainVolume", 1.0f);
-
+			CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 1f));
 		}));
 	}
 
