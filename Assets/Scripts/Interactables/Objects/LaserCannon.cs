@@ -14,14 +14,14 @@ public class LaserCannon : HarmfulObject
 
 			hit.transform.SendMessage("KillPlayer", GameManager.DamageTypes.Laser, SendMessageOptions.DontRequireReceiver);
 
-			if (hit.transform.CompareTag("Player"))
-			{
-				Rigidbody2D playerRigidbody = hit.transform.GetComponent<Rigidbody2D>();
-				Vector2 vel = Vector2.right * 5;
+			//if (hit.transform.CompareTag("Player"))
+			//{
+			//	Rigidbody2D playerRigidbody = hit.transform.GetComponent<Rigidbody2D>();
+			//	Vector2 vel = (transform.localScale.x > 0 ? Vector2.right : Vector2.left) * 5;
 
-				vel.y = playerRigidbody.velocity.y;
-				playerRigidbody.velocity = vel;
-			}
+			//	vel.y = playerRigidbody.velocity.y;
+			//	playerRigidbody.velocity = vel;
+			//}
 		}
 		else
 		{
