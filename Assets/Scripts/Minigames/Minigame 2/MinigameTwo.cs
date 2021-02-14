@@ -1,37 +1,92 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class MinigameTwo : MonoBehaviour
 {
 	[SerializeField]
-	private GameObject _movingObject;
+	private RectTransform _movingObject;
+	[SerializeField]
+	private RectTransform _minigameWindow;
+
+	private CooldownManager cooldownManager = new CooldownManager();
 
 	[SerializeField]
-	private float _movingObjectSpeed = 5f;
+	private RectTransform _counterTransform;
+	[SerializeField]
+	private TextMeshProUGUI _counterText;
 
-	private Resolution resolution;
+	[SerializeField]
+	private float _movingObjectSpeed = 10f;
+
+	private bool _isStarted;
 
 	private void Start()
 	{
-		resolution = Screen.currentResolution;
-
-		_movingObject.transform.position = new Vector3(0, resolution.height / 2, 0);
+		ResetPosition();
+		StartGame();
 	}
 
-	void Update()
+	public void StartGame()
 	{
-		resolution = Screen.currentResolution;
+		ResetPosition();
+		cooldownManager.SetCooldown("minigame2", 3f);
+	}
+
+	private void ResetPosition()
+	{
+		Vector3 newObjectPosition = Vector3.zero;
+
+		Rect windowRect = RectTransformExt.GetWorldRect(_minigameWindow, new Vector2(1, 1));
+
+		newObjectPosition.x = windowRect.x;
+		newObjectPosition.x -= -(windowRect.width / 2) + windowRect.width / 2;
+		newObjectPosition.x -= (windowRect.width / 2);
+
+		newObjectPosition.y = windowRect.height + windowRect.y;
+		newObjectPosition.y -= windowRect.height / 2;
+
+		_movingObject.transform.position = newObjectPosition;
+	}
+
+	private bool isPassedWindow(ref Vector3 newObjectPosition)
+	{
+		Rect windowRect = RectTransformExt.GetWorldRect(_minigameWindow, new Vector2(1, 1));
+
+		return newObjectPosition.x - windowRect.x - _movingObject.rect.width / 2 > windowRect.width;
+	}
+
+	private bool isPassedLine(ref Vector3 newObjectPosition)
+	{
+		Rect windowRect = RectTransformExt.GetWorldRect(_minigameWindow, new Vector2(1, 1));
+
+		return newObjectPosition.x - windowRect.x - _movingObject.rect.width / 2 > windowRect.width;
+	}
+
+	private void Update()
+	{
+		_counterText.text = (Mathf.Floor(cooldownManager.GetCooldown("minigame2"))).ToString() + " " + (cooldownManager.IsInCooldown("minigame2"));
+
+		if (!_isStarted)
+		{
+			return;
+		}
+		//_isStarted = true;
 
 		Vector3 newObjectPosition = _movingObject.transform.position;
 
-		if (newObjectPosition.x - (_movingObject.GetComponent<RectTransform>().rect.width / 2) > resolution.width)
+		if (isPassedWindow(ref newObjectPosition))
 		{
-			newObjectPosition.x = -(resolution.width / 2) + resolution.width / 2;
-			newObjectPosition.x -= (_movingObject.GetComponent<RectTransform>().rect.width / 2);
-
-			_movingObject.transform.position = newObjectPosition;
+			ResetPosition();
 			return;
 		}
 
-		_movingObject.transform.position = Vector3.Lerp(_movingObject.transform.position, newObjectPosition + new Vector3(_movingObjectSpeed, 0, 0), Time.deltaTime * 1);
+		if (isPassedLine(ref newObjectPosition))
+		{
+			Debug.Log("geçti");
+		}
+
+		newObjectPosition.x += 30;
+
+		_movingObject.transform.position = Vector3.Lerp(_movingObject.transform.position, newObjectPosition, Time.deltaTime * 20);
 	}
 }
