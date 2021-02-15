@@ -66,6 +66,10 @@ public class Timer : MonoBehaviour
 
 		float value = 1.0f;
 
+		_progressSlider.value = value;
+
+		_textMeshPro.text = (currentTime).ToString("0.#");
+
 		while (value >= 0)
 		{
 			if (!_pause)

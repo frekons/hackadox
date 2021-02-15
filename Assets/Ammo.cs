@@ -18,12 +18,15 @@ public class Ammo : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!collision.collider.CompareTag("Player"))
+            return;
+
         if (HitEffect)
         {
             Instantiate(HitEffect, collision.contacts[0].point, Quaternion.identity);
         }
 
-        collision.collider.SendMessage("KillPlayer");
+        collision.collider.SendMessage("KillPlayer", GameManager.DamageTypes.Weapon);
 
         Destroy(gameObject);
     }

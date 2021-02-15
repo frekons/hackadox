@@ -9,7 +9,7 @@ public class KillZone : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.SendMessage("KillPlayer");
+            collision.SendMessage("KillPlayer", GameManager.DamageTypes.Suicide);
         }
     }
 }

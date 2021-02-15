@@ -51,7 +51,7 @@ public class VariablePrefab : MonoBehaviour
 
 			foreach (var field in _object.GetType().GetProperties())
 			{
-				if (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name])
+				if (VisibleAttributesDict == null || (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name]))
 				{
 					dropdown.options.Add(new TMP_Dropdown.OptionData(field.Name /*+ ": " + field.GetValue(_object)*/));
 				}
