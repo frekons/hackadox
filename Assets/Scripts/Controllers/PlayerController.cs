@@ -214,7 +214,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 		PlaySpawnEffect(new Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-		canMove = true;
+		StartCoroutine(SetCanMove(true, 0.25f));
 
 		FadeEffect.Instance.FadeOut(() =>
 		{
@@ -229,6 +229,13 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 		Debug.Log("Player has spawned.");
 	}
+
+	IEnumerator SetCanMove(bool canMove, float afterSecond)
+    {
+		yield return new WaitForSeconds(afterSecond);
+
+		this.canMove = canMove;
+    }
 
 	public void PlaySpawnEffect(Color color, int count = 5, float waitTime = 0.2f)
     {
