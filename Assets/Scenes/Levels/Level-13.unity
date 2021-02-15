@@ -2984,7 +2984,7 @@ PrefabInstance:
     - target: {fileID: 8720111170500183182, guid: 322a88a436428b44b99d1e34421084ea,
         type: 3}
       propertyPath: ScenePath
-      value: Assets/Scenes/Levels/Level-10.unity
+      value: Assets/Scenes/Ending.unity
       objectReference: {fileID: 0}
     - target: {fileID: 8720111170500183182, guid: 322a88a436428b44b99d1e34421084ea,
         type: 3}
@@ -3270,11 +3270,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
       propertyPath: VisibleAttributesList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
       propertyPath: VisibleAttributesList.Array.data[0].Name
-      value: posX
+      value: jumpForce
       objectReference: {fileID: 0}
     - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
       propertyPath: VisibleAttributesList.Array.data[1].Name
@@ -3291,6 +3291,10 @@ PrefabInstance:
     - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
       propertyPath: VisibleAttributesList.Array.data[4].Name
       value: posX
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[0].IsVisible
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
       propertyPath: VisibleAttributesList.Array.data[4].IsVisible
