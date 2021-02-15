@@ -194,7 +194,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Texts.Array.data[0].Text
       value: "Hmm, buradaki mavi alanlar benim hackledi\u011Fim \xF6zellikleri resetliyor
-        gibi g\xF6z\xFCk\xFCyor."
+        gibi g\xF6z\xFCk\xFCyor.\\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3160286205229708477, guid: 3376d313a75b84a4b91e184c8bf1f56a,
         type: 3}
@@ -1837,7 +1837,7 @@ PrefabInstance:
     - target: {fileID: 6832612621688054090, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: Time
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 6832612621688054090, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}

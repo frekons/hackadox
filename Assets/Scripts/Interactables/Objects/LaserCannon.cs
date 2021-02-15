@@ -5,11 +5,11 @@ public class LaserCannon : HarmfulObject, ITooltip
 {
 	public LaserSt Laser = new LaserSt();
 
-	[SerializeField]
+	/*[SerializeField]
 	private AudioClip _winSound, _loseSound;
 
 	[SerializeField]
-	private AudioSource _audioSource;
+	private AudioSource _audioSource;*/
 
 	private void Update()
 	{
@@ -66,13 +66,13 @@ public class LaserCannon : HarmfulObject, ITooltip
 				//ConsolePanel.Instance.AddVariable("laser", Laser, null);
 				Laser.Work = false;
 
-				_audioSource.PlayOneShot(_winSound);
+				//_audioSource.PlayOneShot(_winSound);
 
 				_playingMinigameCurrently = false;
 			},
 			() =>
 			{
-				_audioSource.PlayOneShot(_loseSound);
+				//_audioSource.PlayOneShot(_loseSound);
 
 				Debug.Log("player lost game");
 

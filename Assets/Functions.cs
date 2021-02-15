@@ -51,7 +51,7 @@ public class Functions : MonoBehaviour
             }
 
             var _text = text;
-            ConsolePanel.Instance.WriteCallback(text.Text, () =>
+            ConsolePanel.Instance.WriteCallback(text.Text.Replace("\\n", "\n"), () =>
             {
                 _text.HasWritten = true;
             });
