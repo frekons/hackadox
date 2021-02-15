@@ -590,7 +590,7 @@ PrefabInstance:
     - target: {fileID: 3160286205229708477, guid: 3376d313a75b84a4b91e184c8bf1f56a,
         type: 3}
       propertyPath: Texts.Array.data[0].Text
-      value: "HACKADOX: 2. seviye koruma aktifle\u015Fti!"
+      value: "HACKADOX: 2. seviye koruma aktifle\u015Fti!\\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3160286205229708477, guid: 3376d313a75b84a4b91e184c8bf1f56a,
         type: 3}
