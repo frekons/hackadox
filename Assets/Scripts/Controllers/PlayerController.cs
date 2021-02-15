@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 	private void Update()
 	{
-		_healthBar.fillAmount = Player.health / 100.0f;
+		_healthBar.fillAmount = Mathf.Lerp(_healthBar.fillAmount, Player.health / 100.0f, Time.deltaTime * 5.0f);
 
 		if (isDead)
 			return;
@@ -199,6 +199,8 @@ public class PlayerController : MonoBehaviour, ITooltip
 			Player.health = 100f;
 		}
 
+		ResetToDefaults();
+
 		if (Timer.Instance)
 			Timer.SetTimer(Timer.Instance.Time); // restart timer
 
@@ -308,6 +310,8 @@ public class PlayerController : MonoBehaviour, ITooltip
 		if (isDead/* || !canMove*/)
 			return;
 
+		Player.health = 0;
+
 		_audioSource.PlayOneShot(DieSound);
 
 		Debug.Log("Player has dead.");
@@ -322,8 +326,6 @@ public class PlayerController : MonoBehaviour, ITooltip
 		_animator.SetBool("isJumping", false);
 		_animator.SetBool("isDead", true);
 		_animator.SetInteger("damageType", (int)damageType);
-
-		ResetToDefaults();
 
 		FadeEffect.Instance.FadeIn(() =>
 		{

@@ -28,11 +28,14 @@ public class Lava : HarmfulObject, ITooltip
 	private void Update()
 	{
 		if (isStaying)
+        {
 			if (!cooldownManager.IsInCooldown("lava_damage"))
 			{
 				GiveDamage(GameObject.FindWithTag("Player").GetComponent<Collider2D>());
+
 				cooldownManager.SetCooldown("lava_damage", damageCooldown);
 			}
+		}
 	}
 
 	public void OnHover()

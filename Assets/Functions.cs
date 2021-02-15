@@ -15,6 +15,8 @@ public class Functions : MonoBehaviour
     public void ResetGame()
     {
         GameManager.ResetGame();
+
+        GameCanvas.Instance.HackerPanel.SetActive(true);
     }
 
     //

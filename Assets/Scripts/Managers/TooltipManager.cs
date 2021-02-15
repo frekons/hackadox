@@ -61,8 +61,6 @@ public class TooltipManager : MonoBehaviour
 
 		var hits = Physics2D.Raycast(screen2world, Vector2.zero);
 
-		Debug.Log("hits length: " + (bool)hits + ", screen2world: " + screen2world + ", inputMousePos: " + Input.mousePosition);
-
 		if (hits)
 		{
 			_isReceived = false;

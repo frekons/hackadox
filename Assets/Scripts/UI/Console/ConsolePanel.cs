@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class ConsolePanel : MonoBehaviour
 {
+	[TextArea]
+	public string BeginText;
+
 	public List<VariablePrefab> VariableList = new List<VariablePrefab>();
 
 	[Header("Fields")]
@@ -36,6 +39,19 @@ public class ConsolePanel : MonoBehaviour
 	private void Awake()
 	{
 		_consoleText.text = _defaultText;
+	}
+
+    private IEnumerator Start()
+    {
+		Timer.Pause();
+
+		Write(BeginText);
+
+		yield return new WaitForSeconds(7.0f);
+
+		Clear();
+
+		Timer.Resume();
 	}
 
 	private void OnEnable()
