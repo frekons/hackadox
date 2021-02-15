@@ -203,5 +203,7 @@ public class MinigameTwo : MonoBehaviour
 
 			yield return waitForEndOfFrame;
 		}
+
+		Destroy(gameObject);
 	}
 }
