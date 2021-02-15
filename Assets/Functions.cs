@@ -39,36 +39,54 @@ public class Functions : MonoBehaviour
         _startTime = Time.time;
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
-        float time = getTime;
-
-        var waitForSecs = new WaitForSeconds(0.1f);
-
         if (Texts.Count > 0)
         {
-            while (time <= Texts[Texts.Count - 1].AtTime)
+            var text = Texts[0];
+
+            if (text.ClearBefore)
             {
-                foreach (var text in Texts)
-                {
-                    if (text.AtTime < time && !text.HasWritten)
-                    {
-                        if (text.ClearBefore)
-                        {
-                            ConsolePanel.Instance.Clear();
-                        }
-
-                        ConsolePanel.Instance.Write(text.Text);
-
-                        text.HasWritten = true;
-                    }
-                }
-
-                time = getTime;
-
-                yield return waitForSecs;
+                ConsolePanel.Instance.Clear();
             }
+
+            var _text = text;
+            ConsolePanel.Instance.WriteCallback(text.Text, () =>
+            {
+                _text.HasWritten = true;
+            });
         }
+
+        //float time = getTime;
+
+        //var waitForSecs = new WaitForSeconds(0.1f);
+
+        //if (Texts.Count > 0)
+        //{
+        //    while (time <= Texts[Texts.Count - 1].AtTime + 100.0f)
+        //    {
+        //        foreach (var text in Texts)
+        //        {
+        //            if (text.AtTime < time && !text.HasWritten)
+        //            {
+        //                if (text.ClearBefore)
+        //                {
+        //                    ConsolePanel.Instance.Clear();
+        //                }
+
+        //                var _text = text;
+        //                ConsolePanel.Instance.WriteCallback(text.Text, ()=>
+        //                {
+        //                    _text.HasWritten = true;
+        //                });
+        //            }
+        //        }
+
+        //        time = getTime;
+
+        //        yield return waitForSecs;
+        //    }
+        //}
     }
 
     public void ResetGame()

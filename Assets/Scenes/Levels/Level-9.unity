@@ -590,7 +590,7 @@ PrefabInstance:
     - target: {fileID: 3160286205229708477, guid: 3376d313a75b84a4b91e184c8bf1f56a,
         type: 3}
       propertyPath: Texts.Array.data[0].Text
-      value: "HACKADOX: 2. seviye koruma aktifle\u015Fti!"
+      value: "HACKADOX: 2. seviye koruma aktifle\u015Fti!\\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3160286205229708477, guid: 3376d313a75b84a4b91e184c8bf1f56a,
         type: 3}
@@ -1057,7 +1057,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &933139103
 PrefabInstance:
@@ -1409,7 +1409,7 @@ PrefabInstance:
     - target: {fileID: 7486941989424610363, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7486941989424610363, guid: 55ec8bb166dbbfc488078cd9264eef4e,
         type: 3}
@@ -1888,7 +1888,7 @@ Transform:
   m_LocalScale: {x: 3.993, y: 3.993, z: 3.993}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1427857863
 GameObject:
@@ -1950,7 +1950,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1545209606
 PrefabInstance:
@@ -2088,7 +2088,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1725516637
 GameObject:

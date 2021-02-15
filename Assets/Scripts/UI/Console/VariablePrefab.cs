@@ -101,6 +101,8 @@ public class VariablePrefab : MonoBehaviour
 						if (input.Trim() == string.Empty)
 							return;
 
+						input = input.Replace(".", ",");
+
 						Debug.Log("Option: " + option.text);
 
 						var field = _object.GetType().GetProperty(option.text);

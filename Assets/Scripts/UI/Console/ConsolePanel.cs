@@ -338,6 +338,13 @@ public class ConsolePanel : MonoBehaviour
 		{
 			Destroy(allDropdowns[i].gameObject);
 		}
+
+		var allInputBoxes = transform.GetComponentsInChildren<TMPro.TMP_InputField>();
+
+		for (int i = allInputBoxes.Length - 1; i >= 0; --i)
+		{
+			Destroy(allInputBoxes[i].gameObject);
+		}
 	}
 
 	public void OnSceneUnloaded(Scene scene)
