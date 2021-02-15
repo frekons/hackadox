@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,9 +16,11 @@ public class MinigameTwo : MonoBehaviour
 	private Vector2 _movingObjectStartSize;
 
 	[SerializeField]
+	private CanvasGroup _canvasGroup;
+	[SerializeField]
 	private RectTransform _minigameWindow;
 	[SerializeField]
-	private CanvasGroup _deathScreen;
+	private CanvasGroup _deathScreen, _winScreen;
 	[SerializeField]
 	private RectTransform _counterTransform;
 	[SerializeField]
@@ -35,7 +38,7 @@ public class MinigameTwo : MonoBehaviour
 
 	private void Start()
 	{
-		_movingObjectStartSize = _movingObject.sizeDelta;
+		_movingObjectStartSize = /*_movingObject.sizeDelta*/ new Vector2(100, 100);
 
 		ResetPosition();
 	}
@@ -46,7 +49,7 @@ public class MinigameTwo : MonoBehaviour
 
 		GameObject obj = GameObject.Instantiate(minigame);
 
-		MinigameTwo _minigame = minigame.GetComponent<MinigameTwo>();
+		MinigameTwo _minigame = obj.GetComponent<MinigameTwo>();
 
 		_minigame.OnWin = onWin;
 
@@ -59,15 +62,17 @@ public class MinigameTwo : MonoBehaviour
 	{
 		ResetPosition();
 
-		cooldownManager.SetCooldown("minigame_2", 5f);
+		cooldownManager.SetCooldown("minigame_2", 8.5f);
 
 		_isStarted = true;
-		_movingObject.sizeDelta = _movingObjectStartSize;
+		//_movingObject.sizeDelta = _movingObjectStartSize;
 
 		_counterTransform.GetComponent<CanvasGroup>().alpha = 1;
 
 		_deathScreen.interactable = false;
 		_deathScreen.alpha = 0;
+
+		_winScreen.alpha = 0;
 	}
 
 	private void ResetPosition()
@@ -117,7 +122,8 @@ public class MinigameTwo : MonoBehaviour
 		{
 			float time = Mathf.Round(cooldownManager.GetCooldown("minigame_2"));
 
-			_counterText.text = time >= 4 ? "Hazır.." : time == 0 ? "Başla" : time.ToString();
+			_counterText.text = time >= 4 ? "Top yeşil alana geldiğinde mouse sol tik basman gerekiyor, hazır ol: " + time : time == 0 ? "Başla" : time.ToString();
+
 			return;
 		}
 		else
@@ -142,25 +148,60 @@ public class MinigameTwo : MonoBehaviour
 			{
 				_isStarted = false;
 
-				_deathScreen.interactable = true;
+				//_deathScreen.interactable = true;
 				_deathScreen.alpha = 1;
 
 				ResetPosition();
 
 				OnLose();
+
+				StartCoroutine(DestroyWindow());
 				return;
 			}
 		}
 
-		if (Input.GetButtonDown("Jump") && _isPassed)
+		if (Input.GetMouseButtonDown(0))
 		{
-			_isStarted = false;
-			OnWin();
-			return;
+			if(_isPassed)
+            {
+				_isStarted = false;
+				OnWin();
+				_winScreen.alpha = 1;
+				StartCoroutine(DestroyWindow());
+				return;
+			}
+			else
+            {
+				_isStarted = false;
+
+				//_deathScreen.interactable = true;
+				_deathScreen.alpha = 1;
+
+				ResetPosition();
+
+				OnLose();
+
+				StartCoroutine(DestroyWindow());
+				return;
+            }
 		}
 
 		newObjectPosition.x += _movingObjectSpeed;
 
 		_movingObject.transform.position = Vector3.Lerp(_movingObject.transform.position, newObjectPosition, Time.deltaTime * 20);
+	}
+
+	IEnumerator DestroyWindow()
+    {
+		yield return new WaitForSeconds(1.0f);
+
+		var waitForEndOfFrame = new WaitForEndOfFrame();
+
+		while (_canvasGroup.alpha > 0.01f)
+		{
+			_canvasGroup.alpha = Mathf.Lerp(_canvasGroup.alpha, 0.0f, Time.deltaTime * 2.0f);
+
+			yield return waitForEndOfFrame;
+		}
 	}
 }

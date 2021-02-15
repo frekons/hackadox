@@ -380,7 +380,10 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 	public void OnClick()
 	{
-		ConsolePanel.Instance.AddVariable(CONSOLE_ID, Player, VisibleAttributesDict);
+		if (ConsolePanel.Instance)
+		{
+			ConsolePanel.Instance.AddVariable(CONSOLE_ID, Player, VisibleAttributesDict);
+		}
 	}
 }
 

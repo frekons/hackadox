@@ -11,6 +11,16 @@ public class Resetter : Interactable
 			PlayerController playerController = collision.GetComponent<PlayerController>();
 
 			playerController.ResetToDefaults();
+
+			foreach (var enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+			{
+				enemy.GetComponent<Enemy>().EnemyStruct._isEnemy = true;
+			}
+
+			foreach (var enemy in GameObject.FindGameObjectsWithTag("Laser"))
+			{
+				enemy.GetComponent<LaserCannon>().Laser.Work = true;
+			}
 		}
 	}
 }
