@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MinigameTwo : MonoBehaviour
 {
@@ -29,15 +30,29 @@ public class MinigameTwo : MonoBehaviour
 	private bool _isStarted;
 	private bool _isPassed;
 
+	public UnityAction OnWin;
+	public UnityAction OnLose;
+
 	private void Start()
 	{
 		_movingObjectStartSize = _movingObject.sizeDelta;
 
 		ResetPosition();
-		StartGame();
 	}
 
-	public void StartGame()
+	public static void CreateMinigame(UnityAction onWin = null, UnityAction onLose = null)
+	{
+		var minigame = Resources.Load<GameObject>("Prefabs/Minigame2-Canvas");
+
+		GameObject obj = GameObject.Instantiate(minigame);
+
+		MinigameTwo _minigame = minigame.GetComponent<MinigameTwo>();
+
+		_minigame.OnWin = onWin;
+		_minigame.OnLose = onLose;
+	}
+
+	public void StartGame(UnityAction onWin, UnityAction onLose)
 	{
 		ResetPosition();
 
@@ -120,7 +135,7 @@ public class MinigameTwo : MonoBehaviour
 			_movingObject.sizeDelta -= new Vector2(5, 5);
 			_isPassed = true;
 
-			if (_movingObject.sizeDelta.x <= 20f)
+			if (_movingObject.sizeDelta.x <= 20f) //on lose
 			{
 				_isStarted = false;
 
@@ -129,6 +144,7 @@ public class MinigameTwo : MonoBehaviour
 
 				ResetPosition();
 
+				OnLose();
 				return;
 			}
 		}
@@ -136,6 +152,7 @@ public class MinigameTwo : MonoBehaviour
 		if (Input.GetButtonDown("Jump") && _isPassed)
 		{
 			_isStarted = false;
+			OnWin();
 			return;
 		}
 
