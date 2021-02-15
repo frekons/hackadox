@@ -3740,6 +3740,42 @@ PrefabInstance:
       propertyPath: terrainLayer.m_Bits
       value: 136
       objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[0].Name
+      value: health
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[1].Name
+      value: gravity
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[2].Name
+      value: jumpForce
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[3].Name
+      value: walkSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[4].Name
+      value: walkSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[5].Name
+      value: walkSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[4].IsVisible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 163539791, guid: 74f27bdd9da20814791ac1f62d2acf30, type: 3}
+      propertyPath: VisibleAttributesList.Array.data[5].IsVisible
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1105646009457761430, guid: 74f27bdd9da20814791ac1f62d2acf30,
         type: 3}
       propertyPath: m_Size.y
