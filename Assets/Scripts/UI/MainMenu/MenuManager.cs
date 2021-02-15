@@ -127,6 +127,11 @@ public class MenuManager : MonoBehaviour
 		}));
 	}
 
+	public void OnPressExit()
+	{
+		Application.Quit();
+	}
+
 	public void OnClickToggleAudio()
 	{
 		_isSoundActive = !_isSoundActive;

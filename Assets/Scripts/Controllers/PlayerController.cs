@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +11,10 @@ public class PlayerController : MonoBehaviour, ITooltip
 {
 	#region SOUNDS
 	public AudioClip JumpSound, DieSound;
-    #endregion
+	#endregion
 
-    #region COMPONENTS
-    [Header("Components")]
+	#region COMPONENTS
+	[Header("Components")]
 
 	[SerializeField]
 	private Image _healthBar;
@@ -238,7 +237,7 @@ public class PlayerController : MonoBehaviour, ITooltip
     }
 
 	public void PlaySpawnEffect(Color color, int count = 5, float waitTime = 0.2f)
-    {
+	{
 		if (_spawnedEffect != null)
 			StopCoroutine(_spawnedEffect);
 
@@ -338,6 +337,9 @@ public class PlayerController : MonoBehaviour, ITooltip
 		_animator.SetBool("isJumping", false);
 		_animator.SetBool("isDead", true);
 		_animator.SetInteger("damageType", (int)damageType);
+
+		_rigibody2d.velocity = Vector2.zero;
+		_rigibody2d.angularVelocity = 0;
 
 		FadeEffect.Instance.FadeIn(() =>
 		{
