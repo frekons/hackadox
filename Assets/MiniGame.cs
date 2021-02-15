@@ -143,6 +143,9 @@ public class MiniGame : MonoBehaviour
             }
                  
             Init();
+        }else
+        {
+            LoseMG();
         }
 
     }
