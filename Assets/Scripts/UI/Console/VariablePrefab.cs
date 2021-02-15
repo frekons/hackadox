@@ -43,6 +43,20 @@ public class VariablePrefab : MonoBehaviour
 		if (ConsolePanel.Instance.TutorialPlaying)
 			return;
 
+		bool isThereProperty = false;
+
+		foreach (var field in _object.GetType().GetProperties())
+		{
+			if (VisibleAttributesDict == null || (VisibleAttributesDict.ContainsKey(field.Name) && VisibleAttributesDict[field.Name]))
+			{
+				isThereProperty = true;
+				break;
+			}
+		}
+
+		if (!isThereProperty)
+			return;
+
 		UISoundManager.PlayOneShot(TypingSound);
 
 		_button.interactable = false;
@@ -95,7 +109,8 @@ public class VariablePrefab : MonoBehaviour
 
 						var result = parseMethodInfo.Invoke(null, args);
 
-						field.SetValue(_object, result);
+						//field.SetValue(_object, result);
+						field.SetMethod.Invoke(_object, new object[] { result });
 
 						Debug.Log("result: " + result);
 

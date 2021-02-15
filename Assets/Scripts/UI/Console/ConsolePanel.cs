@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ConsolePanel : MonoBehaviour
@@ -46,9 +47,12 @@ public class ConsolePanel : MonoBehaviour
 	private void Awake()
 	{
 		_consoleText.text = _defaultText;
+
+		SceneManager.sceneUnloaded += OnSceneUnloaded;
 	}
 
-    private IEnumerator Start()
+
+	private IEnumerator Start()
     {
 		var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
@@ -263,6 +267,44 @@ public class ConsolePanel : MonoBehaviour
 		VariableList.Add(variablePrefab);
 
 		LayoutRebuilder.ForceRebuildLayoutImmediate(_horizontalLayoutGroup.GetComponent<RectTransform>());
+	}
+
+	public void RemoveVariable(string variableName)
+	{
+		var list = VariableList.FindAll(x => x.VariableName == variableName);
+
+		for (int i = list.Count - 1; i >= 0; --i)
+		{
+			Destroy(list[i].gameObject);
+
+			VariableList.RemoveAt(i);
+		}
+	}
+
+	public void RemoveAllVariables()
+    {
+		var list = VariableList;
+
+		for (int i = list.Count - 1; i >= 0; --i)
+		{
+			Destroy(list[i].gameObject);
+
+			VariableList.RemoveAt(i);
+		}
+
+		var allDropdowns = transform.GetComponentsInChildren<TMPro.TMP_Dropdown>();
+
+		for (int i = list.Count - 1; i >= 0; --i)
+		{
+			Destroy(allDropdowns[i].gameObject);
+		}
+	}
+
+	void OnSceneUnloaded<Scene>(Scene scene)
+	{
+		RemoveAllVariables();
+
+		Clear();
 	}
 
 	//
