@@ -143,12 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dcf221dc33d2145b63b4eaa2a25148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxDamage: 0
+  _maxDamage: 50
   _randomDamage: 0
   _hurtSound: {fileID: 8300000, guid: 48b551f4d80026a4f85f0a9c33e81020, type: 3}
   _audioSource: {fileID: 3791386722905739660}
   isStaying: 0
-  damageCooldown: 2
+  damageCooldown: 0.2
 --- !u!82 &3791386722905739660
 AudioSource:
   m_ObjectHideFlags: 0
