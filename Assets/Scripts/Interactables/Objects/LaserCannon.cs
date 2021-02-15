@@ -3,7 +3,13 @@ using UnityEngine;
 
 public class LaserCannon : HarmfulObject, ITooltip
 {
-	public LaserSt Laser;
+	public LaserSt Laser = new LaserSt();
+
+	[SerializeField]
+	private AudioClip _winSound, _loseSound;
+
+	[SerializeField]
+	private AudioSource _audioSource;
 
 	private void Update()
 	{
@@ -36,26 +42,43 @@ public class LaserCannon : HarmfulObject, ITooltip
 		}
 		else
         {
-
-        }
+			laser.SetPosition(1, Vector3.zero);
+		}
 	}
 
 	public void OnHover()
 	{
-		TooltipManager.Instance.ShowTooltip("RESTRICTED");
+		TooltipManager.Instance.ShowTooltip(Laser.Work ? "KORUMALI ADRES" : "HACKED");
 	}
 
-    public void OnClick()
-    {
-		MiniGame.CreateMinigame(21, 20, () =>
+	private bool _playingMinigameCurrently = false;
+
+	public void OnClick()
+	{
+		if (Laser.Work && !_playingMinigameCurrently)
 		{
-			ConsolePanel.Instance.AddVariable("laser", Laser, null);
-		},
-		() =>
-		{
-			Debug.Log("player lost game");
-		});
-    }
+			_playingMinigameCurrently = true;
+
+			MiniGame.CreateMinigame(21, 20, () =>
+			{
+				Debug.Log("player won game");
+				//ConsolePanel.Instance.AddVariable("laser", Laser, null);
+				Laser.Work = false;
+
+				_audioSource.PlayOneShot(_winSound);
+
+				_playingMinigameCurrently = false;
+			},
+			() =>
+			{
+				_audioSource.PlayOneShot(_loseSound);
+
+				Debug.Log("player lost game");
+
+				_playingMinigameCurrently = false;
+			});
+		}
+	}
 }
 
 [Serializable]

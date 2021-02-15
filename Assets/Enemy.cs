@@ -115,12 +115,12 @@ public class Enemy : MonoBehaviour, ITooltip
         ammo.Shoot(transform.localScale.x > 0 ? Vector2.right : Vector2.left);
     }
 
-    void ITooltip.OnHover()
+    public void OnHover()
     {
         TooltipManager.Instance.ShowTooltip("RESTRICTED");
     }
 
-    void ITooltip.OnClick()
+    public void OnClick()
     {
         MinigameTwo.CreateMinigame(() =>
         {

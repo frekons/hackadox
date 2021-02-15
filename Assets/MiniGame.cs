@@ -49,7 +49,7 @@ public class MiniGame : MonoBehaviour
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
-            TimerText.text = timeRemaining.ToString().Substring(0,5);
+            TimerText.text = timeRemaining.ToString("0.0#");
         }
         else
         {
@@ -60,7 +60,6 @@ public class MiniGame : MonoBehaviour
 
     void Init()
     {
-
         for (int i = 0; i < ButtonCount; i++)
         {
             var go = Instantiate(ButtonPrefab, ButtonContainer);
@@ -86,22 +85,22 @@ public class MiniGame : MonoBehaviour
     public static void CreateMinigame(int buttonCount, float second, UnityAction onWin, UnityAction onLose)
     {
 
-        var minigame = Resources.Load<GameObject>("Prefabs/Minigame-Panel");
+        var minigame = Resources.Load<GameObject>("Prefabs/Minigame-Canvas");
 
-        MiniGame _minigame = Instantiate(minigame).GetComponent<MiniGame>();
+        MiniGame _minigame = Instantiate(minigame).transform.GetChild(0).GetComponent<MiniGame>();
 
         _minigame.ButtonCount = buttonCount;
 
         _minigame.timeRemaining = second;
-
-        _minigame.Init();
 
         _minigame.anim.SetBool("onStart", true);
 
         _minigame.WinMG = onWin;
 
         _minigame.LoseMG = onLose;
- 
+
+        _minigame.Init();
+
     }
 
     public void WinMiniGame()
@@ -139,10 +138,14 @@ public class MiniGame : MonoBehaviour
 
             if (WinCounter >= MaxWinCount)
             {
-                StartCoroutine(EndMiniGame());
+                WinMiniGame();
             }
                  
             Init();
+        }
+        else
+        {
+            LoseMiniGame();
         }
 
     }

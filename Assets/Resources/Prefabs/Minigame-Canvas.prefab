@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 2984589282913831855}
   - component: {fileID: 2984589282913831852}
   m_Layer: 5
-  m_Name: Minigame-Panel 1
+  m_Name: Minigame-Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

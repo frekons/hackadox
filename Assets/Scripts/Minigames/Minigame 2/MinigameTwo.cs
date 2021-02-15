@@ -49,10 +49,13 @@ public class MinigameTwo : MonoBehaviour
 		MinigameTwo _minigame = minigame.GetComponent<MinigameTwo>();
 
 		_minigame.OnWin = onWin;
+
 		_minigame.OnLose = onLose;
+
+		_minigame.StartGame();
 	}
 
-	public void StartGame(UnityAction onWin, UnityAction onLose)
+	public void StartGame()
 	{
 		ResetPosition();
 
