@@ -115,20 +115,38 @@ public class Enemy : MonoBehaviour, ITooltip
         ammo.Shoot(transform.localScale.x > 0 ? Vector2.right : Vector2.left);
     }
 
-    void ITooltip.OnHover()
+    public void OnHover()
     {
-        TooltipManager.Instance.ShowTooltip("RESTRICTED");
+        TooltipManager.Instance.ShowTooltip(EnemyStruct.isEnemy ? "KORUMALI ADRES" : "HACKED");
     }
 
-    void ITooltip.OnClick()
+    private bool _playingMinigameCurrently = false, _winBefore = false;
+
+    public void OnClick()
     {
+        if (_winBefore || _playingMinigameCurrently)
+            return;
+
+        _playingMinigameCurrently = true;
+
         MinigameTwo.CreateMinigame(() =>
         {
-            ConsolePanel.Instance.AddVariable("enemy", EnemyStruct, null);
+            if (ConsolePanel.Instance != null)
+            {
+                ConsolePanel.Instance.AddVariable("enemy", EnemyStruct, null);
+
+                _winBefore = true;
+            }
+
+            _playingMinigameCurrently = false;
+
+            Debug.Log("plr won");
         },
         () =>
         {
-            
+            _playingMinigameCurrently = false;
+
+            Debug.Log("plr lost");
         });
     }
 }
@@ -151,6 +169,11 @@ public class EnemySt
 			Debug.Log("set isEnemy called!");
 
             _isEnemy = value;
+
+            if (!value)
+            {
+                Physics2D.IgnoreCollision(GameObject.FindGameObjectWithTag("Enemy").GetComponent<Collider2D>(), GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>());
+            }
 		}
 	}
 

@@ -88,7 +88,6 @@ public class TooltipManager : MonoBehaviour
 	public void ShowTooltip(string message = "")
 	{
 		Message = message;
-		Debug.Log("mousepos: " + Input.mousePosition);
 		_rectTransform.anchoredPosition = Input.mousePosition + new Vector3(0, (42.5f / 2) + 5f, 0); // 42.5f == transform.GetComponent<RectTransform>().rect.height
 		transform.GetComponent<CanvasGroup>().alpha = 1;
 
