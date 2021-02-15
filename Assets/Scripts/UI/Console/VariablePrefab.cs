@@ -59,7 +59,9 @@ public class VariablePrefab : MonoBehaviour
 
 		UISoundManager.PlayOneShot(TypingSound);
 
-		_button.interactable = false;
+		ConsolePanel.Instance.OnAnyButtonClicked();
+
+		//_button.interactable = false;
 
 		ConsolePanel.Instance.WriteCallback(VariableName + ".", () =>
 		{
@@ -116,7 +118,8 @@ public class VariablePrefab : MonoBehaviour
 
 						ConsolePanel.Instance.WriteLine(result.ToString());
 
-						_button.interactable = true;
+						//_button.interactable = true;
+						ConsolePanel.Instance.OnInputEnd();
 
 						Destroy(inputField.gameObject);
 					});

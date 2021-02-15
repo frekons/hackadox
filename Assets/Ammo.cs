@@ -26,7 +26,7 @@ public class Ammo : MonoBehaviour
             Instantiate(HitEffect, collision.contacts[0].point, Quaternion.identity);
         }
 
-        collision.collider.SendMessage("KillPlayer", GameManager.DamageTypes.Weapon);
+        collision.collider.SendMessage("KillPlayer", GameManager.DamageTypes.Weapon, SendMessageOptions.DontRequireReceiver);
 
         Destroy(gameObject);
     }

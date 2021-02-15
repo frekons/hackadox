@@ -89,7 +89,7 @@ public class ConsolePanel : MonoBehaviour
 
 		Clear();
 
-		yield return new WaitForSeconds(3.0f);
+		yield return new WaitForSeconds(6.5f);
 
 		Timer.Resume();
 
@@ -122,19 +122,32 @@ public class ConsolePanel : MonoBehaviour
 
 		var waitForSeconds = new WaitForSecondsRealtime(waitTime);
 
+
 		for (int i = startIndex; i >= lastIndex; --i)
 		{
-			var character = _consoleText.text[i];
+			bool skipWait = false;
 
-			_consoleText.text = _consoleText.text.Remove(i);
+			try
+			{
+				var character = _consoleText.text[i];
 
-			OnCharacterRemove(character);
+				_consoleText.text = _consoleText.text.Remove(i);
 
-			if (!DiscardedCharacters.Contains(character))
+				OnCharacterRemove(character);
+
+				skipWait = DiscardedCharacters.Contains(character);
+			}
+			catch
+			{
+
+			}
+
+			if (!skipWait)
 			{
 				yield return waitForSeconds;
 			}
 		}
+		
 		
 		_editingText = false;
 
@@ -152,17 +165,26 @@ public class ConsolePanel : MonoBehaviour
 
 		var waitForSeconds = new WaitForSecondsRealtime(waitTime);
 
+
 		foreach (var character in message)
 		{
-			_consoleText.text += character;
+			try
+			{
+				_consoleText.text += character;
 
-			OnCharacterWrote(character);
+				OnCharacterWrote(character);
+			}
+			catch
+			{
+
+			}
 
 			if (!DiscardedCharacters.Contains(character))
 			{
 				yield return waitForSeconds;
 			}
 		}
+	
 
 		_editingText = false;
 
@@ -249,6 +271,24 @@ public class ConsolePanel : MonoBehaviour
 		StartCoroutine(ClearIEnumerator(startIndex, lastIndex));
 	}
 
+	//
+	public void OnAnyButtonClicked()
+	{
+		foreach (var button in VariableList)
+		{
+			button._button.interactable = false;
+		}
+	}
+
+	public void OnInputEnd()
+	{
+		foreach (var button in VariableList)
+		{
+			button._button.interactable = true;
+		}
+	}
+	//
+
 	public void AddVariable(string variableName, object @object, Dictionary<string, bool> visibleAttributesDict)
 	{
 		var existingCheck = VariableList.Find(x => x._textMeshPro.text == variableName);
@@ -287,20 +327,20 @@ public class ConsolePanel : MonoBehaviour
 
 		for (int i = list.Count - 1; i >= 0; --i)
 		{
-			Destroy(list[i].gameObject);
+			Destroy(list[i]._button.gameObject);
 
 			VariableList.RemoveAt(i);
 		}
 
 		var allDropdowns = transform.GetComponentsInChildren<TMPro.TMP_Dropdown>();
 
-		for (int i = list.Count - 1; i >= 0; --i)
+		for (int i = allDropdowns.Length - 1; i >= 0; --i)
 		{
 			Destroy(allDropdowns[i].gameObject);
 		}
 	}
 
-	void OnSceneUnloaded<Scene>(Scene scene)
+	public void OnSceneUnloaded(Scene scene)
 	{
 		RemoveAllVariables();
 
