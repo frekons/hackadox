@@ -44,6 +44,10 @@ public class ConsolePanel : MonoBehaviour
 
     private IEnumerator Start()
     {
+		var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+		player.canMove = false;
+
 		TutorialPlaying = true;
 
 		var waitForEndOfFrame = new WaitForEndOfFrame();
@@ -65,7 +69,7 @@ public class ConsolePanel : MonoBehaviour
 
 		yield return new WaitForSeconds(1.0f);
 
-		GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().PlaySpawnEffect(new Color(1.0f, 0.8f, 0.8f, 0.6f));
+		player.PlaySpawnEffect(new Color(1.0f, 0.8f, 0.8f, 0.6f));
 
 		yield return new WaitForSeconds(5.8f);
 
@@ -76,6 +80,8 @@ public class ConsolePanel : MonoBehaviour
 		Timer.Resume();
 
 		TutorialPlaying = false;
+
+		player.canMove = true;
 	}
 
 	private void OnEnable()

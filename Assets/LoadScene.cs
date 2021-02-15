@@ -9,19 +9,43 @@ public class LoadScene : MonoBehaviour
 
     public bool LoadWithSceneName;
 
+    public bool LoadAfterSeconds = false;
+
+    public float Seconds = 2.0f;
+
     public string SceneName;
 
     void Awake()
     {
-        if (LoadNextScene)
+        if (!LoadAfterSeconds)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+            if (LoadNextScene)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
 
-        if (LoadWithSceneName)
-        {
-            SceneManager.LoadScene(SceneName);
+            if (LoadWithSceneName)
+            {
+                SceneManager.LoadScene(SceneName);
+            }
         }
     }
 
+    private IEnumerator Start()
+    {
+        if (LoadAfterSeconds)
+        {
+            yield return new WaitForSeconds(Seconds);
+
+            if (LoadNextScene)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+
+            if (LoadWithSceneName)
+            {
+                SceneManager.LoadScene(SceneName);
+            }
+        }
+    }
 }
