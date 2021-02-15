@@ -34,9 +34,9 @@ public class CooldownManager
 		if (!_cooldownList.ContainsKey(key))
 			return false;
 
-		bool isIn = _cooldownList[key] - Time.time > 0;
+		bool isIn = _cooldownList[key] - Time.time >= 0;
 
-		if (isIn)
+		if (!isIn)
 			RemoveCooldown(key);
 
 		return isIn;
