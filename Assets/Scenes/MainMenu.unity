@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 54581134}
   - component: {fileID: 54581136}
   - component: {fileID: 54581135}
+  - component: {fileID: 54581137}
   m_Layer: 5
   m_Name: Game-Name-Text
   m_TagString: Untagged
@@ -180,10 +181,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HACKER BOY
+  m_text: HACKADOX
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 54999491f587f9444a1d4f69bf4af985, type: 2}
-  m_sharedMaterial: {fileID: 8887972874483320315, guid: 54999491f587f9444a1d4f69bf4af985,
+  m_fontAsset: {fileID: 11400000, guid: 23a3f9da88334e149986eba0afde012a, type: 2}
+  m_sharedMaterial: {fileID: -3589252914248657280, guid: 23a3f9da88334e149986eba0afde012a,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -208,8 +209,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 164
-  m_fontSizeBase: 164
+  m_fontSize: 264
+  m_fontSizeBase: 264
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -258,6 +259,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54581133}
   m_CullTransparentMesh: 1
+--- !u!95 &54581137
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54581133}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: acfdc0c1390f082468eda24c8c260cef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &145387616
 GameObject:
   m_ObjectHideFlags: 0

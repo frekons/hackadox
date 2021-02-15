@@ -1,6 +1,6 @@
 ﻿interface ITooltip
 {
-	void OnHover();
+	public void OnHover();
 
-	void OnClick();
+	public void OnClick();
 }

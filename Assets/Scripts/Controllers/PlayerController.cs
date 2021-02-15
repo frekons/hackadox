@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ITooltip
 {
 	#region SOUNDS
 	public AudioClip JumpSound, DieSound;
@@ -15,6 +16,9 @@ public class PlayerController : MonoBehaviour
 
     #region COMPONENTS
     [Header("Components")]
+
+	[SerializeField]
+	private Image _healthBar;
 
 	[SerializeField]
 	private AudioSource _audioSource;
@@ -84,6 +88,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		_healthBar.fillAmount = Player.health / 100.0f;
+
 		if (isDead)
 			return;
 
@@ -347,6 +353,19 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 	#endregion
+
+	//
+	const string CONSOLE_ID = "player";
+
+	public void OnHover()
+	{
+		TooltipManager.Instance.ShowTooltip(CONSOLE_ID);
+	}
+
+	public void OnClick()
+	{
+		ConsolePanel.Instance.AddVariable(CONSOLE_ID, Player, VisibleAttributesDict);
+	}
 }
 
 

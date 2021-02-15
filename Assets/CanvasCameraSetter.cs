@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class CanvasCameraSetter : MonoBehaviour
 {
-    private void OnLevelWasLoaded(int level)
-    {
-        var canvas = GetComponent<Canvas>();
+    private Canvas _canvas;
 
-        if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
+    private void Update()
+    {
+        if (_canvas == null)
         {
-            canvas.worldCamera = Camera.main;
+            _canvas = GetComponent<Canvas>();
+            return;
         }
+
+        _canvas.worldCamera = Camera.main;
+
+        _canvas.planeDistance = 1;
     }
 }

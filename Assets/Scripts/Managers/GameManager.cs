@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
 	public void OnPlayerReset(PlayerController playerController)
 	{
-		ConsolePanel.Instance.AddVariable("player", playerController.Player, playerController.VisibleAttributesDict);
+		//ConsolePanel.Instance.AddVariable("player", playerController.Player, playerController.VisibleAttributesDict);
 	}
 	#endregion
 
