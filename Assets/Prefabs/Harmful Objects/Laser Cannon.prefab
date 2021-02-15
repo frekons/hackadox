@@ -213,6 +213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxDamage: 0
   _randomDamage: 0
+  _winSound: {fileID: 0}
+  _loseSound: {fileID: 0}
+  _audioSource: {fileID: 0}
 --- !u!82 &80458314501225126
 AudioSource:
   m_ObjectHideFlags: 0
