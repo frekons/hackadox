@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 234391342}
   - component: {fileID: 234391344}
   - component: {fileID: 234391343}
+  - component: {fileID: 234391345}
   m_Layer: 3
   m_Name: BlackL
   m_TagString: Untagged
@@ -356,7 +357,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -423,6 +424,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &234391345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234391341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8f3e4dd3de9074dbbfa7f6e6ee7796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &369067907
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,6 +929,7 @@ GameObject:
   - component: {fileID: 1020149373}
   - component: {fileID: 1020149375}
   - component: {fileID: 1020149374}
+  - component: {fileID: 1020149376}
   m_Layer: 3
   m_Name: BlackR (1)
   m_TagString: Untagged
@@ -947,7 +961,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1014,6 +1028,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1020149376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020149372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8f3e4dd3de9074dbbfa7f6e6ee7796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1100795587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,6 +1685,7 @@ GameObject:
   - component: {fileID: 1295997105}
   - component: {fileID: 1295997107}
   - component: {fileID: 1295997106}
+  - component: {fileID: 1295997108}
   m_Layer: 3
   m_Name: BlackR
   m_TagString: Untagged
@@ -1690,7 +1717,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1757,6 +1784,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1295997108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295997104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8f3e4dd3de9074dbbfa7f6e6ee7796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1339690229
 GameObject:
   m_ObjectHideFlags: 0
