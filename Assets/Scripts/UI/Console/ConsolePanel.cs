@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class ConsolePanel : MonoBehaviour
 {
 	[TextArea]
-	public string BeginText;
+	public string BeginText, TutorialText1, TutorialText2;
 
 	public List<VariablePrefab> VariableList = new List<VariablePrefab>();
 
@@ -35,6 +35,7 @@ public class ConsolePanel : MonoBehaviour
 
 	private bool _editingText;
 
+	public bool TutorialPlaying = false;
 
 	private void Awake()
 	{
@@ -43,15 +44,38 @@ public class ConsolePanel : MonoBehaviour
 
     private IEnumerator Start()
     {
+		TutorialPlaying = true;
+
+		var waitForEndOfFrame = new WaitForEndOfFrame();
+
 		Timer.Pause();
 
 		Write(BeginText);
 
-		yield return new WaitForSeconds(7.0f);
+		yield return new WaitForSeconds(5.0f);
 
 		Clear();
 
+		Write(TutorialText1);
+
+		while (VariableList.Count <= 0)
+			yield return waitForEndOfFrame;
+
+		Write(TutorialText2);
+
+		yield return new WaitForSeconds(1.0f);
+
+		GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().PlaySpawnEffect(new Color(1.0f, 0.8f, 0.8f, 0.6f));
+
+		yield return new WaitForSeconds(8.0f);
+
+		Clear();
+
+		yield return new WaitForSeconds(10.0f);
+
 		Timer.Resume();
+
+		TutorialPlaying = false;
 	}
 
 	private void OnEnable()
@@ -67,7 +91,7 @@ public class ConsolePanel : MonoBehaviour
 
 	private WaitForEndOfFrame _waitForEndOfFrame = new WaitForEndOfFrame();
 
-	private IEnumerator ClearIEnumerator(int startIndex, int lastIndex, float waitTime = 0.065f) // startIndex > lastIndex
+	private IEnumerator ClearIEnumerator(int startIndex, int lastIndex, float waitTime = 0.023f) // startIndex > lastIndex
 	{
 		while (_editingText)
 			yield return _waitForEndOfFrame;
