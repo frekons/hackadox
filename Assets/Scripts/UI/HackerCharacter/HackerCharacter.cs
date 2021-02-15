@@ -5,7 +5,7 @@ public class HackerCharacter : MonoBehaviour
 	[SerializeField]
 	private Animator _animator;
 
-	private void OnEnable()
+	private void Awake()
 	{
 		if (Instance != null)
 		{
