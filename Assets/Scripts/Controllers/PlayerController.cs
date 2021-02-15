@@ -212,10 +212,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 		gameObject.transform.position = GameObject.FindWithTag("SpawnPoint").transform.position;
 		gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-		if (_spawnedEffect != null)
-			StopCoroutine(_spawnedEffect);
-
-		_spawnedEffect = StartCoroutine(SpawnedEffect());
+		PlaySpawnEffect(new Color(1.0f, 1.0f, 1.0f, 0.5f));
 
 		canMove = true;
 
@@ -233,14 +230,22 @@ public class PlayerController : MonoBehaviour, ITooltip
 		Debug.Log("Player has spawned.");
 	}
 
-	public IEnumerator SpawnedEffect()
+	public void PlaySpawnEffect(Color color, int count = 5, float waitTime = 0.2f)
+    {
+		if (_spawnedEffect != null)
+			StopCoroutine(_spawnedEffect);
+
+		_spawnedEffect = StartCoroutine(SpawnedEffect(color, count, waitTime));
+	}
+
+	public IEnumerator SpawnedEffect(Color color, int count = 5, float waitTime = 0.2f)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < count; i++)
 		{
-			GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
-			yield return new WaitForSeconds(0.2f);
+			GetComponent<SpriteRenderer>().color = color;
+			yield return new WaitForSeconds(waitTime);
 			GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
-			yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(waitTime);
 		}
 	}
 

@@ -464,6 +464,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BeginText: "Anla\u015F\u0131lan buray\u0131 hile yapmadan ge\xE7emeyece\u011Fim...
     Hadi ba\u015Flayal\u0131m o zaman!"
+  TutorialText1: "Hacklemek istedi\u011Fim objenin \xFCzerine t\u0131klayarak onun
+    adresini bulabilirim!"
+  TutorialText2: "Harika, objenin adresini buldum! \u015Eimdi istedi\u011Fim \u015Feyi
+    de\u011Fi\u015Ftirebilirim. (A\u015Fa\u011F\u0131dan istedi\u011Finiz objeyi
+    se\xE7in)"
   VariableList: []
   _defaultText: ">\t"
   _consoleText: {fileID: 8387646857284969112}

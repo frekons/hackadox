@@ -88,7 +88,7 @@ public class MiniGame : MonoBehaviour
 
         var minigame = Resources.Load<GameObject>("Prefabs/Minigame-Panel");
 
-        MiniGame _minigame = minigame.GetComponent<MiniGame>();
+        MiniGame _minigame = Instantiate(minigame).GetComponent<MiniGame>();
 
         _minigame.ButtonCount = buttonCount;
 
