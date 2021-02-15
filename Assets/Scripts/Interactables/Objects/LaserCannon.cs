@@ -17,11 +17,12 @@ public class LaserCannon : HarmfulObject, ITooltip
 
 		if (Laser.Work)
 		{
-			var hit = Physics2D.Raycast(laser.transform.position, (transform.localScale.x > 0 ? Vector2.right : Vector2.left));
+			var hit = Physics2D.Raycast(laser.transform.position, transform.localScale.x > 0 ? laser.transform.right : -laser.transform.right);
 
 			if (hit)
 			{
 				float distance = Vector2.Distance(laser.transform.position, hit.point);
+
 				laser.SetPosition(1, Vector2.right * distance);
 
 				hit.transform.SendMessage("KillPlayer", GameManager.DamageTypes.Laser, SendMessageOptions.DontRequireReceiver);

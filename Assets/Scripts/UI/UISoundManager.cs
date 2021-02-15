@@ -6,7 +6,7 @@ public class UISoundManager : MonoBehaviour
 	private AudioSource audioSource;
 
 
-	private void Awake()
+	private void OnEnable()
 	{
 		Instance = this;
 	}
