@@ -914,10 +914,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dcf221dc33d2145b63b4eaa2a25148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxDamage: 50
+  _maxDamage: 25
   _randomDamage: 0
   isStaying: 0
-  damageCooldown: 2
+  damageCooldown: 0.2
 --- !u!1 &1020149372
 GameObject:
   m_ObjectHideFlags: 0
