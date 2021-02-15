@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2984a2effb0706042bca3e83567ec550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShootCooldown: 3
+  ShootCooldown: 1.5
   AmmoSpeed: 5
   _shootSound: {fileID: 8300000, guid: 3f6a8d4c77b7ed145942c3fb42c306f9, type: 3}
   EnemyStruct:
