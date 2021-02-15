@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
@@ -123,12 +124,22 @@ public class MenuManager : MonoBehaviour
 
 		volume = Mathf.Pow(10, volume / 20);
 
-		CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
-		{
-			SceneManager.LoadScene(1);
+		StartCoroutine(LoadSceneAfter(1));
 
-			CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, volume));
-		}));
+		//CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, 0f, () =>
+		//{
+		//	SceneManager.LoadScene(1);
+
+		//	CoroutineManager.Instance.StartCoroutine(FadeMixerGroup.FadeOut(_audioMixer, "MainVolume", 1f, volume));
+		//}));
+	}
+
+	IEnumerator LoadSceneAfter(float sec)
+    {
+		yield return new WaitForSeconds(sec);
+
+		SceneManager.LoadScene(1);
+
 	}
 
 	public void OnPressExit()

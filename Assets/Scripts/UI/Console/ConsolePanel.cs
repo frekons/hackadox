@@ -10,6 +10,12 @@ public class ConsolePanel : MonoBehaviour
 	[TextArea]
 	public string BeginText, TutorialText1, TutorialText2;
 
+	public AudioClip Tutorial1Sound, Tutorial2Sound;
+
+	[SerializeField]
+	private AudioSource _audioSource;
+
+	[HideInInspector]
 	public List<VariablePrefab> VariableList = new List<VariablePrefab>();
 
 	[Header("Fields")]
@@ -46,13 +52,15 @@ public class ConsolePanel : MonoBehaviour
     {
 		var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 
-		player.canMove = false;
+		player.canMove--;
 
 		TutorialPlaying = true;
 
 		var waitForEndOfFrame = new WaitForEndOfFrame();
 
 		Timer.Pause();
+
+		_audioSource.PlayOneShot(Tutorial1Sound);
 
 		Write(BeginText);
 
@@ -64,6 +72,8 @@ public class ConsolePanel : MonoBehaviour
 
 		while (VariableList.Count <= 0)
 			yield return waitForEndOfFrame;
+
+		_audioSource.PlayOneShot(Tutorial2Sound);
 
 		Write(TutorialText2);
 
@@ -81,7 +91,7 @@ public class ConsolePanel : MonoBehaviour
 
 		TutorialPlaying = false;
 
-		player.canMove = true;
+		player.canMove++;
 	}
 
 	private void OnEnable()

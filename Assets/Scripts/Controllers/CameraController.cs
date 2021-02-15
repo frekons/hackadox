@@ -11,18 +11,25 @@ public class CameraController : MonoBehaviour
 
 	void Start()
 	{
-		_localPlayerRigidbody = GameObject.FindWithTag("Player").GetComponent<Rigidbody2D>();
+		_localPlayerRigidbody = GameObject.FindWithTag("Player")?.GetComponent<Rigidbody2D>();
 
-		Vector3 camPos = _localPlayerRigidbody.transform.position;
-		camPos.z = transform.position.z;
+		if(_localPlayerRigidbody)
+        {
+			Vector3 camPos = _localPlayerRigidbody.transform.position;
 
-		transform.position = camPos/* + CameraOffset*/;
+			camPos.z = transform.position.z;
+
+			transform.position = camPos/* + CameraOffset*/;
+		}
 	}
 
 	private float _lastDirection = 1;
 
 	void LateUpdate()
 	{
+		if (_localPlayerRigidbody == null)
+			return;
+
 		Vector3 camPos = _localPlayerRigidbody.transform.position;
 
 		camPos.z = transform.position.z;

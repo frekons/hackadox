@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 	#region PLAYER FIELDS
 	[Header("Player")]
 	public float jumpCooldown = 0.1f;
-	public bool canMove = true;
+	public int canMove = 1;
 	public bool isDead = false;
 
 	public List<VisibleAttributes> VisibleAttributesList = new List<VisibleAttributes>();
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 		_animator.SetBool("isJumped", !IsGrounded());
 
-		if (!canMove)
+		if (canMove <= 0)
 			return;
 
 		if (Input.GetButtonDown("Jump") && CanPressJump())
@@ -133,8 +133,9 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 	private void FixedUpdate()
 	{
-		if (!canMove)
+		if (canMove <= 0)
 			return;
+
 		if (isDead)
 			return;
 
@@ -162,7 +163,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 	{
 		GameManager.Instance.OnPlayerEnterDoor();
 
-		canMove = false;
+		canMove--;
 		_animator.SetFloat("walkSpeed", 0);
 		_animator.SetBool("isJumped", false);
 	}
@@ -233,7 +234,7 @@ public class PlayerController : MonoBehaviour, ITooltip
     {
 		yield return new WaitForSeconds(afterSecond);
 
-		this.canMove = canMove;
+		this.canMove = canMove ? (this.canMove + 1) : (this.canMove - 1);
     }
 
 	public void PlaySpawnEffect(Color color, int count = 5, float waitTime = 0.2f)
@@ -300,7 +301,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 
 	public void TakeDamage(float damage, GameManager.DamageTypes damageType = GameManager.DamageTypes.Suicide)
 	{
-		if (isDead || !canMove)
+		if (isDead || canMove <= 0)
 			return;
 
 		Player.health -= damage;
@@ -331,7 +332,7 @@ public class PlayerController : MonoBehaviour, ITooltip
 		CanvasManager.Instance.SetCanvasVisibility(CanvasManager.CanvasNames.DeathScreen, true);
 
 		isDead = true;
-		canMove = false;
+		canMove--;
 
 		_animator.SetFloat("walkSpeed", 0);
 		_animator.SetBool("isJumping", false);

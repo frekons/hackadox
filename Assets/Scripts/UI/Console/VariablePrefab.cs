@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class VariablePrefab : MonoBehaviour
 {
+	public AudioClip TypingSound;
+
 	public TMP_Dropdown VariablesDropdownPrefab;
 
 	public TMP_InputField PopInputFieldPrefab;
@@ -12,6 +14,7 @@ public class VariablePrefab : MonoBehaviour
 	public TextMeshProUGUI _textMeshPro;
 
 	public Button _button;
+
 
 	public string VariableName
 	{
@@ -39,6 +42,8 @@ public class VariablePrefab : MonoBehaviour
 		//Debug.Log("Button Pressed! Type: " + _type.Name);
 		if (ConsolePanel.Instance.TutorialPlaying)
 			return;
+
+		UISoundManager.PlayOneShot(TypingSound);
 
 		_button.interactable = false;
 

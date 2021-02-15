@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 519980f1d7a23854495da73c6949009e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TypingSound: {fileID: 8300000, guid: 9fd8d1bfe59100145ad44c5fa92ffd88, type: 3}
   VariablesDropdownPrefab: {fileID: 6266244242226276430, guid: 852b93a4371eaeb4eab434fddaefd33b,
     type: 3}
   PopInputFieldPrefab: {fileID: 5668827606384460857, guid: 948828196843df5469a6f2ad8568abc4,
@@ -283,7 +284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 43.605, y: 0}
+  m_AnchoredPosition: {x: 43.6, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6038463132222960442

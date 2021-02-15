@@ -21,7 +21,7 @@ public class Door : Interactable
 			if (!string.IsNullOrWhiteSpace(ScenePath))
 			{
 				if (player)
-					if (player.canMove)
+					if (player.canMove > 0)
 					{
 						SetDoorOpen(true);
 
