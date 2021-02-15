@@ -170,7 +170,7 @@ public class MiniGame : MonoBehaviour
 
         WinCounter = 0;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.75f);
 
         Destroy(transform.parent.gameObject);
 

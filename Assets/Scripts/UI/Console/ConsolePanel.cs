@@ -311,14 +311,14 @@ public class ConsolePanel : MonoBehaviour
 
 	public void RemoveVariable(string variableName)
 	{
-		var list = VariableList.FindAll(x => x.VariableName == variableName);
+		//var list = VariableList.FindAll(x => x.VariableName == variableName);
 
-		for (int i = list.Count - 1; i >= 0; --i)
-		{
-			Destroy(list[i].gameObject);
+		//for (int i = list.Count - 1; i >= 0; --i)
+		//{
+		//	Destroy(list[i].gameObject);
 
-			VariableList.RemoveAt(i);
-		}
+		//	VariableList.RemoveAt(i);
+		//}
 	}
 
 	public void RemoveAllVariables()
