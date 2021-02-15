@@ -76,7 +76,7 @@ public class Timer : MonoBehaviour
 
 				value = currentTime / seconds;
 
-				_textMeshPro.text = ((int)currentTime).ToString();
+				_textMeshPro.text = (currentTime).ToString("0.#");
 
 				if (onProgress != null)
 					onProgress.Invoke(value);
@@ -114,11 +114,17 @@ public class Timer : MonoBehaviour
 
 	public static void Pause()
     {
+		if (Instance == null)
+			return;
+
 		Instance._pause = true;
     }
 
 	public static void Resume()
     {
+		if (Instance == null)
+			return;
+
 		Instance._pause = false;
 	}
 

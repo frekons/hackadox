@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ITooltip
 {
 	#region SOUNDS
 	public AudioClip JumpSound, DieSound;
@@ -15,6 +16,9 @@ public class PlayerController : MonoBehaviour
 
     #region COMPONENTS
     [Header("Components")]
+
+	[SerializeField]
+	private Image _healthBar;
 
 	[SerializeField]
 	private AudioSource _audioSource;
@@ -84,6 +88,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
+		_healthBar.fillAmount = Player.health / 100.0f;
+
 		if (isDead)
 			return;
 
@@ -148,7 +154,7 @@ public class PlayerController : MonoBehaviour
 	public void OnPlayerFacingDirectionChange(bool facingLeft)
 	{
 		_sprite.flipX = facingLeft;
-		_cameraController.CameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
+		//_cameraController.CameraOffset = facingLeft ? new Vector3(-1, 0, 0) : new Vector3(1, 0, 0);
 
 		GameManager.Instance.OnPlayerFacingDirectionChange(facingLeft);
 	}
@@ -159,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
 		canMove = false;
 		_animator.SetFloat("walkSpeed", 0);
-		_animator.SetBool("isJumping", false);
+		_animator.SetBool("isJumped", false);
 	}
 	#endregion
 
@@ -196,7 +202,7 @@ public class PlayerController : MonoBehaviour
 		if (Timer.Instance)
 			Timer.SetTimer(Timer.Instance.Time); // restart timer
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
+		//GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		_rigibody2d.velocity = Vector2.zero;
 		_rigibody2d.angularVelocity = 0;
@@ -292,7 +298,7 @@ public class PlayerController : MonoBehaviour
 			KillPlayer(damageType);
 		}
 
-		GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
+		//GameObject.Find("Health Text").GetComponent<TextMeshProUGUI>().text = Player.health.ToString();
 
 		GameManager.Instance.OnPlayerTakeDamage(damage, damageType);
 	}
@@ -347,6 +353,19 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 	#endregion
+
+	//
+	const string CONSOLE_ID = "player";
+
+	public void OnHover()
+	{
+		TooltipManager.Instance.ShowTooltip(CONSOLE_ID);
+	}
+
+	public void OnClick()
+	{
+		ConsolePanel.Instance.AddVariable(CONSOLE_ID, Player, VisibleAttributesDict);
+	}
 }
 
 

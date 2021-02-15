@@ -53,7 +53,7 @@ public class MiniGame : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EndMiniGame());
+            LoseMiniGame();
         }
 
     }

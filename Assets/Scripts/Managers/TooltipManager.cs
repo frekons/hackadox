@@ -7,6 +7,7 @@ public class TooltipManager : MonoBehaviour
 	private string _message;
 	private bool _isShowing, _isReceived;
 
+	[SerializeField]
 	private Camera _mainCamera;
 
 	public TextMeshProUGUI MessageText;
@@ -26,12 +27,20 @@ public class TooltipManager : MonoBehaviour
 		}
 	}
 
-	private void Start()
-	{
+    private void Start()
+    {
+        _mainCamera = Camera.main;
+
+		_rectTransform = GetComponent<RectTransform>();
+
+	}
+
+    private void OnLevelWasLoaded(int level)
+    {
 		_mainCamera = Camera.main;
 	}
 
-	private void OnEnable()
+    private void OnEnable()
 	{
 		if (Instance != null)
 		{
@@ -42,21 +51,27 @@ public class TooltipManager : MonoBehaviour
 		Instance = this;
 	}
 
-	private void LateUpdate()
+	private void Update()
 	{
-		Vector2 screen2world = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+		var mousePosition = Input.mousePosition;
 
-		var hit = Physics2D.Raycast(screen2world, Vector2.zero);
+		mousePosition.z = 9.2f;
 
-		if (hit)
+		Vector2 screen2world = _mainCamera.ScreenToWorldPoint(mousePosition);
+
+		var hits = Physics2D.Raycast(screen2world, Vector2.zero);
+
+		Debug.Log("hits length: " + (bool)hits + ", screen2world: " + screen2world + ", inputMousePos: " + Input.mousePosition);
+
+		if (hits)
 		{
 			_isReceived = false;
 
-			hit.transform.SendMessage("OnHover", SendMessageOptions.DontRequireReceiver);
+			hits.transform.SendMessage("OnHover", SendMessageOptions.DontRequireReceiver);
 
 			if (_isReceived && Input.GetKeyDown(KeyCode.Mouse0))
 			{
-				hit.transform.SendMessage("OnClick", SendMessageOptions.DontRequireReceiver);
+				hits.transform.SendMessage("OnClick", SendMessageOptions.DontRequireReceiver);
 			}
 		}
 		else
@@ -65,15 +80,18 @@ public class TooltipManager : MonoBehaviour
 				HideTooltip();
 		}
 
+
 		if (!_isReceived)
 			HideTooltip();
 	}
 
+	private RectTransform _rectTransform;
+
 	public void ShowTooltip(string message = "")
 	{
 		Message = message;
-
-		transform.position = Input.mousePosition + new Vector3(0, (42.5f / 2) + 5f, 0); // 42.5f == transform.GetComponent<RectTransform>().rect.height
+		Debug.Log("mousepos: " + Input.mousePosition);
+		_rectTransform.anchoredPosition = Input.mousePosition + new Vector3(0, (42.5f / 2) + 5f, 0); // 42.5f == transform.GetComponent<RectTransform>().rect.height
 		transform.GetComponent<CanvasGroup>().alpha = 1;
 
 		_isReceived = true;
@@ -88,7 +106,7 @@ public class TooltipManager : MonoBehaviour
 
 	public void OnTooltipMessageChange(string newMessage)
 	{
-		transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = newMessage;
+		MessageText.text = newMessage;
 		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.GetComponent<RectTransform>());
 	}
 

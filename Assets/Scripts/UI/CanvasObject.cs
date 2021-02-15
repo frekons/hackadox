@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasObject : MonoBehaviour
 {
@@ -17,4 +18,5 @@ public class CanvasObject : MonoBehaviour
 			CanvasManager.CanvasList[canvasName] = canvas;
 		}
 	}
+
 }

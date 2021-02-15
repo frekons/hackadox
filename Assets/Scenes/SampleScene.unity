@@ -557,6 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraOffset: {x: 0, y: 0, z: 0}
   _followSpeed: 1
+  _followForesight: 2
 --- !u!1 &1416718425
 GameObject:
   m_ObjectHideFlags: 0
