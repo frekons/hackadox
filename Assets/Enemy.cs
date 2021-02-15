@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, ITooltip
 {
     public float ShootCooldown = 3.0f, AmmoSpeed = 5.0f;
 
@@ -34,9 +34,9 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        var hit = Physics2D.Raycast(_shootPosition.position, _shootPosition.right);
+        var hit = Physics2D.Raycast(_shootPosition.position, transform.localScale.x > 0 ? Vector2.right : Vector2.left);
 
-        if (hit != default && hit.transform != default)
+        if (hit)
         {
             if (EnemyStruct.isEnemy && hit.transform.gameObject.CompareTag("Player"))
             {
@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
                 SetLineRendererColor(Color.white);
             }
 
-            _lineRenderer.SetPosition(1, Vector3.Lerp(_lineRenderer.GetPosition(1), new Vector3(hit.point.x, hit.point.y, 0) - _lineRenderer.transform.position, Time.deltaTime * 10.0f));
+            _lineRenderer.SetPosition(1, Vector3.Lerp(_lineRenderer.GetPosition(1), new Vector3(Mathf.Abs(hit.point.x - _lineRenderer.transform.position.x), Mathf.Abs(hit.point.y - _lineRenderer.transform.position.y), 0), Time.deltaTime * 10.0f));
         }
         else
         {
@@ -112,7 +112,24 @@ public class Enemy : MonoBehaviour
         var ammo = Instantiate(_ammoPrefab, _shootPosition.position, _shootPosition.rotation)
                             .GetComponent<Ammo>();
 
-        ammo.Shoot(_shootPosition.rotation * Vector2.right);
+        ammo.Shoot(transform.localScale.x > 0 ? Vector2.right : Vector2.left);
+    }
+
+    void ITooltip.OnHover()
+    {
+        TooltipManager.Instance.ShowTooltip("RESTRICTED");
+    }
+
+    void ITooltip.OnClick()
+    {
+        MinigameTwo.CreateMinigame(() =>
+        {
+            ConsolePanel.Instance.AddVariable("enemy", EnemyStruct, null);
+        },
+        () =>
+        {
+            
+        });
     }
 }
 
