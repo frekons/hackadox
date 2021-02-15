@@ -37,6 +37,8 @@ public class VariablePrefab : MonoBehaviour
 	public void OnButtonPress()
 	{
 		//Debug.Log("Button Pressed! Type: " + _type.Name);
+		if (ConsolePanel.Instance.TutorialPlaying)
+			return;
 
 		_button.interactable = false;
 

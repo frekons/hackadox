@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
 
-public class Lava : HarmfulObject, ITooltip
+public class Lava : HarmfulObject
 {
+	[SerializeField]
+	private AudioClip _hurtSound;
+
+	[SerializeField]
+	private AudioSource _audioSource;
+
 	private CooldownManager cooldownManager = new CooldownManager();
 
 	[Space]
@@ -31,6 +37,8 @@ public class Lava : HarmfulObject, ITooltip
         {
 			if (!cooldownManager.IsInCooldown("lava_damage"))
 			{
+				_audioSource.PlayOneShot(_hurtSound);
+
 				GiveDamage(GameObject.FindWithTag("Player").GetComponent<Collider2D>());
 
 				cooldownManager.SetCooldown("lava_damage", damageCooldown);
@@ -38,13 +46,4 @@ public class Lava : HarmfulObject, ITooltip
 		}
 	}
 
-	public void OnHover()
-	{
-		TooltipManager.Instance.ShowTooltip("LAVA");
-	}
-
-	public void OnClick()
-	{
-		Debug.Log("clicked lava");
-	}
 }

@@ -16,6 +16,8 @@ public class MinigameTwo : MonoBehaviour
 	[SerializeField]
 	private RectTransform _minigameWindow;
 	[SerializeField]
+	private CanvasGroup _deathScreen;
+	[SerializeField]
 	private RectTransform _counterTransform;
 	[SerializeField]
 	private TextMeshProUGUI _counterText;
@@ -38,10 +40,16 @@ public class MinigameTwo : MonoBehaviour
 	public void StartGame()
 	{
 		ResetPosition();
-		cooldownManager.SetCooldown("minigame_2", 0f);
+
+		cooldownManager.SetCooldown("minigame_2", 5f);
+
 		_isStarted = true;
 		_movingObject.sizeDelta = _movingObjectStartSize;
+
 		_counterTransform.GetComponent<CanvasGroup>().alpha = 1;
+
+		_deathScreen.interactable = false;
+		_deathScreen.alpha = 0;
 	}
 
 	private void ResetPosition()
@@ -50,8 +58,7 @@ public class MinigameTwo : MonoBehaviour
 
 		Rect windowRect = RectTransformExt.GetWorldRect(_minigameWindow, new Vector2(1, 1));
 
-		newObjectPosition.x = windowRect.x;
-		newObjectPosition.x -= _movingObject.rect.width / 2;
+		newObjectPosition.x = -580f;
 
 		newObjectPosition.y = windowRect.height + windowRect.y;
 		newObjectPosition.y -= windowRect.height / 2;
@@ -68,13 +75,13 @@ public class MinigameTwo : MonoBehaviour
 		return newObjectPosition.x - windowRect.x - (_movingObject.rect.width / 2) > windowRect.width;
 	}
 
-	private float getDistanceBetweenLine(ref Vector3 newObjectPosition)
-	{
-		Rect endLineRect = RectTransformExt.GetWorldRect(_endLine, new Vector2(1, 1));
-		Rect moveObjectRect = RectTransformExt.GetWorldRect(_movingObject, new Vector2(1, 1));
+	//private float getDistanceBetweenLine(ref Vector3 newObjectPosition)
+	//{
+	//	Rect endLineRect = RectTransformExt.GetWorldRect(_endLine, new Vector2(1, 1));
+	//	Rect moveObjectRect = RectTransformExt.GetWorldRect(_movingObject, new Vector2(1, 1));
 
-		return Mathf.Abs((moveObjectRect.width / 2) + newObjectPosition.x - endLineRect.x - (endLineRect.width / 2));
-	}
+	//	return Mathf.Abs((moveObjectRect.width / 2) + newObjectPosition.x - endLineRect.x - (endLineRect.width / 2));
+	//}
 
 	private bool isPassedLine(ref Vector3 newObjectPosition)
 	{
@@ -82,28 +89,17 @@ public class MinigameTwo : MonoBehaviour
 
 		return newObjectPosition.x + (_movingObject.rect.width / 2) > endLineRect.x;
 	}
-	private void LateUpdate()
-	{
-
-
-	}
 
 	private void Update()
 	{
-
-		Vector3 newObjectPosition = _movingObject.transform.position;
-
-		GameObject.Find("Debug Text").GetComponent<TextMeshProUGUI>().text = "isPassed: " + isPassedLine(ref newObjectPosition) + "\n";
-		GameObject.Find("Debug Text").GetComponent<TextMeshProUGUI>().text += "getDistanceBetweenLine: " + getDistanceBetweenLine(ref newObjectPosition);
-
-		//GameObject.Find("Debug Text").GetComponent<TextMeshProUGUI>().text = "";
-
 		if (!_isStarted)
 			return;
 
 		if (cooldownManager.IsInCooldown("minigame_2"))
 		{
-			_counterText.text = Mathf.Round(cooldownManager.GetCooldown("minigame_2")).ToString();
+			float time = Mathf.Round(cooldownManager.GetCooldown("minigame_2"));
+
+			_counterText.text = time >= 4 ? "Hazır.." : time == 0 ? "Başla" : time.ToString();
 			return;
 		}
 		else
@@ -111,7 +107,7 @@ public class MinigameTwo : MonoBehaviour
 			_counterTransform.GetComponent<CanvasGroup>().alpha = 0;
 		}
 
-		newObjectPosition = _movingObject.transform.position;
+		Vector3 newObjectPosition = _movingObject.transform.position;
 
 		if (isPassedWindow(ref newObjectPosition))
 		{
@@ -121,48 +117,30 @@ public class MinigameTwo : MonoBehaviour
 
 		if (isPassedLine(ref newObjectPosition) && !_isPassed)
 		{
-			_movingObject.sizeDelta -= new Vector2(10, 10);
+			_movingObject.sizeDelta -= new Vector2(5, 5);
 			_isPassed = true;
 
-			if (_movingObject.sizeDelta.x <= 10f)
+			if (_movingObject.sizeDelta.x <= 20f)
+			{
 				_isStarted = false;
+
+				_deathScreen.interactable = true;
+				_deathScreen.alpha = 1;
+
+				ResetPosition();
+
+				return;
+			}
 		}
-
-
-		//if (Mathf.Floor(getDistanceBetweenLine(ref newObjectPosition)) == 0)
-		//{
-		//	_isStarted = false;
-		//	return;
-		//}
-
-
-
-		//Debug.Log(getDistanceBetweenLine(ref newObjectPosition));
-		//if (getDistanceBetweenLine(ref newObjectPosition) > 0 && getDistanceBetweenLine(ref newObjectPosition) <= 5)
-		//	_isStarted = false;
-
-		GameObject.Find("Debug Text").GetComponent<TextMeshProUGUI>().text += "\ncanWin: " + ((getDistanceBetweenLine(ref newObjectPosition) > 0 && getDistanceBetweenLine(ref newObjectPosition) <= (_movingObject.rect.width / 6) + 1));
 
 		if (Input.GetButtonDown("Jump") && _isPassed)
 		{
 			_isStarted = false;
 			return;
 		}
-		//if (Input.GetButtonDown("Jump") && (getDistanceBetweenLine(ref newObjectPosition) > 0 && getDistanceBetweenLine(ref newObjectPosition) <= (_movingObject.rect.width / 6)) && !_isPassed)
-		//{
-		//	GameObject.Find("Debug Text").GetComponent<TextMeshProUGUI>().text += "\ngeçtin";
-		//	_isStarted = false;
-		//	return;
-
-		//}
 
 		newObjectPosition.x += _movingObjectSpeed;
 
-
-
-
 		_movingObject.transform.position = Vector3.Lerp(_movingObject.transform.position, newObjectPosition, Time.deltaTime * 20);
-
-
 	}
 }
