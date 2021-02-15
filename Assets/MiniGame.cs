@@ -41,6 +41,15 @@ public class MiniGame : MonoBehaviour
     private Transform ButtonContainer;
 
     [SerializeField]
+    private AudioClip TurretsDisabled;
+
+    [SerializeField]
+    private AudioClip MinigameLose;
+
+    [SerializeField]
+    private AudioSource audioSource;
+
+    [SerializeField]
     private TMPro.TextMeshProUGUI WinCounterText;
 
     public void Update()
@@ -105,6 +114,7 @@ public class MiniGame : MonoBehaviour
 
     public void WinMiniGame()
     {
+        audioSource.PlayOneShot(TurretsDisabled);
 
         WinMG();
 
@@ -114,6 +124,7 @@ public class MiniGame : MonoBehaviour
 
     public void LoseMiniGame()
     {
+        audioSource.PlayOneShot(MinigameLose);
 
         LoseMG();
 
