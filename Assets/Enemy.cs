@@ -115,6 +115,11 @@ public class Enemy : MonoBehaviour, ITooltip
         ammo.Shoot(transform.localScale.x > 0 ? Vector2.right : Vector2.left);
     }
 
+    private void OnDestroy()
+    {
+        ConsolePanel.Instance.RemoveVariable("enemy");
+    }
+
     public void OnHover()
     {
         TooltipManager.Instance.ShowTooltip(EnemyStruct.isEnemy ? "KORUMALI ADRES" : "HACKED");

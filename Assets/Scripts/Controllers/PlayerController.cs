@@ -371,8 +371,16 @@ public class PlayerController : MonoBehaviour, ITooltip
 	}
 	#endregion
 
-	//
-	const string CONSOLE_ID = "player";
+	private void OnDestroy()
+	{
+		if (ConsolePanel.Instance)
+		{
+			ConsolePanel.Instance.RemoveVariable(CONSOLE_ID);
+		}
+	}
+
+    //
+    const string CONSOLE_ID = "player";
 
 	public void OnHover()
 	{

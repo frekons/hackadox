@@ -465,11 +465,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BeginText: "Anla\u015F\u0131lan buray\u0131 hile yapmadan ge\xE7emeyece\u011Fim...
     Hadi ba\u015Flayal\u0131m o zaman!"
-  TutorialText1: "Hacklemek istedi\u011Fim objenin \xFCzerine t\u0131klayarak onun
-    adresini bulabilirim!"
-  TutorialText2: "Harika, objenin adresini buldum! \u015Eimdi istedi\u011Fim \u015Feyi
-    de\u011Fi\u015Ftirebilirim. (A\u015Fa\u011F\u0131dan istedi\u011Finiz objeyi
-    se\xE7in)"
+  TutorialText1: "Hacklemek istedi\u011Fim varl\u0131\u011F\u0131n \xFCzerine t\u0131klayarak
+    onun adresini bulabilirim!"
+  TutorialText2: "Harika, varl\u0131\u011F\u0131n adresini buldum! \u015Eimdi istedi\u011Fim
+    \u015Feyi de\u011Fi\u015Ftirebilirim. (A\u015Fa\u011F\u0131dan istedi\u011Finiz
+    objeyi se\xE7in)"
   Tutorial1Sound: {fileID: 8300000, guid: b102f0782afac794d8e211c0b9035720, type: 3}
   Tutorial2Sound: {fileID: 8300000, guid: e0281542fdf9f884cbddf9428074a8aa, type: 3}
   _audioSource: {fileID: 5022009377883611417}

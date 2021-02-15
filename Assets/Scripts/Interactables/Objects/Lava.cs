@@ -37,9 +37,12 @@ public class Lava : HarmfulObject
         {
 			if (!cooldownManager.IsInCooldown("lava_damage"))
 			{
-				_audioSource.PlayOneShot(_hurtSound);
+				var playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
-				GiveDamage(GameObject.FindWithTag("Player").GetComponent<Collider2D>());
+				if (playerController.Player.health > 0 && !playerController.isDead)
+					_audioSource.PlayOneShot(_hurtSound);
+
+				GiveDamage(playerController.GetComponent<Collider2D>());
 
 				cooldownManager.SetCooldown("lava_damage", damageCooldown);
 			}
